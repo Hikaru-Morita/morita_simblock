@@ -68,15 +68,25 @@ public class Node {
 	public void setRegion(int region){ this.region = region; }
 	public int getRegion(){ return this.region; }
 
-	//
-	public boolean addNeighbor(Node node){ return this.routingTable.addNeighbor(node); }
-	public boolean removeNeighbor(Node node){ return this.routingTable.removeNeighbor(node); }
-	public ArrayList<Node> getNeighbors(){ return this.routingTable.getNeighbors(); }
-	public AbstractRoutingTable getRoutingTable(){ return this.routingTable; }
-	public void setnConnection(int nConnection){ this.routingTable.setnConnection(nConnection); }
-	//
 
+	//
+	public boolean addNeighbor(Node node){ 
+		return this.routingTable.addNeighbor(node); 
+
+		//スコアが一定以上なら追加　をこれから実装
+
+	}
+	public boolean removeNeighbor(Node node){ 
+		return this.routingTable.removeNeighbor(node); 
+
+		// スコアが一定以下ならば削除　をこれから実装
+
+	}
+	public ArrayList<Node> getNeighbors(){ return this.routingTable.getNeighbors();}
+	public AbstractRoutingTable getRoutingTable(){ return this.routingTable;}
+	public void setnConnection(int nConnection){ this.routingTable.setnConnection(nConnection);}
 	public int getnConnection(){ return this.routingTable.getnConnection(); }
+	//
 
 
 	public void joinNetwork(){
