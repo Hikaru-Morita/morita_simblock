@@ -39,6 +39,9 @@ import SimBlock.node.Block;
 import SimBlock.node.Node;
 import SimBlock.task.MiningTask;
 
+// 追加
+import static java.lang.System.*;
+
 public class Main {
 	public static Random random = new Random(10);
 	public static long time1 = 0;//a value to know the simation time.
@@ -81,6 +84,7 @@ public class Main {
 
 		printRegion();
 
+		// ノード群の初期設定　地域など
 		constructNetworkWithAllNode(NUM_OF_NODES);
 
 		getSimulatedNodes().get(0).genesisBlock();
@@ -98,13 +102,21 @@ public class Main {
 			runTask();
 		}
 
+		printAllPropagation();	//ファイル出力のみ
 
-		printAllPropagation();
-
-		System.out.println();
+		System.out.println();	
 
 		Set<Block> blocks = new HashSet<Block>();
+
+		// genesis block ?
 		Block block  = getSimulatedNodes().get(0).getBlock();
+
+		// // 確認
+		// out.println("getSimulatedNodes(): " + getSimulatedNodes());
+		// System.out.println("getSimulatedNodes().get(0): " + getSimulatedNodes().get(0));
+		// out.println("getSimulatedNodes().get(0).getBlock(); " + getSimulatedNodes().get(0).getBlock());
+		// //
+
 
 		while(block.getParent() != null){
 			blocks.add(block);
@@ -133,9 +145,10 @@ public class Main {
 	        }
 	    });
 		for(Block orphan : orphans){
-			System.out.println(orphan+ ":" +orphan.getHeight());
+			//System.out.println(orphan+ ":" +orphan.getHeight());
 		}
-		System.out.println(averageOrhansSize);
+
+		//System.out.println(averageOrhansSize);
 
 		try {
 			FileWriter fw = new FileWriter(new File(OUT_FILE_URI.resolve("./blockList.txt")), false);
@@ -164,7 +177,7 @@ public class Main {
 		OUT_JSON_FILE.close();
 		long end = System.currentTimeMillis();
 		time1 += end -start;
-		System.out.println(time1);
+		//System.out.println(time1);
 
 	}
 
