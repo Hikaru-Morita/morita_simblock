@@ -13,6 +13,9 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
+// 99
+
 package SimBlock.simulator;
 
 import java.util.ArrayList;
@@ -93,7 +96,7 @@ public class Simulator {
 	public static void printPropagation(Block block,LinkedHashMap<Integer, Long> propagation){
 		System.out.println(block + ":" + block.getHeight());
 		for(Map.Entry<Integer, Long> timeEntry : propagation.entrySet()){
-			System.out.println(timeEntry.getKey() + "," + timeEntry.getValue());
+			//System.out.println(timeEntry.getKey() + "," + timeEntry.getValue());
 		}
 		System.out.println();
 	}
