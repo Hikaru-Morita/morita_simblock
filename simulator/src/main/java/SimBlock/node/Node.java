@@ -68,12 +68,11 @@ public class Node {
 	public void setRegion(int region){ this.region = region; }
 	public int getRegion(){ return this.region; }
 
+	//
 	public boolean addNeighbor(Node node){ return this.routingTable.addNeighbor(node); }
 	public boolean removeNeighbor(Node node){ return this.routingTable.removeNeighbor(node); }
 	public ArrayList<Node> getNeighbors(){ return this.routingTable.getNeighbors(); }
 	public AbstractRoutingTable getRoutingTable(){ return this.routingTable; }
-
-	// 
 	public void setnConnection(int nConnection){ this.routingTable.setnConnection(nConnection); }
 	//
 

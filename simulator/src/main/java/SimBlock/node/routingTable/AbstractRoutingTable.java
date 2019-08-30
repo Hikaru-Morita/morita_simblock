@@ -30,10 +30,11 @@ public abstract class AbstractRoutingTable {
 	public void setnConnection(int nConnection) {this.nConnection = nConnection;}
 	public int getnConnection(){return this.nConnection;}
 	public abstract void initTable();
+
+	// 重要
 	public abstract ArrayList<Node> getNeighbors();
 	public abstract boolean addNeighbor(Node node);
 	public abstract boolean removeNeighbor(Node node);
-
 	public boolean addInbound(Node from){return false;};
 	public boolean removeInbound(Node from){return false;};
 	public void acceptBlock(){};
