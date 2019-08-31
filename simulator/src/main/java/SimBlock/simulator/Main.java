@@ -76,22 +76,23 @@ public class Main {
 	}
 
 	public static void main(String[] args){
-		long start = System.currentTimeMillis();
-		setTargetInterval(INTERVAL);
+		long start = System.currentTimeMillis();			// timer start?
+		setTargetInterval(INTERVAL);						// does difficulty set only once ?
 
-		OUT_JSON_FILE.print("["); //start json format
-		OUT_JSON_FILE.flush();
+		OUT_JSON_FILE.print("[");							//start json format
+		OUT_JSON_FILE.flush();								//flush to json file
 
-		printRegion();
+		printRegion();										//only flush regions to json file
 
 		// ノード群の初期設定　地域など
 		constructNetworkWithAllNode(NUM_OF_NODES);
 
-		getSimulatedNodes().get(0).genesisBlock();
+		getSimulatedNodes().get(0).genesisBlock();			//set genesisBlock?
 
+
+		// 
 		int j=1;
 		while(getTask() != null){
-
 			if(getTask() instanceof MiningTask){
 				MiningTask task = (MiningTask) getTask();
 				if(task.getParent().getHeight() == j) j++;
@@ -100,41 +101,43 @@ public class Main {
 				writeGraph(j);
 			}
 			runTask();
+			// ここでスコアを更新？
 		}
 
-		printAllPropagation();	//ファイル出力のみ
+		printAllPropagation();								//ファイル出力のみ
 
 		System.out.println();	
 
+		// ブロックを配列に順番に格納
 		Set<Block> blocks = new HashSet<Block>();
-
 		// genesis block ?
 		Block block  = getSimulatedNodes().get(0).getBlock();
-
 		// // 確認
 		// out.println("getSimulatedNodes(): " + getSimulatedNodes());
 		// System.out.println("getSimulatedNodes().get(0): " + getSimulatedNodes().get(0));
 		// out.println("getSimulatedNodes().get(0).getBlock(); " + getSimulatedNodes().get(0).getBlock());
 		// //
-
-
 		while(block.getParent() != null){
 			blocks.add(block);
 			block = block.getParent();
 		}
 
+		// フォークしたorするブロックを配列に順番に格納
 		Set<Block> orphans = new HashSet<Block>();
 		int averageOrhansSize =0;
 		for(Node node :getSimulatedNodes()){
 			orphans.addAll(node.getOrphans());
-			averageOrhansSize += node.getOrphans().size();
+			averageOrhansSize += node.getOrphans().size();					// average orphan size ?
 		}
-		averageOrhansSize = averageOrhansSize/getSimulatedNodes().size();
+		averageOrhansSize = averageOrhansSize/getSimulatedNodes().size();	// average orphan size ?
 
 		blocks.addAll(orphans);
 
+
 		ArrayList<Block> blockList = new ArrayList<Block>();
 		blockList.addAll(blocks);
+
+		// ???????????
 		Collections.sort(blockList, new Comparator<Block>(){
 	        @Override
 	        public int compare(Block a, Block b){
@@ -144,6 +147,8 @@ public class Main {
 			  return order;
 	        }
 	    });
+	    
+
 		for(Block orphan : orphans){
 			//System.out.println(orphan+ ":" +orphan.getHeight());
 		}
@@ -175,7 +180,7 @@ public class Main {
 		OUT_JSON_FILE.print("}");
 		OUT_JSON_FILE.print("]"); //end json format
 		OUT_JSON_FILE.close();
-		long end = System.currentTimeMillis();
+		long end = System.currentTimeMillis();		// timer end?
 		time1 += end -start;
 		//System.out.println(time1);
 
