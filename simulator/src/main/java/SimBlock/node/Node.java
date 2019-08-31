@@ -32,10 +32,15 @@ import SimBlock.task.InvMessageTask;
 import SimBlock.task.MiningTask;
 import SimBlock.task.RecMessageTask;
 import SimBlock.task.Task;
+
 public class Node {
 	private int region;
 	private int nodeID;
 	private long miningRate;
+
+	private int score;				//add
+	static int average_score = 0;	//add
+
 	private AbstractRoutingTable routingTable;
 
 	private Block block;
@@ -53,6 +58,9 @@ public class Node {
 		this.nodeID = nodeID;
 		this.region = region;
 		this.miningRate = power;
+
+		this.score = 0;	//add
+
 		try {
 			this.routingTable = (AbstractRoutingTable) Class.forName(routingTableName).getConstructor(Node.class).newInstance(this);
 			this.setnConnection(nConnection);
@@ -68,19 +76,19 @@ public class Node {
 	public void setRegion(int region){ this.region = region; }
 	public int getRegion(){ return this.region; }
 
+	public int getScore(){ return this.score;}				//add	
+	public int getAverageScore(){ return average_score; }	//add
 
 	//
 	public boolean addNeighbor(Node node){ 
-		return this.routingTable.addNeighbor(node); 
+		//スコアが一定以上なら追加　をこれから実装 
 
-		//スコアが一定以上なら追加　をこれから実装
-
+		return this.routingTable.addNeighbor(node);  
 	}
 	public boolean removeNeighbor(Node node){ 
-		return this.routingTable.removeNeighbor(node); 
-
 		// スコアが一定以下ならば削除　をこれから実装
 
+		return this.routingTable.removeNeighbor(node); 
 	}
 	public ArrayList<Node> getNeighbors(){ return this.routingTable.getNeighbors();}
 	public AbstractRoutingTable getRoutingTable(){ return this.routingTable;}
