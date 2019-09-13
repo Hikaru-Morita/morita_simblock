@@ -76,31 +76,52 @@ public class Main {
 	}
 
 	public static void main(String[] args){
+
+		System.out.println("Main main: begin");					//add
+
 		long start = System.currentTimeMillis();			// timer start?
 		setTargetInterval(INTERVAL);						// does difficulty set only once ?
+
+		System.out.println("Main main: setTargetInterval");			//add
 
 		OUT_JSON_FILE.print("[");							//start json format
 		OUT_JSON_FILE.flush();								//flush to json file
 
 		printRegion();										//only flush regions to json file
 
+
+		System.out.println("Main main: havent set Nodes");
+
 		// ノード群の初期設定　地域など
 		constructNetworkWithAllNode(NUM_OF_NODES);
 
-		getSimulatedNodes().get(0).genesisBlock();			//set genesisBlock?
+		System.out.println("set Nodes");					//add
 
+		getSimulatedNodes().get(0).genesisBlock();			//set genesisBlock?
+		System.out.println("Main main: set genesisBlock");				//add
 
 		// 
 		int j=1;
 		while(getTask() != null){
 			if(getTask() instanceof MiningTask){
 				MiningTask task = (MiningTask) getTask();
+				//System.out.println("main: task=" + task);
 				if(task.getParent().getHeight() == j) j++;
 				if(j > ENDBLOCKHEIGHT){break;}
 				//if(j%100==0 || j==2) 		このif文なに？
+
+				//add
+				// 2周目以降の隣接ノードの更新
+				if(j > 1){
+					// runTask の処理をここで行い、適宜隣接ノードの更新を行う？
+
+				}
+
+				//only write graph on graph/j.txt
 				writeGraph(j);
 			}
-			runTask();
+			// おそらく重要
+			runTask();										
 			// ここでスコアを更新？
 		}
 
@@ -147,7 +168,6 @@ public class Main {
 			  return order;
 	        }
 	    });
-	    
 
 		for(Block orphan : orphans){
 			//System.out.println(orphan+ ":" +orphan.getHeight());
@@ -167,7 +187,6 @@ public class Main {
     			}
             }
             pw.close();
-
         } catch (IOException ex) {
             ex.printStackTrace();
         }
@@ -269,6 +288,10 @@ public class Main {
             for(int index =1;index<=getSimulatedNodes().size();index++){
     			Node node = getSimulatedNodes().get(index-1);
     			for(int i=0;i<node.getNeighbors().size();i++){
+
+    				// neighter なんて単語存在しない
+    				// neither ?
+    				// 勝手に neighbor の複数形を作らないでほしい
     				Node neighter = node.getNeighbors().get(i);
     				pw.println(node.getNodeID()+" " +neighter.getNodeID());
     			}

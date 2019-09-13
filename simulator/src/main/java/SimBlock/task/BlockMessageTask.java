@@ -27,6 +27,11 @@ public class BlockMessageTask extends AbstractMessageTask {
 	private Block block;
 	private long interval;
 
+	private long transmisson_timestamp;		//add
+	private long reception_timestamp;		//add
+	private long pre_transmisson_timestamp;		//add
+	private long pre_reception_timestamp;		//add
+
 	public BlockMessageTask(Node from, Node to, Block block ,long delay) {
 		super(from, to);
 		this.block = block;
@@ -38,13 +43,17 @@ public class BlockMessageTask extends AbstractMessageTask {
 	}
 
 	public void run(){
+		// System.out.println("BlockMessageTask: run()");
 		this.getFrom().sendNextBlockMessage();
 		
+		transmisson_timestamp = (getCurrentTime() - this.interval);		//add
+		reception_timestamp = getCurrentTime();							//add
+
 		OUT_JSON_FILE.print("{");
 		OUT_JSON_FILE.print(	"\"kind\":\"flow-block\",");
 		OUT_JSON_FILE.print(	"\"content\":{");
-		OUT_JSON_FILE.print(		"\"transmission-timestamp\":" + (getCurrentTime() - this.interval) + ",");
-		OUT_JSON_FILE.print(		"\"reception-timestamp\":" + getCurrentTime() + ",");
+		OUT_JSON_FILE.print(		"\"transmission-timestamp\":" + transmisson_timestamp + ",");	//changed
+		OUT_JSON_FILE.print(		"\"reception-timestamp\":" + reception_timestamp + ",");			//changed
 		OUT_JSON_FILE.print(		"\"begin-node-id\":" + getFrom().getNodeID() + ",");
 		OUT_JSON_FILE.print(		"\"end-node-id\":" + getTo().getNodeID() + ",");
 		OUT_JSON_FILE.print(		"\"block-id\":" + block.getId());
@@ -53,6 +62,16 @@ public class BlockMessageTask extends AbstractMessageTask {
 		OUT_JSON_FILE.flush();
 
 		super.run();
+	}
+
+	//add
+	public long getTransmissonTimestamp(){
+		return this.transmisson_timestamp;
+	}
+
+	//add
+	public long getReceptionTimestamp(){
+		return this.reception_timestamp;
 	}
 
 	public Block getBlock(){

@@ -49,12 +49,16 @@ public class Timer {
 		}
 	}
 	
+	// *
 	public static void runTask(){
 		if(taskQueue.size() > 0){
 			ScheduledTask currentScheduledTask = taskQueue.poll();
 			Task currentTask = currentScheduledTask.getTask();
 			currentTime = currentScheduledTask.getScheduledTime();
 			taskMap.remove(currentTask, currentScheduledTask);
+
+			// System.out.println("Time: runTask()");	//
+
 			currentTask.run();
 		}
 	}

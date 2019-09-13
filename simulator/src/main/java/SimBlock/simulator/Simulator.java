@@ -67,8 +67,6 @@ public class Simulator {
 		}
 	}
 
-	
-	
 	//
 	// Record block propagation time
 	// For saving memory, Record only the latest 10 Blocks
