@@ -82,23 +82,20 @@ public class Main {
 		long start = System.currentTimeMillis();			// timer start?
 		setTargetInterval(INTERVAL);						// does difficulty set only once ?
 
-		System.out.println("Main main: setTargetInterval");			//add
+		// System.out.println("Main main: setTargetInterval");			//add
 
 		OUT_JSON_FILE.print("[");							//start json format
 		OUT_JSON_FILE.flush();								//flush to json file
 
 		printRegion();										//only flush regions to json file
 
-
-		System.out.println("Main main: havent set Nodes");
-
 		// ノード群の初期設定　地域など
 		constructNetworkWithAllNode(NUM_OF_NODES);
 
-		System.out.println("set Nodes");					//add
+		System.out.println("Main: constructNetworkWithAllNode");			//add
 
 		getSimulatedNodes().get(0).genesisBlock();			//set genesisBlock?
-		System.out.println("Main main: set genesisBlock");				//add
+		System.out.println("Main: set genesisBlock");						//add
 
 		// 
 		int j=1;
@@ -121,6 +118,7 @@ public class Main {
 				writeGraph(j);
 			}
 			// おそらく重要
+			System.out.println("Main: runTask");
 			runTask();										
 			// ここでスコアを更新？
 		}
