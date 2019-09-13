@@ -46,6 +46,9 @@ public class BitcoinCoreTable extends AbstractRoutingTable {
 		Collections.shuffle(candidates);
 		for(int candidate:candidates){
 			if(this.outbound.size() < this.getnConnection()){
+
+				System.out.println("BitcoinCoreTable initTable: before addNeighbor");	//add
+
 				this.addNeighbor(getSimulatedNodes().get(candidate));
 			}else{
 				break;
@@ -53,9 +56,13 @@ public class BitcoinCoreTable extends AbstractRoutingTable {
 	    };
 	}
 	
+	// ここでスコアを考慮？
 	// add node to outbound and add selfnode to node's inbound 
 	// if # of nodes in outbound is less than nConnection
 	public boolean addNeighbor(Node node){
+
+		System.out.println("BitcoinCoreTable: addNeighbor");	//add
+
 		if(node == getSelfNode() || this.outbound.contains(node) || this.inbound.contains(node) || this.outbound.size() >= this.getnConnection()){
 			return false;
 		}else if(this.outbound.add(node) && node.getRoutingTable().addInbound(getSelfNode())){
@@ -66,8 +73,10 @@ public class BitcoinCoreTable extends AbstractRoutingTable {
 		}
 	}
 	
+	// ここでスコアを考慮？
 	// remove node to outbount and remove selfnode to node's inbount
 	public boolean removeNeighbor(Node node){
+		System.out.println("BitcoinCoreTable: removeNeighbor");	//add
 		if(this.outbound.remove(node) && node.getRoutingTable().removeInbound(getSelfNode())){
 			printRemoveLink(node);
 			return true;
@@ -76,13 +85,20 @@ public class BitcoinCoreTable extends AbstractRoutingTable {
 	}
 	
 	public boolean addInbound(Node from){
+
+		System.out.println("BitcoinCoreTable: addInbound");
+
 		if(this.inbound.add(from)){
 			printAddLink(from);
 			return true;
 		}
 		return false;
 	}
+	
 	public boolean removeInbound(Node from){
+
+		System.out.print("BitcoinCoreTable: removeInbound\n");
+
 		if(this.inbound.remove(from)){
 			printRemoveLink(from);
 			return true;

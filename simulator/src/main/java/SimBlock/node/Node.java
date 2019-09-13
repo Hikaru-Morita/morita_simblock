@@ -82,12 +82,12 @@ public class Node {
 	//
 	public boolean addNeighbor(Node node){ 
 		//スコアが一定以上なら追加　をこれから実装 
-
+		System.out.println("Node: addNeighbor");
 		return this.routingTable.addNeighbor(node);  
 	}
 	public boolean removeNeighbor(Node node){ 
 		// スコアが一定以下ならば削除　をこれから実装
-
+		System.out.println("Node: removeNeighbor");
 		return this.routingTable.removeNeighbor(node); 
 	}
 	public ArrayList<Node> getNeighbors(){ return this.routingTable.getNeighbors();}
