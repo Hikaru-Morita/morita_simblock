@@ -93,6 +93,7 @@ public class Main {
 				if(task.getParent().getHeight() == j) j++;
 				if(j > ENDBLOCKHEIGHT){break;}
 				//if(j%100==0 || j==2) 		このif文なに？
+				// System.out.println("write graph : " + j);  //追記
 				writeGraph(j);
 			}
 			runTask();
@@ -154,12 +155,12 @@ public class Main {
             ex.printStackTrace();
         }
 
-		// OUT_JSON_FILE.print("{");
-		// OUT_JSON_FILE.print(	"\"kind\":\"simulation-end\",");
-		// OUT_JSON_FILE.print(	"\"content\":{");
-		// OUT_JSON_FILE.print(		"\"timestamp\":" + getCurrentTime());
-		// OUT_JSON_FILE.print(	"}");
-		// OUT_JSON_FILE.print("}");
+		OUT_JSON_FILE.print("{");
+		OUT_JSON_FILE.print(	"\"kind\":\"simulation-end\",");
+		OUT_JSON_FILE.print(	"\"content\":{");
+		OUT_JSON_FILE.print(		"\"timestamp\":" + getCurrentTime());
+		OUT_JSON_FILE.print(	"}");
+		OUT_JSON_FILE.print("}");
 		OUT_JSON_FILE.print("]"); //end json format
 		OUT_JSON_FILE.close();
 		long end = System.currentTimeMillis();
