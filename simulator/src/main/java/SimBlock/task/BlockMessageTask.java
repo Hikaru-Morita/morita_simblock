@@ -43,7 +43,7 @@ public class BlockMessageTask extends AbstractMessageTask {
 	}
 
 	public void run(){
-		// System.out.println("BlockMessageTask: run()");
+		System.out.println("	BlockMessageTask: run");	//add
 		this.getFrom().sendNextBlockMessage();
 		
 		transmisson_timestamp = (getCurrentTime() - this.interval);		//add

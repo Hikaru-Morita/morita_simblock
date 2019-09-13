@@ -47,7 +47,7 @@ public class BitcoinCoreTable extends AbstractRoutingTable {
 		for(int candidate:candidates){
 			if(this.outbound.size() < this.getnConnection()){
 
-				System.out.println("BitcoinCoreTable initTable: before addNeighbor");	//add
+				System.out.println("BitcoinCoreTable: initTable");	//add
 
 				this.addNeighbor(getSimulatedNodes().get(candidate));
 			}else{
