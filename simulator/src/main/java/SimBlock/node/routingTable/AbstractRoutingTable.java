@@ -26,8 +26,8 @@ public abstract class AbstractRoutingTable {
 	public AbstractRoutingTable(Node selfNode){
 		this.selfNode = selfNode;
 	}
-	protected Node getSelfNode() {return selfNode;}
-	public void setnConnection(int nConnection) {this.nConnection = nConnection;}
+	protected Node getSelfNode(){return selfNode;}
+	public void setnConnection(int nConnection){this.nConnection = nConnection;}
 	public int getnConnection(){return this.nConnection;}
 	public abstract void initTable();
 
