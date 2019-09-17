@@ -41,7 +41,7 @@ public class BlockMessageTask extends AbstractMessageTask {
 	}
 
 	public void run(){
-		System.out.println("	BlockMessageTask: run");	//add
+		System.out.println("BlockMessageTask: run");	//add
 		Node node = this.getFrom();						//add
 		this.getFrom().sendNextBlockMessage();
 		

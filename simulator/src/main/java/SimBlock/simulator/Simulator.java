@@ -37,11 +37,17 @@ public class Simulator {
 	public static void setTargetInterval(long interval){ TargetInterval = interval; }
 	
 	public static void addNode(Node node){
+
+		// System.out.println("Simulator :addNode");	//add
+
 		SimulatedNodes.add(node);
 		setDifficulty();
 	}
 	
 	public static void removeNode(Node node){
+
+		System.out.println("Simulator :removeNode");	//add
+
 		SimulatedNodes.remove(node);
 		setDifficulty();
 	}
@@ -56,6 +62,9 @@ public class Simulator {
 	
 	// calculate difficulty from totalPower
 	private static void setDifficulty(){
+
+		// System.out.println("Simulator :setDifficulty");	//add
+
 		double totalPower = 0.0;
 		
 		for(Node node : SimulatedNodes){
