@@ -41,7 +41,7 @@ public class Node {
 	// private ArrayList<Double> score = new ArrayList<Double>();		//add
 	// private static double average_score = 0;							//add		
 
-	private Score score;
+	private Score score;		//add
 
 	private AbstractRoutingTable routingTable;
 
@@ -216,7 +216,11 @@ public class Node {
 			this.receiveBlock(block);
 
 			//送信元ノードのスコアを更新　add
-			
+			// if(this.nodeID == message.getTo().getNodeID()){System.out.println("in");}
+			BlockMessageTask m = (BlockMessageTask) message;
+			score.addScore(message.getFrom(),m.getReceptionTimestamp(),block.getTime());
+			// System.out.println("average_score :" + score.getAverageScore());
+			//10の倍数なら隣接ノードを更新
 		}
 	}
 
