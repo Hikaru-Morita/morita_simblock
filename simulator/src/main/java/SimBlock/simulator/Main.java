@@ -101,7 +101,7 @@ public class Main {
 		while(getTask() != null){
 			if(getTask() instanceof MiningTask){
 				MiningTask task = (MiningTask) getTask();
-				//System.out.println("main: task=" + task);
+				// System.out.println("main: task=" + task);
 				if(task.getParent().getHeight() == j) j++;
 				if(j > ENDBLOCKHEIGHT){break;}
 				//if(j%100==0 || j==2) 		このif文なに？
@@ -116,7 +116,7 @@ public class Main {
 
 		printAllPropagation();								//ファイル出力のみ
 
-		System.out.println();	
+		// System.out.println();	
 
 		// ブロックを配列に順番に格納
 		Set<Block> blocks = new HashSet<Block>();
@@ -264,13 +264,14 @@ public class Main {
 		}
 
 		for(Node node: getSimulatedNodes()){
-			System.out.println("Main: constructNetworkWithAllNode :joinNetwork - " + node.getNodeID());
+			// System.out.println("Main: constructNetworkWithAllNode :joinNetwork - " + node.getNodeID());
 			node.joinNetwork();
 		}
 
 	}
 
 	public static void writeGraph(int j){
+		// System.	out.println("main: writeGraph()");
 		try {
 			FileWriter fw = new FileWriter(new File(OUT_FILE_URI.resolve("./graph/"+ j +".txt")), false);
 			PrintWriter pw = new PrintWriter(new BufferedWriter(fw));
@@ -286,10 +287,11 @@ public class Main {
     			}
             }
             pw.close();
-
         } catch (IOException ex) {
             ex.printStackTrace();
         }
+
+        // System.	out.println("main: writeGraph() end");
 	}
 
 }

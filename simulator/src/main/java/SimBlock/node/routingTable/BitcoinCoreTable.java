@@ -40,7 +40,7 @@ public class BitcoinCoreTable extends AbstractRoutingTable {
 	// set nConnection random nodes to table
 	public void initTable(){
 
-		System.out.println("BitcoinCoreTable: initTable");	//add
+		// System.out.println("BitcoinCoreTable: initTable");	//add
 
 	    ArrayList<Integer> candidates = new ArrayList<Integer>();
 	    for(int i = 0 ; i < getSimulatedNodes().size() ; i++) {
