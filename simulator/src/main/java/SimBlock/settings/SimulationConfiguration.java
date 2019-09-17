@@ -16,9 +16,9 @@
 package SimBlock.settings;
 
 public class SimulationConfiguration {
-	public static final int NUM_OF_NODES = 50;//600;//800;//6000;
+	public static final int NUM_OF_NODES = 60;//600;//800;//6000;
 	public static final String TABLE = "SimBlock.node.routingTable.BitcoinCoreTable";
 	public static final long INTERVAL = 1000*60;//1000*60;//1000*30*5;//1000*60*10;
-	public static final int ENDBLOCKHEIGHT = 10;
+	public static final int ENDBLOCKHEIGHT = 31;
 	public static final long BLOCKSIZE = 6110;//6110;//8000;//535000;//0.5MB
 }

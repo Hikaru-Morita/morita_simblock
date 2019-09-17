@@ -61,11 +61,11 @@ public class Timer {
 			currentTime = currentScheduledTask.getScheduledTime();
 			taskMap.remove(currentTask, currentScheduledTask);
 
-			System.out.println("Timer: runTask   currentTask = " + currentTask);		//add
+			// System.out.println("Timer: runTask   currentTask = " + currentTask);		//add
 
 			currentTask.run();
 		}
-		System.out.println("end runTask");
+		// System.out.println("end runTask");
 	}
 
 	public static void removeTask(Task task){

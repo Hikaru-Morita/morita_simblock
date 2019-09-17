@@ -89,11 +89,10 @@ public class Main {
 
 		printRegion();										//only flush regions to json file
 
+		System.out.println("Main: constructNetworkWithAllNode");			//add
 		// ノード群の初期設定　地域など
 		constructNetworkWithAllNode(NUM_OF_NODES);
-
-		System.out.println("Main: constructNetworkWithAllNode");			//add
-
+		
 		getSimulatedNodes().get(0).genesisBlock();			//set genesisBlock?
 		System.out.println("Main: set genesisBlock");						//add
 
@@ -265,6 +264,7 @@ public class Main {
 		}
 
 		for(Node node: getSimulatedNodes()){
+			System.out.println("Main: constructNetworkWithAllNode :joinNetwork - " + node.getNodeID());
 			node.joinNetwork();
 		}
 

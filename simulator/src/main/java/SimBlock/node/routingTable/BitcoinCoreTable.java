@@ -39,6 +39,9 @@ public class BitcoinCoreTable extends AbstractRoutingTable {
 	
 	// set nConnection random nodes to table
 	public void initTable(){
+
+		System.out.println("BitcoinCoreTable: initTable");	//add
+
 	    ArrayList<Integer> candidates = new ArrayList<Integer>();
 	    for(int i = 0 ; i < getSimulatedNodes().size() ; i++) {
 	    	candidates.add(i);	
@@ -46,9 +49,6 @@ public class BitcoinCoreTable extends AbstractRoutingTable {
 		Collections.shuffle(candidates);
 		for(int candidate:candidates){
 			if(this.outbound.size() < this.getnConnection()){
-
-				System.out.println("BitcoinCoreTable: initTable");	//add
-
 				this.addNeighbor(getSimulatedNodes().get(candidate));
 			}else{
 				break;
@@ -61,7 +61,7 @@ public class BitcoinCoreTable extends AbstractRoutingTable {
 	// if # of nodes in outbound is less than nConnection
 	public boolean addNeighbor(Node node){
 
-		System.out.println("BitcoinCoreTable: addNeighbor");	//add
+		// System.out.println("BitcoinCoreTable: addNeighbor");	//add
 
 		if(node == getSelfNode() || this.outbound.contains(node) || this.inbound.contains(node) || this.outbound.size() >= this.getnConnection()){
 			return false;
@@ -76,7 +76,7 @@ public class BitcoinCoreTable extends AbstractRoutingTable {
 	// ここでスコアを考慮？
 	// remove node to outbount and remove selfnode to node's inbount
 	public boolean removeNeighbor(Node node){
-		System.out.println("BitcoinCoreTable: removeNeighbor");	//add
+		System.out.println("    BitcoinCoreTable: removeNeighbor");	//add
 		if(this.outbound.remove(node) && node.getRoutingTable().removeInbound(getSelfNode())){
 			printRemoveLink(node);
 			return true;
@@ -86,7 +86,7 @@ public class BitcoinCoreTable extends AbstractRoutingTable {
 	
 	public boolean addInbound(Node from){
 
-		System.out.println("BitcoinCoreTable: addInbound");
+		// System.out.println("BitcoinCoreTable: addInbound");	//add
 
 		if(this.inbound.add(from)){
 			printAddLink(from);
@@ -97,7 +97,7 @@ public class BitcoinCoreTable extends AbstractRoutingTable {
 	
 	public boolean removeInbound(Node from){
 
-		System.out.print("BitcoinCoreTable: removeInbound\n");
+		System.out.print("    BitcoinCoreTable: removeInbound\n");	//add
 
 		if(this.inbound.remove(from)){
 			printRemoveLink(from);

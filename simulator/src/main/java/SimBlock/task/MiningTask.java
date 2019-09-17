@@ -42,7 +42,7 @@ public class MiningTask implements Task {
 
 	@Override
 	public void run() {
-		System.out.println("MiningTask: run");	//add
+		// System.out.println("MiningTask: run");	//add
 		Block createdBlock = new Block(this.parentBlock.getHeight() + 1, this.parentBlock, this.miningNode ,getCurrentTime());
 		this.miningNode.receiveBlock(createdBlock);
 	}
