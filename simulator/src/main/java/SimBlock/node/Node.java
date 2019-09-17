@@ -38,10 +38,10 @@ public class Node {
 	private int nodeID;
 	private long miningRate;
 
-	private ArrayList<Double> score = new ArrayList<Double>();		//add
-	private static double average_score = 0;							//add
-	private long t_inv = 0;											//add
-	private long t_block = 0;											//add		
+	// private ArrayList<Double> score = new ArrayList<Double>();		//add
+	// private static double average_score = 0;							//add		
+
+	private Score score;
 
 	private AbstractRoutingTable routingTable;
 
@@ -97,8 +97,6 @@ public class Node {
 	public AbstractRoutingTable getRoutingTable(){ return this.routingTable;}
 	public void setnConnection(int nConnection){ this.routingTable.setnConnection(nConnection);}
 	public int getnConnection(){ return this.routingTable.getnConnection(); }
-	//
-
 
 	public void joinNetwork(){
 		this.routingTable.initTable();
@@ -150,6 +148,8 @@ public class Node {
 	public void sendInv(Block block){
 		for(Node to : this.routingTable.getNeighbors()){
 			AbstractMessageTask task = new InvMessageTask(this,to,block);
+
+			// System.out.println("1");
 			putTask(task);
 		}
 	}
@@ -171,6 +171,7 @@ public class Node {
 			this.mining();
 			this.sendInv(receivedBlock);
 
+		//orphan の処理
 		}else if(receivedBlock.getHeight() <= this.block.getHeight()){
 			sameHeightBlock = this.block.getBlockWithHeight(receivedBlock.getHeight());
 			if(!this.orphans.contains(receivedBlock) && receivedBlock != sameHeightBlock){
@@ -178,7 +179,6 @@ public class Node {
 				arriveBlock(receivedBlock, this);
 			}
 		}
-
 	}
 
 	public void receiveMessage(AbstractMessageTask message){
@@ -214,6 +214,9 @@ public class Node {
 			Block block = ((BlockMessageTask) message).getBlock();
 			downloadingBlocks.remove(block);
 			this.receiveBlock(block);
+
+			//送信元ノードのスコアを更新　add
+			
 		}
 	}
 
@@ -225,6 +228,7 @@ public class Node {
 
 			Node to = this.messageQue.get(0).getFrom();
 			Block block = this.messageQue.get(0).getBlock();
+
 			this.messageQue.remove(0);
 			long blockSize = BLOCKSIZE;
 			long bandwidth = getBandwidth(this.getRegion(),to.getRegion());

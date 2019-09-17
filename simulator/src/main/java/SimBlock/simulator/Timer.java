@@ -19,6 +19,8 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.PriorityQueue;
 
+import SimBlock.task.InvMessageTask;	//add
+
 import SimBlock.task.Task;
 
 
@@ -34,6 +36,7 @@ public class Timer {
 		
 		private ScheduledTask(Task task, long scheduledTime){
 			this.task = task;
+			// if(this.task instanceof InvMessageTask){System.out.println("check");}
 			this.scheduledTime = scheduledTime;
 		}
 		
@@ -51,6 +54,9 @@ public class Timer {
 			return order;
 		}
 	}
+
+	public static Map<Task,ScheduledTask> returnTaskMap(){return taskMap;}				//add
+	public static PriorityQueue<ScheduledTask> returnTaskQueue(){return taskQueue;}	//add
 	
 	// *
 	public static void runTask(){
@@ -88,6 +94,7 @@ public class Timer {
 	}
 	
 	public static void putTask(Task task){
+		// System.out.println("2");
 		ScheduledTask stask = new ScheduledTask(task, currentTime + task.getInterval());
 		taskMap.put(task,stask);
 		taskQueue.add(stask);
