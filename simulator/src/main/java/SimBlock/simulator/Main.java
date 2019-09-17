@@ -107,18 +107,10 @@ public class Main {
 				if(j > ENDBLOCKHEIGHT){break;}
 				//if(j%100==0 || j==2) 		このif文なに？
 
-				//add
-				// 2周目以降の隣接ノードの更新
-				if(j > 1){
-					// runTask の処理をここで行い、適宜隣接ノードの更新を行う？
-
-				}
-
 				//only write graph on graph/j.txt
 				writeGraph(j);
 			}
 			// おそらく重要
-			System.out.println("Main: runTask");
 			runTask();										
 			// ここでスコアを更新？
 		}
@@ -289,7 +281,6 @@ public class Main {
 
     				// neighter なんて単語存在しない
     				// neither ?
-    				// 勝手に neighbor の複数形を作らないでほしい
     				Node neighter = node.getNeighbors().get(i);
     				pw.println(node.getNodeID()+" " +neighter.getNodeID());
     			}

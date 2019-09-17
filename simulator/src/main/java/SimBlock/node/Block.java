@@ -23,7 +23,6 @@ public class Block {
 	private int id;
 	private static int latestId = 0;
 
-
 	public Block(int height, Block parent, Node creator,long generatedTime){
 		this.height = height;
 		this.parent = parent;

@@ -38,8 +38,10 @@ public class Node {
 	private int nodeID;
 	private long miningRate;
 
-	private int score;				//add
-	static int average_score = 0;	//add
+	private ArrayList<Double> score = new ArrayList<Double>();		//add
+	private static double average_score = 0;							//add
+	private long t_inv = 0;											//add
+	private long t_block = 0;											//add		
 
 	private AbstractRoutingTable routingTable;
 
@@ -59,7 +61,8 @@ public class Node {
 		this.region = region;
 		this.miningRate = power;
 
-		this.score = 0;	//add
+		// this.score = 0;			//add
+		// this.average_score = 0;	//add
 
 		try {
 			this.routingTable = (AbstractRoutingTable) Class.forName(routingTableName).getConstructor(Node.class).newInstance(this);
@@ -76,8 +79,8 @@ public class Node {
 	public void setRegion(int region){ this.region = region; }
 	public int getRegion(){ return this.region; }
 
-	public int getScore(){ return this.score;}				//add	
-	public int getAverageScore(){ return average_score; }	//add
+	// public double getScore(){ return this.score;}				//add	
+	// public double getAverageScore(){ return average_score; }	//add
 
 	//
 	public boolean addNeighbor(Node node){ 
