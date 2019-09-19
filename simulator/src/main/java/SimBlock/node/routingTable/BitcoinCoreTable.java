@@ -26,6 +26,8 @@ public class BitcoinCoreTable extends AbstractRoutingTable {
 	private ArrayList<Node> outbound = new ArrayList<Node>();
 	private ArrayList<Node> inbound = new ArrayList<Node>();
 
+	private int rundoom_node_num = 3;	//add
+
 	public BitcoinCoreTable(Node selfNode) {
 		super(selfNode);
 	}

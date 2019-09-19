@@ -235,8 +235,8 @@ public class Node {
 			if(block.getId() % 10 == 0){
 				System.out.println(this + ": " + score.getAverageScore());
 
-				if(){
-
+				if(true){
+							
 				}
 				else{
 					
