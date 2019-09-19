@@ -25,6 +25,8 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Set;
 
+import java.util.Random;	//add
+
 import SimBlock.node.Score;		//add
 import SimBlock.node.routingTable.AbstractRoutingTable;
 import SimBlock.task.AbstractMessageTask;
@@ -43,6 +45,8 @@ public class Node {
 	// private static double average_score = 0;							//add		
 
 	private Score score;		//add
+	private int update_node_num = 3;		//add
+	private Random rand = new Random();	//add
 
 	private AbstractRoutingTable routingTable;
 
@@ -232,14 +236,22 @@ public class Node {
 			// System.out.println("average_score :" + score.getAverageScore());
 		
 			//10の倍数なら隣接ノードを更新
-			if(block.getId() % 10 == 0){
+			if(block.getId() % 10 == 0 && block.getId() != 0){
 				System.out.println(this + ": " + score.getAverageScore());
 
-				if(true){
-							
-				}
-				else{
+				for(int i=0; i < update_node_num; i++){
+
+					getSimulatedNodes().size();
+					// getSimulatedNodes().get(id);
+
+					// System.out.println("in Node " + score.getScore(message.getFrom()));
+					if(score.getScore(message.getFrom()) >= score.getAverageScore()){
+						routingTable.removeNeighbor(message.getFrom());
+						routingTable.addNeighbor(getSimulatedNodes().get(rand.nextInt(getSimulatedNodes().size())));
+					}
+					else{
 					
+					}
 				}
 				// removeNeighbor addNeighbor
 

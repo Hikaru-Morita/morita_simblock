@@ -26,8 +26,6 @@ public class BitcoinCoreTable extends AbstractRoutingTable {
 	private ArrayList<Node> outbound = new ArrayList<Node>();
 	private ArrayList<Node> inbound = new ArrayList<Node>();
 
-	private int rundoom_node_num = 3;	//add
-
 	public BitcoinCoreTable(Node selfNode) {
 		super(selfNode);
 	}
@@ -77,7 +75,7 @@ public class BitcoinCoreTable extends AbstractRoutingTable {
 	// ここでスコアを考慮？
 	// remove node to outbount and remove selfnode to node's inbount
 	public boolean removeNeighbor(Node node){
-		System.out.println("    BitcoinCoreTable: removeNeighbor");	//add
+		// System.out.println("    BitcoinCoreTable: removeNeighbor");	//add
 		if(this.outbound.remove(node) && node.getRoutingTable().removeInbound(getSelfNode())){
 			printRemoveLink(node);
 			return true;
@@ -98,7 +96,7 @@ public class BitcoinCoreTable extends AbstractRoutingTable {
 	
 	public boolean removeInbound(Node from){
 
-		System.out.print("    BitcoinCoreTable: removeInbound\n");	//add
+		// System.out.print("    BitcoinCoreTable: removeInbound\n");	//add
 
 		if(this.inbound.remove(from)){
 			printRemoveLink(from);
