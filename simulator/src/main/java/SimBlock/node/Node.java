@@ -136,9 +136,9 @@ public class Node {
 		OUT_JSON_FILE.flush();
 	}
 
-	private void printAverageScore(Node node, double score){
+	private void printAverageScore(Node node, double score, int id){
 		// AVERAGESCORE_JSON_FILE.print("{");
-		AVERAGESCORE_CSV_FILE.print(node + "," + score + "\n");
+		AVERAGESCORE_CSV_FILE.print(node + "," + score + "," + id + "\n");
 		// AVERAGESCORE_JSON_FILE.print("}");
 	}
 
@@ -245,7 +245,7 @@ public class Node {
 			if(block.getId() % 10 == 0 && block.getId() != 0){
 
 				// System.out.println(this + ": " + score.getAverageScore());
-				printAverageScore(this,score.getAverageScore());
+				printAverageScore(this, score.getAverageScore(), m.getBlock().getId());
 
 				for(int i=0; i < update_node_num; i++){
 
