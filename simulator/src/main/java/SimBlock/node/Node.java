@@ -25,6 +25,7 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Set;
 
+import SimBlock.node.Score;		//add
 import SimBlock.node.routingTable.AbstractRoutingTable;
 import SimBlock.task.AbstractMessageTask;
 import SimBlock.task.BlockMessageTask;
@@ -60,6 +61,8 @@ public class Node {
 		this.nodeID = nodeID;
 		this.region = region;
 		this.miningRate = power;
+
+		score = new Score();		//add
 
 		// this.score = 0;			//add
 		// this.average_score = 0;	//add
@@ -220,15 +223,27 @@ public class Node {
 			BlockMessageTask m = (BlockMessageTask) message;
 			// score.addScore(message.getFrom(),m.getReceptionTimestamp(),block.getTime());
 
-			System.out.println("message.getFrom(): " + message.getFrom());
-			System.out.println("m.getReceptionTimestamp(): " + m.getReceptionTimestamp());
-			System.out.println("block.getTime(): " + block.getTime());
+			// System.out.println("message.getFrom(): " + message.getFrom());
+			// System.out.println("m.getReceptionTimestamp(): " + m.getReceptionTimestamp());
+			// System.out.println("block.getTime(): " + block.getTime());
 			if(block.getTime() != 0){
-				System.out.println("in if ");
 				score.addScore(message.getFrom(),m.getReceptionTimestamp(),block.getTime());	
 			}
 			// System.out.println("average_score :" + score.getAverageScore());
+		
 			//10の倍数なら隣接ノードを更新
+			if(block.getId() % 10 == 0){
+				System.out.println(this + ": " + score.getAverageScore());
+
+				if(){
+
+				}
+				else{
+					
+				}
+				// removeNeighbor addNeighbor
+
+			}
 		}
 	}
 
