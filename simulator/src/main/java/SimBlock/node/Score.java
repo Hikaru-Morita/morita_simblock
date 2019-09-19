@@ -28,7 +28,7 @@ public class Score{
 		else{
 			score = scores.get(from);
 			scores.remove(from);
-			scores.put(from, (1-para)*(score)-para*(t_inv-t_block));
+			scores.put(from, (1-para)*(score)+para*(t_inv-t_block));
 		}
 	}
 

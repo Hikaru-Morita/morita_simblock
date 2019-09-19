@@ -136,6 +136,12 @@ public class Node {
 		OUT_JSON_FILE.flush();
 	}
 
+	private void printAverageScore(Node node, double score){
+		// AVERAGESCORE_JSON_FILE.print("{");
+		AVERAGESCORE_CSV_FILE.print(node + "," + score + "\n");
+		// AVERAGESCORE_JSON_FILE.print("}");
+	}
+
 	public void addOrphans(Block newBlock, Block correctBlock){
 		if(newBlock != correctBlock){
 			this.orphans.add(newBlock);
@@ -237,7 +243,9 @@ public class Node {
 		
 			//10の倍数なら隣接ノードを更新
 			if(block.getId() % 10 == 0 && block.getId() != 0){
-				System.out.println(this + ": " + score.getAverageScore());
+
+				// System.out.println(this + ": " + score.getAverageScore());
+				printAverageScore(this,score.getAverageScore());
 
 				for(int i=0; i < update_node_num; i++){
 
@@ -250,7 +258,6 @@ public class Node {
 						routingTable.addNeighbor(getSimulatedNodes().get(rand.nextInt(getSimulatedNodes().size())));
 					}
 					else{
-					
 					}
 				}
 				// removeNeighbor addNeighbor

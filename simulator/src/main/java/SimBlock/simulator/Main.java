@@ -59,6 +59,7 @@ public class Main {
 
 	public static PrintWriter OUT_JSON_FILE;
 	public static PrintWriter STATIC_JSON_FILE;
+	public static PrintWriter AVERAGESCORE_CSV_FILE;	//add
 	static {
 		try{
 			OUT_JSON_FILE = new PrintWriter(new BufferedWriter(new FileWriter(new File(OUT_FILE_URI.resolve("./output.json")))));
@@ -66,10 +67,18 @@ public class Main {
 			e.printStackTrace();
 		}
 	}
-
 	static {
 		try{
 			STATIC_JSON_FILE = new PrintWriter(new BufferedWriter(new FileWriter(new File(OUT_FILE_URI.resolve("./static.json")))));
+		} catch (IOException e){
+			e.printStackTrace();
+		}
+	}
+
+	//add
+	static {
+		try{
+			AVERAGESCORE_CSV_FILE = new PrintWriter(new BufferedWriter(new FileWriter(new File(OUT_FILE_URI.resolve("./AverageScore.csv")))));
 		} catch (IOException e){
 			e.printStackTrace();
 		}
@@ -83,7 +92,7 @@ public class Main {
 		setTargetInterval(INTERVAL);						// does difficulty set only once ?
 
 		// System.out.println("Main main: setTargetInterval");			//add
-
+		// AVERAGESCORE_JSON_FILE.print("{");	//add
 		OUT_JSON_FILE.print("[");							//start json format
 		OUT_JSON_FILE.flush();								//flush to json file
 
@@ -188,6 +197,11 @@ public class Main {
 		OUT_JSON_FILE.print("}");
 		OUT_JSON_FILE.print("]"); //end json format
 		OUT_JSON_FILE.close();
+
+		// AVERAGESCORE_JSON_FILE.print("\"0\"" + ":" + "\"0\"");
+		// AVERAGESCORE_JSON_FILE.print("}");	//add
+		AVERAGESCORE_CSV_FILE.close();		//add
+
 		long end = System.currentTimeMillis();		// timer end?
 		time1 += end -start;
 		//System.out.println(time1);
