@@ -218,7 +218,15 @@ public class Node {
 			//送信元ノードのスコアを更新　add
 			// if(this.nodeID == message.getTo().getNodeID()){System.out.println("in");}
 			BlockMessageTask m = (BlockMessageTask) message;
-			score.addScore(message.getFrom(),m.getReceptionTimestamp(),block.getTime());
+			// score.addScore(message.getFrom(),m.getReceptionTimestamp(),block.getTime());
+
+			System.out.println("message.getFrom(): " + message.getFrom());
+			System.out.println("m.getReceptionTimestamp(): " + m.getReceptionTimestamp());
+			System.out.println("block.getTime(): " + block.getTime());
+			if(block.getTime() != 0){
+				System.out.println("in if ");
+				score.addScore(message.getFrom(),m.getReceptionTimestamp(),block.getTime());	
+			}
 			// System.out.println("average_score :" + score.getAverageScore());
 			//10の倍数なら隣接ノードを更新
 		}

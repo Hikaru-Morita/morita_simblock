@@ -5,11 +5,8 @@ import java.util.Map;
 
 public class Score{
 	private Map<Node,Double> scores = new HashMap<Node,Double>();
-	private Node from;
-	private double score; 
-	private long t_inv;
-	private long t_block;
-	private double average_score;
+	private double score;
+	private double average_score = 0;
 	private double para = 0.3;
 
 	public 	Map<Node,Double> getScores(){return scores;}
@@ -23,6 +20,7 @@ public class Score{
 	}
 
 	public void addScore(Node from, long t_inv, long t_block){
+		System.out.println("test2");
 		if(scores.get(from) == null){
 			score = (t_inv-t_block);
 			scores.put(from, score);
