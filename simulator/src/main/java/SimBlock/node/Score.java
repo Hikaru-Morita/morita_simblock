@@ -6,13 +6,14 @@ import java.util.Map;
 public class Score{
 	private Map<Node,Double> scores = new HashMap<Node,Double>();
 	private double score = 0;
-	private double average_score = 0;
 	private double para = 0.3;
 
 	public 	Map<Node,Double> getScores(){return scores;}
 	public double getScore(Node node){return scores.get(node);}
 	public double getAverageScore(){
-		int i = 1;
+		int i = 0;	
+		double average_score = 0;
+		
 		for(double val : scores.values()){
 			average_score = average_score + val;
 			i++;
@@ -24,11 +25,14 @@ public class Score{
 		if(scores.get(from) == null){
 			score = (t_inv-t_block);
 			scores.put(from, score);
+			// System.out.println("first");
 		}
 		else{
 			score = scores.get(from);
 			scores.remove(from);
-			scores.put(from, (1-para)*(score)+para*(t_inv-t_block));
+			score = (1-para)*(score)+para*(t_inv-t_block);
+			scores.put(from, score);
+			// System.out.println("more than once");
 		}
 	}
 
