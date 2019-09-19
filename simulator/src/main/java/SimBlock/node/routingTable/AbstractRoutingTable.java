@@ -38,5 +38,4 @@ public abstract class AbstractRoutingTable {
 	public boolean addInbound(Node from){return false;};
 	public boolean removeInbound(Node from){return false;};
 	public void acceptBlock(){};
-	
 }

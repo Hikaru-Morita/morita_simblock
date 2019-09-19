@@ -10,6 +10,7 @@ public class Score{
 	private double para = 0.3;
 
 	public 	Map<Node,Double> getScores(){return scores;}
+	public double getScore(Node node){return scores.get(node);}
 	public double getAverageScore(){
 		int i = 1;
 		for(double val : scores.values()){
