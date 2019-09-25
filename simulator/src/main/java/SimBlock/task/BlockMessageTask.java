@@ -21,6 +21,7 @@ import static SimBlock.simulator.Timer.*;
 
 import SimBlock.node.Block;
 import SimBlock.node.Node;
+import SimBlock.node.Score;
 
 public class BlockMessageTask extends AbstractMessageTask {
 
@@ -34,6 +35,7 @@ public class BlockMessageTask extends AbstractMessageTask {
 		super(from, to);
 		this.block = block;
 		this.interval = getLatency(this.getFrom().getRegion(), this.getTo().getRegion()) + delay;
+		// System.out.println("BlockMessageTask: interval = " +  this.interval);
 	}
 
 	public long getInterval(){
@@ -48,17 +50,19 @@ public class BlockMessageTask extends AbstractMessageTask {
 		this.transmisson_timestamp = (getCurrentTime() - this.interval);		//add
 		this.reception_timestamp = getCurrentTime();							//add 
 
-		OUT_JSON_FILE.print("{");
-		OUT_JSON_FILE.print(	"\"kind\":\"flow-block\",");
-		OUT_JSON_FILE.print(	"\"content\":{");
-		OUT_JSON_FILE.print(		"\"transmission-timestamp\":" + transmisson_timestamp + ",");		//changed
-		OUT_JSON_FILE.print(		"\"reception-timestamp\":" + reception_timestamp + ",");			//changed
-		OUT_JSON_FILE.print(		"\"begin-node-id\":" + getFrom().getNodeID() + ",");
-		OUT_JSON_FILE.print(		"\"end-node-id\":" + getTo().getNodeID() + ",");
-		OUT_JSON_FILE.print(		"\"block-id\":" + block.getId());
-		OUT_JSON_FILE.print(	"}");
-		OUT_JSON_FILE.print("},");
-		OUT_JSON_FILE.flush();
+		// OUT_JSON_FILE.print("{");
+		// OUT_JSON_FILE.print(	"\"kind\":\"flow-block\",");
+		// OUT_JSON_FILE.print(	"\"content\":{");
+		// OUT_JSON_FILE.print(		"\"transmission-timestamp\":" + transmisson_timestamp + ",");		//changed
+		// OUT_JSON_FILE.print(		"\"reception-timestamp\":" + reception_timestamp + ",");			//changed
+		// OUT_JSON_FILE.print(		"\"begin-node-id\":" + getFrom().getNodeID() + ",");
+		// OUT_JSON_FILE.print(		"\"end-node-id\":" + getTo().getNodeID() + ",");
+		// OUT_JSON_FILE.print(		"\"block-id\":" + block.getId());
+		// OUT_JSON_FILE.print(	"}");
+		// OUT_JSON_FILE.print("},");
+		// OUT_JSON_FILE.flush();
+
+		Score.addBFT(this.interval);
 
 		super.run();
 	}

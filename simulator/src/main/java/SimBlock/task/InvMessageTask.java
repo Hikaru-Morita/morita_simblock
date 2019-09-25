@@ -26,7 +26,7 @@ public class InvMessageTask extends AbstractMessageTask {
 		super(from, to);
 		this.block = block;
 	}
-
+	
 	public Block getBlock(){
 		return this.block;
 	}
