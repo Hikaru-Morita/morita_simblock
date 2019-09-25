@@ -125,15 +125,15 @@ public class Node {
 	}
 
 	private void printAddBlock(Block newBlock){
-		OUT_JSON_FILE.print("{");
-		OUT_JSON_FILE.print(	"\"kind\":\"add-block\",");
-		OUT_JSON_FILE.print(	"\"content\":{");
-		OUT_JSON_FILE.print(		"\"timestamp\":" + getCurrentTime() + ",");
-		OUT_JSON_FILE.print(		"\"node-id\":" + this.getNodeID() + ",");
-		OUT_JSON_FILE.print(		"\"block-id\":" + newBlock.getId());
-		OUT_JSON_FILE.print(	"}");
-		OUT_JSON_FILE.print("},");
-		OUT_JSON_FILE.flush();
+		// OUT_JSON_FILE.print("{");
+		// OUT_JSON_FILE.print(	"\"kind\":\"add-block\",");
+		// OUT_JSON_FILE.print(	"\"content\":{");
+		// OUT_JSON_FILE.print(		"\"timestamp\":" + getCurrentTime() + ",");
+		// OUT_JSON_FILE.print(		"\"node-id\":" + this.getNodeID() + ",");
+		// OUT_JSON_FILE.print(		"\"block-id\":" + newBlock.getId());
+		// OUT_JSON_FILE.print(	"}");
+		// OUT_JSON_FILE.print("},");
+		// OUT_JSON_FILE.flush();
 	}
 
 	private void printAverageScore(Node node, double score, int id){
@@ -245,23 +245,24 @@ public class Node {
 			if(block.getId() % 10 == 0 && block.getId() != 0){
 
 				// System.out.println(this + ": " + score.getAverageScore());
-				printAverageScore(this, score.getAverageScore(), m.getBlock().getId());
+				// printAverageScore(this, score.getAverageScore(), m.getBlock().getId());
 
 				for(int i=0; i < update_node_num; i++){
-
-					getSimulatedNodes().size();
+					routingTable.removeNeighbor(score.getWorstNode());
+					routingTable.addNeighbor(getSimulatedNodes().get(rand.nextInt(getSimulatedNodes().size())));
+						
+					// getSimulatedNodes().size();
 					// getSimulatedNodes().get(id);
 
 					// System.out.println("in Node " + score.getScore(message.getFrom()));
-					if(score.getScore(message.getFrom()) >= score.getAverageScore()){
-						routingTable.removeNeighbor(message.getFrom());
-						routingTable.addNeighbor(getSimulatedNodes().get(rand.nextInt(getSimulatedNodes().size())));
-					}
-					else{
-					}
+					// if(score.getScore(message.getFrom()) >= score.getAverageScore()){
+					// 	routingTable.removeNeighbor(message.getFrom());
+					// 	routingTable.addNeighbor(getSimulatedNodes().get(rand.nextInt(getSimulatedNodes().size())));
+					// }
+					// else{
+					// }
 				}
 				// removeNeighbor addNeighbor
-
 			}
 		}
 	}

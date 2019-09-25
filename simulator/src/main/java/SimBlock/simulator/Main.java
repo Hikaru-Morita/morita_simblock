@@ -37,6 +37,7 @@ import java.util.Set;
 
 import SimBlock.node.Block;
 import SimBlock.node.Node;
+import SimBlock.node.Score;
 import SimBlock.task.MiningTask;
 
 // 追加
@@ -60,6 +61,8 @@ public class Main {
 	public static PrintWriter OUT_JSON_FILE;
 	public static PrintWriter STATIC_JSON_FILE;
 	public static PrintWriter AVERAGESCORE_CSV_FILE;	//add
+	public static PrintWriter AVERAGE_BFT_FILE; 		//add
+
 	static {
 		try{
 			OUT_JSON_FILE = new PrintWriter(new BufferedWriter(new FileWriter(new File(OUT_FILE_URI.resolve("./output.json")))));
@@ -79,6 +82,15 @@ public class Main {
 	static {
 		try{
 			AVERAGESCORE_CSV_FILE = new PrintWriter(new BufferedWriter(new FileWriter(new File(OUT_FILE_URI.resolve("./AverageScore.csv")))));
+		} catch (IOException e){
+			e.printStackTrace();
+		}
+	}
+
+	//add
+	static {
+		try{
+			AVERAGE_BFT_FILE = new PrintWriter(new BufferedWriter(new FileWriter(new File(OUT_FILE_URI.resolve("./AverageBFT.txt")), true)));
 		} catch (IOException e){
 			e.printStackTrace();
 		}
@@ -189,25 +201,26 @@ public class Main {
             ex.printStackTrace();
         }
 
-		OUT_JSON_FILE.print("{");
-		OUT_JSON_FILE.print(	"\"kind\":\"simulation-end\",");
-		OUT_JSON_FILE.print(	"\"content\":{");
-		OUT_JSON_FILE.print(		"\"timestamp\":" + getCurrentTime());
-		OUT_JSON_FILE.print(	"}");
-		OUT_JSON_FILE.print("}");
-		OUT_JSON_FILE.print("]"); //end json format
-		OUT_JSON_FILE.close();
+		// OUT_JSON_FILE.print("{");
+		// OUT_JSON_FILE.print(	"\"kind\":\"simulation-end\",");
+		// OUT_JSON_FILE.print(	"\"content\":{");
+		// OUT_JSON_FILE.print(		"\"timestamp\":" + getCurrentTime());
+		// OUT_JSON_FILE.print(	"}");
+		// OUT_JSON_FILE.print("}");
+		// OUT_JSON_FILE.print("]"); //end json format
+		// OUT_JSON_FILE.close();
 
+		AVERAGE_BFT_FILE.print(Score.getAverageBFT() + "\n");
+		AVERAGE_BFT_FILE.close();
 		// AVERAGESCORE_JSON_FILE.print("\"0\"" + ":" + "\"0\"");
 		// AVERAGESCORE_JSON_FILE.print("}");	//add
 		AVERAGESCORE_CSV_FILE.close();		//add
 
+
 		long end = System.currentTimeMillis();		// timer end?
 		time1 += end -start;
 		//System.out.println(time1);
-
 	}
-
 
 	//TODO　以下の初期生成はシナリオを読み込むようにする予定
 	//ノードを参加させるタスクを作る(ノードの参加と，リンクの貼り始めるタスクは分ける)
@@ -265,15 +278,15 @@ public class Main {
 			Node node = new Node(id,degreeList.get(id-1)+1,regionList.get(id-1),RandomPower(id),TABLE);
 			addNode(node);
 
-			OUT_JSON_FILE.print("{");
-			OUT_JSON_FILE.print(	"\"kind\":\"add-node\",");
-			OUT_JSON_FILE.print(	"\"content\":{");
-			OUT_JSON_FILE.print(		"\"timestamp\":0,");
-			OUT_JSON_FILE.print(		"\"node-id\":" + id + ",");
-			OUT_JSON_FILE.print(		"\"region-id\":" + regionList.get(id-1));
-			OUT_JSON_FILE.print(	"}");
-			OUT_JSON_FILE.print("},");
-			OUT_JSON_FILE.flush();
+			// OUT_JSON_FILE.print("{");
+			// OUT_JSON_FILE.print(	"\"kind\":\"add-node\",");
+			// OUT_JSON_FILE.print(	"\"content\":{");
+			// OUT_JSON_FILE.print(		"\"timestamp\":0,");
+			// OUT_JSON_FILE.print(		"\"node-id\":" + id + ",");
+			// OUT_JSON_FILE.print(		"\"region-id\":" + regionList.get(id-1));
+			// OUT_JSON_FILE.print(	"}");
+			// OUT_JSON_FILE.print("},");
+			// OUT_JSON_FILE.flush();
 
 		}
 
