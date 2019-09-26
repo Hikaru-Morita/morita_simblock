@@ -45,7 +45,7 @@ public class Node {
 	// private static double average_score = 0;							//add		
 
 	private Score score;		//add
-	private int update_node_num = 3;		//add
+	private int update_node_num = 1;		//add
 	private Random rand = new Random();	//add
 
 	private AbstractRoutingTable routingTable;
@@ -92,12 +92,12 @@ public class Node {
 	//
 	public boolean addNeighbor(Node node){ 
 		//スコアが一定以上なら追加　をこれから実装 
-		System.out.println("Node: addNeighbor");
+		// System.out.println("Node: addNeighbor");
 		return this.routingTable.addNeighbor(node);  
 	}
 	public boolean removeNeighbor(Node node){ 
 		// スコアが一定以下ならば削除　をこれから実装
-		System.out.println("Node: removeNeighbor");
+		// System.out.println("Node: removeNeighbor");
 		return this.routingTable.removeNeighbor(node); 
 	}
 	public ArrayList<Node> getNeighbors(){ return this.routingTable.getNeighbors();}
@@ -245,7 +245,7 @@ public class Node {
 			if(block.getId() % 10 == 0 && block.getId() != 0){
 
 				// System.out.println(this + ": " + score.getAverageScore());
-				// printAverageScore(this, score.getAverageScore(), m.getBlock().getId());
+// printAverageScore(this, score.getAverageScore(), m.getBlock().getId());
 
 				for(int i=0; i < update_node_num; i++){
 					routingTable.removeNeighbor(score.getWorstNode());

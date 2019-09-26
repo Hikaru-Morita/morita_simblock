@@ -47,6 +47,8 @@ public class Main {
 	public static Random random = new Random(10);
 	public static long time1 = 0;//a value to know the simation time.
 
+	public static double paramater = 0;
+
 	public static URI CONF_FILE_URI;
 	public static URI OUT_FILE_URI;
 	static {
