@@ -1,4 +1,5 @@
 package SimBlock.node;
+import SimBlock.simulator.Main;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -6,7 +7,7 @@ import java.util.Map;
 public class Score{
 	private Map<Node,Double> scores = new HashMap<Node,Double>();
 	private double score = 0;
-	private double para = 0.3;
+	private double para = 0.01;	//Main.paramater;
 	private Node worst;
 	public static double average_bft;
 	public static long count;
@@ -33,10 +34,14 @@ public class Score{
 		return average_score/i;
 	}
 
-	public Node gerWorstNode(){
-		for(int i = 0; ; ){
-
+	public Node getWorstNode(){
+		worst = scores.keySet().iterator().next();
+		for(Node i: scores.keySet()){
+			if(scores.get(worst)>scores.get(i)){
+				worst = i;
+			}
 		}
+		return worst;
 	}
 
 	public void addScore(Node from, long t_inv, long t_block){
@@ -56,6 +61,4 @@ public class Score{
 	// public long getAverageScore(){
 	// 	for(Node score; scores)
 	// }
-
-
 }
