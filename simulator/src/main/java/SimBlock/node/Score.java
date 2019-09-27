@@ -7,7 +7,7 @@ import java.util.Map;
 public class Score{
 	private Map<Node,Double> scores = new HashMap<Node,Double>();
 	private double score = 0;
-	private double para = 0.01;	//Main.paramater;
+	private double para = 0.3;	//Main.paramater;
 	private Node worst;
 	public static double average_bft;
 	public static long count;
@@ -37,10 +37,13 @@ public class Score{
 	public Node getWorstNode(){
 		worst = scores.keySet().iterator().next();
 		for(Node i: scores.keySet()){
-			if(scores.get(worst)>scores.get(i)){
+			// System.out.println(scores.get(i));
+			if(scores.get(worst)<scores.get(i)){
 				worst = i;
 			}
 		}
+		// System.out.println("\n" + scores.get(worst) + "\n");
+		scores.remove(worst);
 		return worst;
 	}
 

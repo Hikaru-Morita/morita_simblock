@@ -21,14 +21,20 @@ import SimBlock.node.Node;
 public class InvMessageTask extends AbstractMessageTask {
 	
 	private Block block;
+	private long send_time; 
 	
-	public InvMessageTask(Node from, Node to, Block block) {
+	public InvMessageTask(Node from, Node to, Block block, long send_time) {
 		super(from, to);
 		this.block = block;
+		this.send_time = send_time;
 	}
 	
 	public Block getBlock(){
 		return this.block;
+	}
+
+	public long getRecievedTime(){
+		return this.send_time + getInterval();
 	}
 
 }

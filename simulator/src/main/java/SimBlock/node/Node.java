@@ -160,9 +160,7 @@ public class Node {
 
 	public void sendInv(Block block){
 		for(Node to : this.routingTable.getNeighbors()){
-			AbstractMessageTask task = new InvMessageTask(this,to,block);
-
-			// System.out.println("1");
+			AbstractMessageTask task = new InvMessageTask(this,to,block,getCurrentTime());
 			putTask(task);
 		}
 	}
@@ -213,6 +211,12 @@ public class Node {
 						downloadingBlocks.add(block);
 					}
 				}
+
+				InvMessageTask m = (InvMessageTask) message;
+				//reload score  //add
+				if(block.getTime() != -1){
+					score.addScore(m.getFrom(),m.getRecievedTime(),block.getTime());	
+				}
 			}
 		}
 
@@ -236,16 +240,16 @@ public class Node {
 			// System.out.println("message.getFrom(): " + message.getFrom());
 			// System.out.println("m.getReceptionTimestamp(): " + m.getReceptionTimestamp());
 			// System.out.println("block.getTime(): " + block.getTime());
-			if(block.getTime() != 0){
-				score.addScore(message.getFrom(),m.getReceptionTimestamp(),block.getTime());	
-			}
+			// if(block.getTime() != 0){
+			// 	score.addScore(message.getFrom(),m.getReceptionTimestamp(),block.getTime());	
+			// }
 			// System.out.println("average_score :" + score.getAverageScore());
 		
 			//10の倍数なら隣接ノードを更新
 			if(block.getId() % 10 == 0 && block.getId() != 0){
 
 				// System.out.println(this + ": " + score.getAverageScore());
-// printAverageScore(this, score.getAverageScore(), m.getBlock().getId());
+				printAverageScore(this, score.getAverageScore(), m.getBlock().getId());
 
 				for(int i=0; i < update_node_num; i++){
 					routingTable.removeNeighbor(score.getWorstNode());
