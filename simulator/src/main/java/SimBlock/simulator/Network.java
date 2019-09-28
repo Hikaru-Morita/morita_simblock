@@ -23,9 +23,6 @@ import java.util.List;
 public class Network {
 	// latency according with 20% variance pallet distribution
 	public static final long getLatency(int from, int to){
-
-		// System.out.println("Network: getLatency(" + from +"," + to + ")");		//add
-
 		long mean = LATENCY[from][to];
 		double shape = 0.2 * mean;
 		double scale = mean - 5;

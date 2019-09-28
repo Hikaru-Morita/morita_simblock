@@ -99,29 +99,19 @@ public class Main {
 	}
 
 	public static void main(String[] args){
+		long start = System.currentTimeMillis();				
+		setTargetInterval(INTERVAL);							
 
-	// for(double i=0.1; i<10; i++){
+		OUT_JSON_FILE.print("[");							
+		OUT_JSON_FILE.flush();							
 
-		System.out.println("Main main: begin");					//add
+		printRegion();										
 
-		long start = System.currentTimeMillis();			// timer start?
-		setTargetInterval(INTERVAL);						// does difficulty set only once ?
-
-		// System.out.println("Main main: setTargetInterval");			//add
-		// AVERAGESCORE_JSON_FILE.print("{");	//add
-		OUT_JSON_FILE.print("[");							//start json format
-		OUT_JSON_FILE.flush();								//flush to json file
-
-		printRegion();										//only flush regions to json file
-
-		System.out.println("Main: constructNetworkWithAllNode");			//add
 		// ノード群の初期設定　地域など
 		constructNetworkWithAllNode(NUM_OF_NODES);
 		
-		getSimulatedNodes().get(0).genesisBlock();			//set genesisBlock?
-		System.out.println("Main: set genesisBlock");						//add
-
-		// 
+		getSimulatedNodes().get(0).genesisBlock();			
+		 
 		int j=1;
 		while(getTask() != null){
 			if(getTask() instanceof MiningTask){
@@ -134,24 +124,15 @@ public class Main {
 				//only write graph on graph/j.txt
 				writeGraph(j);
 			}
-			// おそらく重要
+			// 重要
 			runTask();										
-			// ここでスコアを更新？
 		}
-
 		printAllPropagation();								//ファイル出力のみ
-
-		// System.out.println();	
-
+		
 		// ブロックを配列に順番に格納
 		Set<Block> blocks = new HashSet<Block>();
-		// genesis block ?
 		Block block  = getSimulatedNodes().get(0).getBlock();
-		// // 確認
-		// out.println("getSimulatedNodes(): " + getSimulatedNodes());
-		// System.out.println("getSimulatedNodes().get(0): " + getSimulatedNodes().get(0));
-		// out.println("getSimulatedNodes().get(0).getBlock(); " + getSimulatedNodes().get(0).getBlock());
-		// //
+	
 		while(block.getParent() != null){
 			blocks.add(block);
 			block = block.getParent();
@@ -162,17 +143,15 @@ public class Main {
 		int averageOrhansSize =0;
 		for(Node node :getSimulatedNodes()){
 			orphans.addAll(node.getOrphans());
-			averageOrhansSize += node.getOrphans().size();					// average orphan size ?
+			averageOrhansSize += node.getOrphans().size();					
 		}
-		averageOrhansSize = averageOrhansSize/getSimulatedNodes().size();	// average orphan size ?
+		averageOrhansSize = averageOrhansSize/getSimulatedNodes().size();	
 
 		blocks.addAll(orphans);
-
 
 		ArrayList<Block> blockList = new ArrayList<Block>();
 		blockList.addAll(blocks);
 
-		// ???????????
 		Collections.sort(blockList, new Comparator<Block>(){
 	        @Override
 	        public int compare(Block a, Block b){
@@ -186,7 +165,6 @@ public class Main {
 		for(Block orphan : orphans){
 			//System.out.println(orphan+ ":" +orphan.getHeight());
 		}
-
 		//System.out.println(averageOrhansSize);
 
 		try {
@@ -224,14 +202,11 @@ public class Main {
 		long end = System.currentTimeMillis();		// timer end?
 		time1 += end -start;
 		//System.out.println(time1);
-
-	// }
 	}
 
 	//TODO　以下の初期生成はシナリオを読み込むようにする予定
 	//ノードを参加させるタスクを作る(ノードの参加と，リンクの貼り始めるタスクは分ける)
 	//シナリオファイルで上の参加タスクをTimer入れていく．
-
 	public static ArrayList<Integer> makeRandomList(double[] distribution ,boolean facum){
 		ArrayList<Integer> list = new ArrayList<Integer>();
 		int index=0;
@@ -274,7 +249,7 @@ public class Main {
 		return  Math.max((int)(r * variance + averageHashRate),1);
 	}
 	public static void constructNetworkWithAllNode(int numNodes){
-		//List<String> regions = new ArrayList<>(Arrays.asList("NORTH_AMERICA", "EUROPE", "SOUTH_AMERICA", "ASIA_PACIFIC", "JAPAN", "AUSTRALIA", "OTHER"));
+		// List<String> regions = new ArrayList<>(Arrays.asList("NORTH_AMERICA", "EUROPE", "SOUTH_AMERICA", "ASIA_PACIFIC", "JAPAN", "AUSTRALIA", "OTHER"));
 		double[] regionDistribution = getRegionDistribution();
 		List<Integer> regionList  = makeRandomList(regionDistribution,false);
 		double[] degreeDistribution = getDegreeDistribution();
@@ -304,7 +279,6 @@ public class Main {
 	}
 
 	public static void writeGraph(int j){
-		// System.	out.println("main: writeGraph()");
 		try {
 			FileWriter fw = new FileWriter(new File(OUT_FILE_URI.resolve("./graph/"+ j +".txt")), false);
 			PrintWriter pw = new PrintWriter(new BufferedWriter(fw));

@@ -44,12 +44,10 @@ public class Score{
 	public Node getWorstNode(){
 		worst = scores.keySet().iterator().next();
 		for(Node i: scores.keySet()){
-			// System.out.println(scores.get(i));
 			if(scores.get(worst)<scores.get(i)){
 				worst = i;
 			}
 		}
-		// System.out.println("\n" + scores.get(worst) + "\n");
 		scores.remove(worst);
 		return worst;
 	}
@@ -58,17 +56,12 @@ public class Score{
 		if(scores.get(from) == null){
 			score = (t_inv-t_block);
 			scores.put(from, score);
-			// System.out.println("first");
 		}
 		else{
 			score = scores.get(from);
 			scores.remove(from);
 			score = (1-para)*(score)+para*(t_inv-t_block);
 			scores.put(from, score);
-			// System.out.println("more than once");
 		}
 	}
-	// public long getAverageScore(){
-	// 	for(Node score; scores)
-	// }
 }

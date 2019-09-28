@@ -36,12 +36,10 @@ public class Timer {
 		
 		private ScheduledTask(Task task, long scheduledTime){
 			this.task = task;
-			// if(this.task instanceof InvMessageTask){System.out.println("check");}
 			this.scheduledTime = scheduledTime;
 		}
 		
 		private Task getTask(){ 
-			// System.out.println("2");
 			return this.task; 
 		}
 		private long getScheduledTime(){ return this.scheduledTime; }
@@ -61,21 +59,16 @@ public class Timer {
 	// *
 	public static void runTask(){
 		if(taskQueue.size() > 0){
-			// System.out.println("in");
 			ScheduledTask currentScheduledTask = taskQueue.poll();
 			Task currentTask = currentScheduledTask.getTask();
 			currentTime = currentScheduledTask.getScheduledTime();
 			taskMap.remove(currentTask, currentScheduledTask);
 
-			// System.out.println("Timer: runTask   currentTask = " + currentTask);		//add
-
 			currentTask.run();
 		}
-		// System.out.println("end runTask");
 	}
 
 	public static void removeTask(Task task){
-		// System.out.println("Timer: removeTask");		//add
 		if(taskMap.containsKey(task)){
 			ScheduledTask stask = taskMap.get(task);
 			taskQueue.remove(stask);
@@ -84,7 +77,6 @@ public class Timer {
 	}
 	
 	public static Task getTask(){
-		// System.out.println("1");
 		if(taskQueue.size() > 0){
 			ScheduledTask currentTask = taskQueue.peek();
 			return currentTask.getTask();
@@ -94,7 +86,6 @@ public class Timer {
 	}
 	
 	public static void putTask(Task task){
-		// System.out.println("2");
 		ScheduledTask stask = new ScheduledTask(task, currentTime + task.getInterval());
 		taskMap.put(task,stask);
 		taskQueue.add(stask);
