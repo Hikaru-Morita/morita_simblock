@@ -7,13 +7,20 @@ import java.util.Map;
 public class Score{
 	private Map<Node,Double> scores = new HashMap<Node,Double>();
 	private double score = 0;
-	private double para = 0.3;	//Main.paramater;
+	public static double para = 0.001;
 	private Node worst;
+
+	public static long bft_flag = 0;
 	public static double average_bft;
 	public static long count;
 
 	public static void addBFT(long bft){
-		average_bft = average_bft + bft;
+		if(bft_flag == 0){
+			average_bft = bft;
+			bft_flag = 1;
+		}else if(bft_flag == 1){
+			average_bft = average_bft + bft;
+		}
 		count = count + 1;
 	}
 

@@ -100,6 +100,8 @@ public class Main {
 
 	public static void main(String[] args){
 
+	// for(double i=0.1; i<10; i++){
+
 		System.out.println("Main main: begin");					//add
 
 		long start = System.currentTimeMillis();			// timer start?
@@ -212,7 +214,7 @@ public class Main {
 		// OUT_JSON_FILE.print("]"); //end json format
 		// OUT_JSON_FILE.close();
 
-		AVERAGE_BFT_FILE.print(Score.getAverageBFT() + "\n");
+		AVERAGE_BFT_FILE.print(Score.getAverageBFT() + "," + Score.para + "\n");
 		AVERAGE_BFT_FILE.close();
 		// AVERAGESCORE_JSON_FILE.print("\"0\"" + ":" + "\"0\"");
 		// AVERAGESCORE_JSON_FILE.print("}");	//add
@@ -222,6 +224,8 @@ public class Main {
 		long end = System.currentTimeMillis();		// timer end?
 		time1 += end -start;
 		//System.out.println(time1);
+
+	// }
 	}
 
 	//TODO　以下の初期生成はシナリオを読み込むようにする予定
