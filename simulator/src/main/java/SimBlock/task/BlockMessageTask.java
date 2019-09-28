@@ -35,7 +35,6 @@ public class BlockMessageTask extends AbstractMessageTask {
 		super(from, to);
 		this.block = block;
 		this.interval = getLatency(this.getFrom().getRegion(), this.getTo().getRegion()) + delay;
-		// System.out.println("BlockMessageTask: interval = " +  this.interval);
 	}
 
 	public long getInterval(){
@@ -43,7 +42,6 @@ public class BlockMessageTask extends AbstractMessageTask {
 	}
 
 	public void run(){
-		// System.out.println("BlockMessageTask: run");	//add
 		Node node = this.getFrom();							//add
 		this.getFrom().sendNextBlockMessage();
 		

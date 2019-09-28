@@ -39,10 +39,7 @@ import SimBlock.task.Task;
 public class Node {
 	private int region;
 	private int nodeID;
-	private long miningRate;
-
-	// private ArrayList<Double> score = new ArrayList<Double>();		//add
-	// private static double average_score = 0;							//add		
+	private long miningRate;	
 
 	private Score score;		//add
 	private int update_node_num = 1;		//add
@@ -68,9 +65,6 @@ public class Node {
 
 		score = new Score();		//add
 
-		// this.score = 0;			//add
-		// this.average_score = 0;	//add
-
 		try {
 			this.routingTable = (AbstractRoutingTable) Class.forName(routingTableName).getConstructor(Node.class).newInstance(this);
 			this.setnConnection(nConnection);
@@ -86,18 +80,11 @@ public class Node {
 	public void setRegion(int region){ this.region = region; }
 	public int getRegion(){ return this.region; }
 
-	// public double getScore(){ return this.score;}				//add	
-	// public double getAverageScore(){ return average_score; }	//add
-
 	//
 	public boolean addNeighbor(Node node){ 
-		//スコアが一定以上なら追加　をこれから実装 
-		// System.out.println("Node: addNeighbor");
 		return this.routingTable.addNeighbor(node);  
 	}
 	public boolean removeNeighbor(Node node){ 
-		// スコアが一定以下ならば削除　をこれから実装
-		// System.out.println("Node: removeNeighbor");
 		return this.routingTable.removeNeighbor(node); 
 	}
 	public ArrayList<Node> getNeighbors(){ return this.routingTable.getNeighbors();}
@@ -233,17 +220,8 @@ public class Node {
 			this.receiveBlock(block);
 
 			//送信元ノードのスコアを更新　add
-			// if(this.nodeID == message.getTo().getNodeID()){System.out.println("in");}
 			BlockMessageTask m = (BlockMessageTask) message;
-			// score.addScore(message.getFrom(),m.getReceptionTimestamp(),block.getTime());
-
-			// System.out.println("message.getFrom(): " + message.getFrom());
-			// System.out.println("m.getReceptionTimestamp(): " + m.getReceptionTimestamp());
-			// System.out.println("block.getTime(): " + block.getTime());
 			// if(block.getTime() != 0){
-			// 	score.addScore(message.getFrom(),m.getReceptionTimestamp(),block.getTime());	
-			// }
-			// System.out.println("average_score :" + score.getAverageScore());
 		
 			//10の倍数なら隣接ノードを更新
 			if(block.getId() % 10 == 0 && block.getId() != 0){
@@ -253,20 +231,8 @@ public class Node {
 
 				for(int i=0; i < update_node_num; i++){
 					routingTable.removeNeighbor(score.getWorstNode());
-					routingTable.addNeighbor(getSimulatedNodes().get(rand.nextInt(getSimulatedNodes().size())));
-						
-					// getSimulatedNodes().size();
-					// getSimulatedNodes().get(id);
-
-					// System.out.println("in Node " + score.getScore(message.getFrom()));
-					// if(score.getScore(message.getFrom()) >= score.getAverageScore()){
-					// 	routingTable.removeNeighbor(message.getFrom());
-					// 	routingTable.addNeighbor(getSimulatedNodes().get(rand.nextInt(getSimulatedNodes().size())));
-					// }
-					// else{
-					// }
+					routingTable.addNeighbor(getSimulatedNodes().get(rand.nextInt(getSimulatedNodes().size())));						
 				}
-				// removeNeighbor addNeighbor
 			}
 		}
 	}
