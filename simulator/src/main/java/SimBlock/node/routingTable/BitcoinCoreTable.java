@@ -56,7 +56,8 @@ public class BitcoinCoreTable extends AbstractRoutingTable {
 	// add node to outbound and add selfnode to node's inbound 
 	// if # of nodes in outbound is less than nConnection
 	public boolean addNeighbor(Node node){
-		if(node == getSelfNode() || this.outbound.contains(node) || this.inbound.contains(node) || this.outbound.size() >= this.getnConnection()){
+		// if(node == getSelfNode() || this.outbound.contains(node) || this.inbound.contains(node) || this.outbound.size() >= this.getnConnection()){
+		if(node == getSelfNode() || this.outbound.contains(node) || this.inbound.contains(node) || this.outbound.size() >= 8){
 			return false;
 		}else if(this.outbound.add(node) && node.getRoutingTable().addInbound(getSelfNode())){
 			printAddLink(node);
