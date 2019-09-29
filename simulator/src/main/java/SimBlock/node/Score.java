@@ -7,15 +7,16 @@ import java.util.Map;
 public class Score{
 	private Map<Node,Double> scores = new HashMap<Node,Double>();
 	private double score = 0;
-	public static double para = 0.4;
+	public static double para = 0.01;
 	private Node worst;
 
 	public static long bft_flag = 0;
 	public static double average_bft;
 	public static long count;
 
-	private int score_count = 0;
-	private double average_score = 0;
+	public static long score_flag = 0;
+	public static int score_count = 0;
+	public static double average_score = 0;
 
 	public static void addBFT(long bft){
 		if(bft_flag == 0){
@@ -34,14 +35,19 @@ public class Score{
 	public 	Map<Node,Double> getScores(){return scores;}
 	public double getScore(Node node){return scores.get(node);}
 	public double getAverageScore(){
-		return average_score;
+		return average_score/score_count;
 	}
 
 	public Node getWorstNode(){
-		worst = scores.keySet().iterator().next();
-		for(Node i: scores.keySet()){
-			if(scores.get(worst)<scores.get(i)){
+		if(scores.keySet() != null){
+			for(Node i: scores.keySet()){
 				worst = i;
+				break;
+			}
+			for(Node i: scores.keySet()){
+				if(scores.get(worst)<scores.get(i)){
+					worst = i;
+				}
 			}
 		}
 		return worst;
@@ -69,7 +75,13 @@ public class Score{
 			score = (1-para)*(score)+para*(t_inv-t_block);
 			scores.put(from, score);
 		}
-		
 
+		score_count++;
+		if(score_flag == 0){
+			average_score = score;
+			score_flag = 1;
+		}else if(score_flag == 1){
+			average_score = average_score + score;
+		}
 	}
 }
