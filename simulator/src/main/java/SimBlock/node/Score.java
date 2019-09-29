@@ -7,8 +7,9 @@ import java.util.Map;
 public class Score{
 	private Map<Node,Double> scores = new HashMap<Node,Double>();
 	private double score = 0;
-	public static double para = 0.01;
+	public static double para = 0.6;
 	private Node worst;
+	private Node this_node;
 
 	public static long bft_flag = 0;
 	public static double average_bft;
@@ -17,6 +18,11 @@ public class Score{
 	public static long score_flag = 0;
 	public static int score_count = 0;
 	public static double average_score = 0;
+
+
+	Score(Node node){
+		this_node = node;
+	}
 
 	public static void addBFT(long bft){
 		if(bft_flag == 0){
@@ -49,6 +55,9 @@ public class Score{
 					worst = i;
 				}
 			}
+		}else{
+			System.out.println("getWorstNode: error     " + worst);
+			worst = this_node;
 		}
 		return worst;
 	}
