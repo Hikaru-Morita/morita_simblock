@@ -42,7 +42,7 @@ public class Node {
 	private long miningRate;	
 
 	private Score score;		//add
-	private int update_node_num = 1;		//add
+	private int update_node_num = 4;		//add
 	private Random rand = new Random();	//add
 
 	private AbstractRoutingTable routingTable;
@@ -225,13 +225,17 @@ public class Node {
 		
 			//10の倍数なら隣接ノードを更新
 			if(block.getId() % 10 == 0 && block.getId() != 0){
-
 				// System.out.println(this + ": " + score.getAverageScore());
 // printAverageScore(this, score.getAverageScore(), m.getBlock().getId());
 
 				for(int i=0; i < update_node_num; i++){
-					routingTable.removeNeighbor(score.getWorstNode());
-					routingTable.addNeighbor(getSimulatedNodes().get(rand.nextInt(getSimulatedNodes().size())));						
+					if(score.getAverageScore()>=score.getScore(score.getWorstNode())){
+						routingTable.removeNeighbor(score.getWorstNodeWithRemove());
+						routingTable.addNeighbor(getSimulatedNodes().get(rand.nextInt(getSimulatedNodes().size())));						
+					}
+					//最低１つは更新する
+					// routingTable.removeNeighbor(score.getWorstNodeWithRemove());
+					// routingTable.addNeighbor(getSimulatedNodes().get(rand.nextInt(getSimulatedNodes().size())));							
 				}
 			}
 		}
