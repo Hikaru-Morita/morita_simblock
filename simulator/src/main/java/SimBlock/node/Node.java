@@ -66,7 +66,7 @@ public class Node {
 		this.region = region;
 		this.miningRate = power;
 
-		score = new Score();		//add
+		score = new Score(this);		//add
 
 		try {
 			this.routingTable = (AbstractRoutingTable) Class.forName(routingTableName).getConstructor(Node.class).newInstance(this);
@@ -234,17 +234,17 @@ public class Node {
 				remove_node = score.getWorstNodeWithRemove();
 				flag = routingTable.removeNeighbor(remove_node);
 				while(flag){
-					System.out.println("a");
+					// System.out.println("a");
 					if(routingTable.getNeighbors().size() < 8){
 						routingTable.addNeighbor(getSimulatedNodes().get(rand.nextInt(getSimulatedNodes().size())));
 						this.setnConnection(routingTable.getNeighbors().size());
-						System.out.println(routingTable.getNeighbors().size());
+						// System.out.println(routingTable.getNeighbors().size());
 					}else{
 						break;
 					}
 				}	
 				while(flag){
-					System.out.println("b");
+					// System.out.println("b");
 					if(remove_node.getRoutingTable().getNeighbors().size() < 8){
 						remove_node.getRoutingTable().addNeighbor(getSimulatedNodes().get(rand.nextInt(getSimulatedNodes().size())));
 						remove_node.setnConnection(routingTable.getNeighbors().size());
@@ -254,22 +254,22 @@ public class Node {
 				}
 					
 				for(int i=0; i < update_node_num; i++){
-					System.out.println("neighbors num :" + this.getNeighbors().size());
+					// System.out.println("neighbors num :" + this.getNeighbors().size());
 					if(score.getAverageScore()>=score.getScore(score.getWorstNode()) && score.getWorstNode() != null){
 						remove_node = score.getWorstNodeWithRemove();
 						flag = routingTable.removeNeighbor(remove_node);
 						while(flag){
-							System.out.println("1");
+							// System.out.println("1");
 							if(routingTable.getNeighbors().size() < 8){
 								routingTable.addNeighbor(getSimulatedNodes().get(rand.nextInt(getSimulatedNodes().size())));
 								this.setnConnection(routingTable.getNeighbors().size());
-								System.out.println(routingTable.getNeighbors().size());
+								// System.out.println(routingTable.getNeighbors().size());
 							}else{
 								break;
 							}
 						}		
 						while(flag){
-							System.out.println("2");
+							// System.out.println("2");
 							if(remove_node.getRoutingTable().getNeighbors().size() < 8){
 								remove_node.getRoutingTable().addNeighbor(getSimulatedNodes().get(rand.nextInt(getSimulatedNodes().size())));
 								remove_node.setnConnection(routingTable.getNeighbors().size());
