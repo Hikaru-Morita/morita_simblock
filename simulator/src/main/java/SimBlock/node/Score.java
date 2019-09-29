@@ -7,12 +7,15 @@ import java.util.Map;
 public class Score{
 	private Map<Node,Double> scores = new HashMap<Node,Double>();
 	private double score = 0;
-	public static double para = 0.9;
+	public static double para = 0.4;
 	private Node worst;
 
 	public static long bft_flag = 0;
 	public static double average_bft;
 	public static long count;
+
+	private int score_count = 0;
+	private double average_score = 0;
 
 	public static void addBFT(long bft){
 		if(bft_flag == 0){
@@ -31,14 +34,7 @@ public class Score{
 	public 	Map<Node,Double> getScores(){return scores;}
 	public double getScore(Node node){return scores.get(node);}
 	public double getAverageScore(){
-		int i = 0;	
-		double average_score = 0;
-		
-		for(double val : scores.values()){
-			average_score = average_score + val;
-			i++;
-		}
-		return average_score/i;
+		return average_score;
 	}
 
 	public Node getWorstNode(){
@@ -73,5 +69,7 @@ public class Score{
 			score = (1-para)*(score)+para*(t_inv-t_block);
 			scores.put(from, score);
 		}
+		
+
 	}
 }
