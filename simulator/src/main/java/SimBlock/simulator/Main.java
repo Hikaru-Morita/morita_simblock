@@ -37,6 +37,7 @@ import java.util.Set;
 
 import SimBlock.node.Block;
 import SimBlock.node.Node;
+import SimBlock.node.Score;
 import SimBlock.task.MiningTask;
 
 // 追加
@@ -45,6 +46,8 @@ import static java.lang.System.*;
 public class Main {
 	public static Random random = new Random(10);
 	public static long time1 = 0;//a value to know the simation time.
+
+	public static double paramater = 0;
 
 	public static URI CONF_FILE_URI;
 	public static URI OUT_FILE_URI;
@@ -59,6 +62,9 @@ public class Main {
 
 	public static PrintWriter OUT_JSON_FILE;
 	public static PrintWriter STATIC_JSON_FILE;
+	public static PrintWriter AVERAGESCORE_CSV_FILE;	//add
+	public static PrintWriter AVERAGE_BFT_FILE; 		//add
+
 	static {
 		try{
 			OUT_JSON_FILE = new PrintWriter(new BufferedWriter(new FileWriter(new File(OUT_FILE_URI.resolve("./output.json")))));
@@ -66,7 +72,6 @@ public class Main {
 			e.printStackTrace();
 		}
 	}
-
 	static {
 		try{
 			STATIC_JSON_FILE = new PrintWriter(new BufferedWriter(new FileWriter(new File(OUT_FILE_URI.resolve("./static.json")))));
@@ -75,34 +80,43 @@ public class Main {
 		}
 	}
 
+	//add
+	static {
+		try{
+			AVERAGESCORE_CSV_FILE = new PrintWriter(new BufferedWriter(new FileWriter(new File(OUT_FILE_URI.resolve("./AverageScore.csv")))));
+		} catch (IOException e){
+			e.printStackTrace();
+		}
+	}
+
+	//add
+	static {
+		try{
+			AVERAGE_BFT_FILE = new PrintWriter(new BufferedWriter(new FileWriter(new File(OUT_FILE_URI.resolve("./AverageBFT.txt")), true)));
+		} catch (IOException e){
+			e.printStackTrace();
+		}
+	}
+
 	public static void main(String[] args){
+		long start = System.currentTimeMillis();				
+		setTargetInterval(INTERVAL);							
 
-		System.out.println("Main main: begin");					//add
+		OUT_JSON_FILE.print("[");							
+		OUT_JSON_FILE.flush();							
 
-		long start = System.currentTimeMillis();			// timer start?
-		setTargetInterval(INTERVAL);						// does difficulty set only once ?
-
-		// System.out.println("Main main: setTargetInterval");			//add
-
-		OUT_JSON_FILE.print("[");							//start json format
-		OUT_JSON_FILE.flush();								//flush to json file
-
-		printRegion();										//only flush regions to json file
+		printRegion();										
 
 		// ノード群の初期設定　地域など
 		constructNetworkWithAllNode(NUM_OF_NODES);
-
-		System.out.println("Main: constructNetworkWithAllNode");			//add
-
-		getSimulatedNodes().get(0).genesisBlock();			//set genesisBlock?
-		System.out.println("Main: set genesisBlock");						//add
-
-		// 
+		
+		getSimulatedNodes().get(0).genesisBlock();			
+		 
 		int j=1;
 		while(getTask() != null){
 			if(getTask() instanceof MiningTask){
 				MiningTask task = (MiningTask) getTask();
-				//System.out.println("main: task=" + task);
+				// System.out.println("main: task=" + task);
 				if(task.getParent().getHeight() == j) j++;
 				if(j > ENDBLOCKHEIGHT){break;}
 				//if(j%100==0 || j==2) 		このif文なに？
@@ -110,24 +124,15 @@ public class Main {
 				//only write graph on graph/j.txt
 				writeGraph(j);
 			}
-			// おそらく重要
+			// 重要
 			runTask();										
-			// ここでスコアを更新？
 		}
-
 		printAllPropagation();								//ファイル出力のみ
-
-		System.out.println();	
-
+		
 		// ブロックを配列に順番に格納
 		Set<Block> blocks = new HashSet<Block>();
-		// genesis block ?
 		Block block  = getSimulatedNodes().get(0).getBlock();
-		// // 確認
-		// out.println("getSimulatedNodes(): " + getSimulatedNodes());
-		// System.out.println("getSimulatedNodes().get(0): " + getSimulatedNodes().get(0));
-		// out.println("getSimulatedNodes().get(0).getBlock(); " + getSimulatedNodes().get(0).getBlock());
-		// //
+	
 		while(block.getParent() != null){
 			blocks.add(block);
 			block = block.getParent();
@@ -138,17 +143,15 @@ public class Main {
 		int averageOrhansSize =0;
 		for(Node node :getSimulatedNodes()){
 			orphans.addAll(node.getOrphans());
-			averageOrhansSize += node.getOrphans().size();					// average orphan size ?
+			averageOrhansSize += node.getOrphans().size();					
 		}
-		averageOrhansSize = averageOrhansSize/getSimulatedNodes().size();	// average orphan size ?
+		averageOrhansSize = averageOrhansSize/getSimulatedNodes().size();	
 
 		blocks.addAll(orphans);
-
 
 		ArrayList<Block> blockList = new ArrayList<Block>();
 		blockList.addAll(blocks);
 
-		// ???????????
 		Collections.sort(blockList, new Comparator<Block>(){
 	        @Override
 	        public int compare(Block a, Block b){
@@ -162,7 +165,6 @@ public class Main {
 		for(Block orphan : orphans){
 			//System.out.println(orphan+ ":" +orphan.getHeight());
 		}
-
 		//System.out.println(averageOrhansSize);
 
 		try {
@@ -181,25 +183,30 @@ public class Main {
             ex.printStackTrace();
         }
 
-		OUT_JSON_FILE.print("{");
-		OUT_JSON_FILE.print(	"\"kind\":\"simulation-end\",");
-		OUT_JSON_FILE.print(	"\"content\":{");
-		OUT_JSON_FILE.print(		"\"timestamp\":" + getCurrentTime());
-		OUT_JSON_FILE.print(	"}");
-		OUT_JSON_FILE.print("}");
-		OUT_JSON_FILE.print("]"); //end json format
-		OUT_JSON_FILE.close();
+		// OUT_JSON_FILE.print("{");
+		// OUT_JSON_FILE.print(	"\"kind\":\"simulation-end\",");
+		// OUT_JSON_FILE.print(	"\"content\":{");
+		// OUT_JSON_FILE.print(		"\"timestamp\":" + getCurrentTime());
+		// OUT_JSON_FILE.print(	"}");
+		// OUT_JSON_FILE.print("}");
+		// OUT_JSON_FILE.print("]"); //end json format
+		// OUT_JSON_FILE.close();
+
+		AVERAGE_BFT_FILE.print(Score.getAverageBFT() + "," + Score.para + "\n");
+		AVERAGE_BFT_FILE.close();
+		// AVERAGESCORE_JSON_FILE.print("\"0\"" + ":" + "\"0\"");
+		// AVERAGESCORE_JSON_FILE.print("}");	//add
+		AVERAGESCORE_CSV_FILE.close();		//add
+
+
 		long end = System.currentTimeMillis();		// timer end?
 		time1 += end -start;
 		//System.out.println(time1);
-
 	}
-
 
 	//TODO　以下の初期生成はシナリオを読み込むようにする予定
 	//ノードを参加させるタスクを作る(ノードの参加と，リンクの貼り始めるタスクは分ける)
 	//シナリオファイルで上の参加タスクをTimer入れていく．
-
 	public static ArrayList<Integer> makeRandomList(double[] distribution ,boolean facum){
 		ArrayList<Integer> list = new ArrayList<Integer>();
 		int index=0;
@@ -242,7 +249,7 @@ public class Main {
 		return  Math.max((int)(r * variance + averageHashRate),1);
 	}
 	public static void constructNetworkWithAllNode(int numNodes){
-		//List<String> regions = new ArrayList<>(Arrays.asList("NORTH_AMERICA", "EUROPE", "SOUTH_AMERICA", "ASIA_PACIFIC", "JAPAN", "AUSTRALIA", "OTHER"));
+		// List<String> regions = new ArrayList<>(Arrays.asList("NORTH_AMERICA", "EUROPE", "SOUTH_AMERICA", "ASIA_PACIFIC", "JAPAN", "AUSTRALIA", "OTHER"));
 		double[] regionDistribution = getRegionDistribution();
 		List<Integer> regionList  = makeRandomList(regionDistribution,false);
 		double[] degreeDistribution = getDegreeDistribution();
@@ -252,19 +259,20 @@ public class Main {
 			Node node = new Node(id,degreeList.get(id-1)+1,regionList.get(id-1),RandomPower(id),TABLE);
 			addNode(node);
 
-			OUT_JSON_FILE.print("{");
-			OUT_JSON_FILE.print(	"\"kind\":\"add-node\",");
-			OUT_JSON_FILE.print(	"\"content\":{");
-			OUT_JSON_FILE.print(		"\"timestamp\":0,");
-			OUT_JSON_FILE.print(		"\"node-id\":" + id + ",");
-			OUT_JSON_FILE.print(		"\"region-id\":" + regionList.get(id-1));
-			OUT_JSON_FILE.print(	"}");
-			OUT_JSON_FILE.print("},");
-			OUT_JSON_FILE.flush();
+			// OUT_JSON_FILE.print("{");
+			// OUT_JSON_FILE.print(	"\"kind\":\"add-node\",");
+			// OUT_JSON_FILE.print(	"\"content\":{");
+			// OUT_JSON_FILE.print(		"\"timestamp\":0,");
+			// OUT_JSON_FILE.print(		"\"node-id\":" + id + ",");
+			// OUT_JSON_FILE.print(		"\"region-id\":" + regionList.get(id-1));
+			// OUT_JSON_FILE.print(	"}");
+			// OUT_JSON_FILE.print("},");
+			// OUT_JSON_FILE.flush();
 
 		}
 
 		for(Node node: getSimulatedNodes()){
+			// System.out.println("Main: constructNetworkWithAllNode :joinNetwork - " + node.getNodeID());
 			node.joinNetwork();
 		}
 
@@ -286,10 +294,11 @@ public class Main {
     			}
             }
             pw.close();
-
         } catch (IOException ex) {
             ex.printStackTrace();
         }
+
+        // System.	out.println("main: writeGraph() end");
 	}
 
 }
