@@ -34,7 +34,6 @@ public abstract class AbstractMessageTask implements Task{
 	}
 
 	public void run(){
-		System.out.println("AbstractMessageTask: run");
 		this.to.receiveMessage(this);
 	}
 

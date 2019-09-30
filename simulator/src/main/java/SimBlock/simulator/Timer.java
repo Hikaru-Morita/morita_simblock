@@ -19,6 +19,8 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.PriorityQueue;
 
+import SimBlock.task.InvMessageTask;	//add
+
 import SimBlock.task.Task;
 
 
@@ -38,7 +40,6 @@ public class Timer {
 		}
 		
 		private Task getTask(){ 
-			// System.out.println("2");
 			return this.task; 
 		}
 		private long getScheduledTime(){ return this.scheduledTime; }
@@ -51,25 +52,23 @@ public class Timer {
 			return order;
 		}
 	}
+
+	public static Map<Task,ScheduledTask> returnTaskMap(){return taskMap;}				//add
+	public static PriorityQueue<ScheduledTask> returnTaskQueue(){return taskQueue;}	//add
 	
 	// *
 	public static void runTask(){
 		if(taskQueue.size() > 0){
-			// System.out.println("in");
 			ScheduledTask currentScheduledTask = taskQueue.poll();
 			Task currentTask = currentScheduledTask.getTask();
 			currentTime = currentScheduledTask.getScheduledTime();
 			taskMap.remove(currentTask, currentScheduledTask);
 
-			System.out.println("Timer: runTask   currentTask = " + currentTask);		//add
-
 			currentTask.run();
 		}
-		System.out.println("end runTask");
 	}
 
 	public static void removeTask(Task task){
-		// System.out.println("Timer: removeTask");		//add
 		if(taskMap.containsKey(task)){
 			ScheduledTask stask = taskMap.get(task);
 			taskQueue.remove(stask);
@@ -78,7 +77,6 @@ public class Timer {
 	}
 	
 	public static Task getTask(){
-		// System.out.println("1");
 		if(taskQueue.size() > 0){
 			ScheduledTask currentTask = taskQueue.peek();
 			return currentTask.getTask();

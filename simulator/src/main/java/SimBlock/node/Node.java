@@ -25,6 +25,9 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Set;
 
+import java.util.Random;	//add
+
+import SimBlock.node.Score;		//add
 import SimBlock.node.routingTable.AbstractRoutingTable;
 import SimBlock.task.AbstractMessageTask;
 import SimBlock.task.BlockMessageTask;
@@ -36,12 +39,11 @@ import SimBlock.task.Task;
 public class Node {
 	private int region;
 	private int nodeID;
-	private long miningRate;
+	private long miningRate;	
 
-	private ArrayList<Double> score = new ArrayList<Double>();		//add
-	private static double average_score = 0;							//add
-	private long t_inv = 0;											//add
-	private long t_block = 0;											//add		
+	private Score score;		//add
+	private int update_node_num = 2;		//add
+	private Random rand = new Random();	//add
 
 	private AbstractRoutingTable routingTable;
 
@@ -56,13 +58,15 @@ public class Node {
 
 	private long processingTime = 2;
 
+	private Node remove_node;
+	private boolean flag;
+
 	public Node(int nodeID,int nConnection ,int region, long power, String routingTableName){
 		this.nodeID = nodeID;
 		this.region = region;
 		this.miningRate = power;
 
-		// this.score = 0;			//add
-		// this.average_score = 0;	//add
+		score = new Score(this);		//add
 
 		try {
 			this.routingTable = (AbstractRoutingTable) Class.forName(routingTableName).getConstructor(Node.class).newInstance(this);
@@ -79,26 +83,17 @@ public class Node {
 	public void setRegion(int region){ this.region = region; }
 	public int getRegion(){ return this.region; }
 
-	// public double getScore(){ return this.score;}				//add	
-	// public double getAverageScore(){ return average_score; }	//add
-
 	//
 	public boolean addNeighbor(Node node){ 
-		//スコアが一定以上なら追加　をこれから実装 
-		System.out.println("Node: addNeighbor");
 		return this.routingTable.addNeighbor(node);  
 	}
 	public boolean removeNeighbor(Node node){ 
-		// スコアが一定以下ならば削除　をこれから実装
-		System.out.println("Node: removeNeighbor");
 		return this.routingTable.removeNeighbor(node); 
 	}
 	public ArrayList<Node> getNeighbors(){ return this.routingTable.getNeighbors();}
 	public AbstractRoutingTable getRoutingTable(){ return this.routingTable;}
 	public void setnConnection(int nConnection){ this.routingTable.setnConnection(nConnection);}
 	public int getnConnection(){ return this.routingTable.getnConnection(); }
-	//
-
 
 	public void joinNetwork(){
 		this.routingTable.initTable();
@@ -120,15 +115,21 @@ public class Node {
 	}
 
 	private void printAddBlock(Block newBlock){
-		OUT_JSON_FILE.print("{");
-		OUT_JSON_FILE.print(	"\"kind\":\"add-block\",");
-		OUT_JSON_FILE.print(	"\"content\":{");
-		OUT_JSON_FILE.print(		"\"timestamp\":" + getCurrentTime() + ",");
-		OUT_JSON_FILE.print(		"\"node-id\":" + this.getNodeID() + ",");
-		OUT_JSON_FILE.print(		"\"block-id\":" + newBlock.getId());
-		OUT_JSON_FILE.print(	"}");
-		OUT_JSON_FILE.print("},");
-		OUT_JSON_FILE.flush();
+		// OUT_JSON_FILE.print("{");
+		// OUT_JSON_FILE.print(	"\"kind\":\"add-block\",");
+		// OUT_JSON_FILE.print(	"\"content\":{");
+		// OUT_JSON_FILE.print(		"\"timestamp\":" + getCurrentTime() + ",");
+		// OUT_JSON_FILE.print(		"\"node-id\":" + this.getNodeID() + ",");
+		// OUT_JSON_FILE.print(		"\"block-id\":" + newBlock.getId());
+		// OUT_JSON_FILE.print(	"}");
+		// OUT_JSON_FILE.print("},");
+		// OUT_JSON_FILE.flush();
+	}
+
+	private void printAverageScore(Node node, double score, int id){
+		// AVERAGESCORE_JSON_FILE.print("{");
+		AVERAGESCORE_CSV_FILE.print(node + "," + score + "," + id + "\n");
+		// AVERAGESCORE_JSON_FILE.print("}");
 	}
 
 	public void addOrphans(Block newBlock, Block correctBlock){
@@ -149,7 +150,7 @@ public class Node {
 
 	public void sendInv(Block block){
 		for(Node to : this.routingTable.getNeighbors()){
-			AbstractMessageTask task = new InvMessageTask(this,to,block);
+			AbstractMessageTask task = new InvMessageTask(this,to,block,getCurrentTime());
 			putTask(task);
 		}
 	}
@@ -171,6 +172,7 @@ public class Node {
 			this.mining();
 			this.sendInv(receivedBlock);
 
+		//orphan の処理
 		}else if(receivedBlock.getHeight() <= this.block.getHeight()){
 			sameHeightBlock = this.block.getBlockWithHeight(receivedBlock.getHeight());
 			if(!this.orphans.contains(receivedBlock) && receivedBlock != sameHeightBlock){
@@ -178,7 +180,6 @@ public class Node {
 				arriveBlock(receivedBlock, this);
 			}
 		}
-
 	}
 
 	public void receiveMessage(AbstractMessageTask message){
@@ -200,6 +201,12 @@ public class Node {
 						downloadingBlocks.add(block);
 					}
 				}
+
+				InvMessageTask m = (InvMessageTask) message;
+				//reload score  //add
+				if(block.getTime() != -1){
+					score.addScore(m.getFrom(),m.getRecievedTime(),block.getTime());	
+				}
 			}
 		}
 
@@ -214,6 +221,68 @@ public class Node {
 			Block block = ((BlockMessageTask) message).getBlock();
 			downloadingBlocks.remove(block);
 			this.receiveBlock(block);
+
+			//送信元ノードのスコアを更新　add
+			BlockMessageTask m = (BlockMessageTask) message;
+			// if(block.getTime() != 0){
+		
+			//10の倍数なら隣接ノードを更新
+			if(block.getId() % 10 == 0 && block.getId() != 0){
+
+
+
+				remove_node = score.getWorstNodeWithRemove();
+				flag = routingTable.removeNeighbor(remove_node);
+				while(flag){
+					// System.out.println("a");
+					if(routingTable.getNeighbors().size() < 8){
+						routingTable.addNeighbor(getSimulatedNodes().get(rand.nextInt(getSimulatedNodes().size())));
+						this.setnConnection(routingTable.getNeighbors().size());
+						// System.out.println(routingTable.getNeighbors().size());
+					}else{
+						break;
+					}
+				}	
+				while(flag){
+					// System.out.println("b");
+					if(remove_node.getRoutingTable().getNeighbors().size() < 8){
+						remove_node.getRoutingTable().addNeighbor(getSimulatedNodes().get(rand.nextInt(getSimulatedNodes().size())));
+						remove_node.setnConnection(routingTable.getNeighbors().size());
+					}else{
+						break;
+					}
+				}
+					
+				for(int i=0; i < update_node_num; i++){
+					// System.out.println("neighbors num :" + this.getNeighbors().size());
+					if(score.getAverageScore()>=score.getScore(score.getWorstNode()) && score.getWorstNode() != null){
+						remove_node = score.getWorstNodeWithRemove();
+						flag = routingTable.removeNeighbor(remove_node);
+						while(flag){
+							// System.out.println("1");
+							if(routingTable.getNeighbors().size() < 8){
+								routingTable.addNeighbor(getSimulatedNodes().get(rand.nextInt(getSimulatedNodes().size())));
+								this.setnConnection(routingTable.getNeighbors().size());
+								// System.out.println(routingTable.getNeighbors().size());
+							}else{
+								break;
+							}
+						}		
+						while(flag){
+							// System.out.println("2");
+							if(remove_node.getRoutingTable().getNeighbors().size() < 8){
+								remove_node.getRoutingTable().addNeighbor(getSimulatedNodes().get(rand.nextInt(getSimulatedNodes().size())));
+								remove_node.setnConnection(routingTable.getNeighbors().size());
+							}else{
+								break;
+							}
+						}
+					}
+					//最低１つは更新する
+					// routingTable.removeNeighbor(score.getWorstNodeWithRemove());
+					// routingTable.addNeighbor(getSimulatedNodes().get(rand.nextInt(getSimulatedNodes().size())));							
+				}
+			}
 		}
 	}
 
@@ -225,6 +294,7 @@ public class Node {
 
 			Node to = this.messageQue.get(0).getFrom();
 			Block block = this.messageQue.get(0).getBlock();
+
 			this.messageQue.remove(0);
 			long blockSize = BLOCKSIZE;
 			long bandwidth = getBandwidth(this.getRegion(),to.getRegion());

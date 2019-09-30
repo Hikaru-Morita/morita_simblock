@@ -23,9 +23,6 @@ import java.util.List;
 public class Network {
 	// latency according with 20% variance pallet distribution
 	public static final long getLatency(int from, int to){
-
-		// System.out.println("Network: getLatency(" + from +"," + to + ")");		//add
-
 		long mean = LATENCY[from][to];
 		double shape = 0.2 * mean;
 		double scale = mean - 5;
@@ -50,22 +47,22 @@ public class Network {
 	}
 
 	public static void printRegion(){
-		STATIC_JSON_FILE.print("{\"region\":[");
+		// STATIC_JSON_FILE.print("{\"region\":[");
 
-		int id = 0;
-		for(; id < REGION_LIST.size() -1; id++){
-			STATIC_JSON_FILE.print("{");
-			STATIC_JSON_FILE.print(		"\"id\":" + id + ",");
-			STATIC_JSON_FILE.print(		"\"name\":\"" + REGION_LIST.get(id) + "\"");
-			STATIC_JSON_FILE.print("},");
-		}
+		// int id = 0;
+		// for(; id < REGION_LIST.size() -1; id++){
+		// 	STATIC_JSON_FILE.print("{");
+		// 	STATIC_JSON_FILE.print(		"\"id\":" + id + ",");
+		// 	STATIC_JSON_FILE.print(		"\"name\":\"" + REGION_LIST.get(id) + "\"");
+		// 	STATIC_JSON_FILE.print("},");
+		// }
 
-		STATIC_JSON_FILE.print(	   "{");
-		STATIC_JSON_FILE.print(			"\"id\":" + id + ",");
-		STATIC_JSON_FILE.print(			"\"name\":\"" + REGION_LIST.get(id) + "\"");
-		STATIC_JSON_FILE.print(    "}");
-		STATIC_JSON_FILE.print("]}");
-		STATIC_JSON_FILE.flush();
-		STATIC_JSON_FILE.close();
+		// STATIC_JSON_FILE.print(	   "{");
+		// STATIC_JSON_FILE.print(			"\"id\":" + id + ",");
+		// STATIC_JSON_FILE.print(			"\"name\":\"" + REGION_LIST.get(id) + "\"");
+		// STATIC_JSON_FILE.print(    "}");
+		// STATIC_JSON_FILE.print("]}");
+		// STATIC_JSON_FILE.flush();
+		// STATIC_JSON_FILE.close();
 	}
 }
