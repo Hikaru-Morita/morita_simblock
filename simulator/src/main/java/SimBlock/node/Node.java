@@ -41,7 +41,7 @@ public class Node {
 	private int nodeID;
 	private long miningRate;	
 
-	private Score score;		//add
+	private Score score;					//add
 	private int update_node_num = 2;		//add
 	private Random rand = new Random();	//add
 
@@ -203,6 +203,7 @@ public class Node {
 				}
 
 				InvMessageTask m = (InvMessageTask) message;
+
 				//reload score  //add
 				if(block.getTime() != -1){
 					score.addScore(m.getFrom(),m.getRecievedTime(),block.getTime());	
@@ -229,54 +230,20 @@ public class Node {
 			//10の倍数なら隣接ノードを更新
 			if(block.getId() % 10 == 0 && block.getId() != 0){
 
-
-
 				remove_node = score.getWorstNodeWithRemove();
 				flag = routingTable.removeNeighbor(remove_node);
-				while(flag){
-					// System.out.println("a");
-					if(routingTable.getNeighbors().size() < 8){
-						routingTable.addNeighbor(getSimulatedNodes().get(rand.nextInt(getSimulatedNodes().size())));
-						this.setnConnection(routingTable.getNeighbors().size());
-						// System.out.println(routingTable.getNeighbors().size());
-					}else{
-						break;
-					}
-				}	
-				while(flag){
-					// System.out.println("b");
-					if(remove_node.getRoutingTable().getNeighbors().size() < 8){
-						remove_node.getRoutingTable().addNeighbor(getSimulatedNodes().get(rand.nextInt(getSimulatedNodes().size())));
-						remove_node.setnConnection(routingTable.getNeighbors().size());
-					}else{
-						break;
-					}
-				}
+
+				addNeighborsWithConnections(this, flag);	
+				addNeighborsWithConnections(remove_node, flag);
 					
 				for(int i=0; i < update_node_num; i++){
 					// System.out.println("neighbors num :" + this.getNeighbors().size());
 					if(score.getAverageScore()>=score.getScore(score.getWorstNode()) && score.getWorstNode() != null){
 						remove_node = score.getWorstNodeWithRemove();
 						flag = routingTable.removeNeighbor(remove_node);
-						while(flag){
-							// System.out.println("1");
-							if(routingTable.getNeighbors().size() < 8){
-								routingTable.addNeighbor(getSimulatedNodes().get(rand.nextInt(getSimulatedNodes().size())));
-								this.setnConnection(routingTable.getNeighbors().size());
-								// System.out.println(routingTable.getNeighbors().size());
-							}else{
-								break;
-							}
-						}		
-						while(flag){
-							// System.out.println("2");
-							if(remove_node.getRoutingTable().getNeighbors().size() < 8){
-								remove_node.getRoutingTable().addNeighbor(getSimulatedNodes().get(rand.nextInt(getSimulatedNodes().size())));
-								remove_node.setnConnection(routingTable.getNeighbors().size());
-							}else{
-								break;
-							}
-						}
+						
+					addNeighborsWithConnections(this, flag);	
+					addNeighborsWithConnections(remove_node, flag);	
 					}
 					//最低１つは更新する
 					// routingTable.removeNeighbor(score.getWorstNodeWithRemove());
@@ -304,6 +271,17 @@ public class Node {
 			putTask(messageTask);
 		}else{
 			sendingBlock = false;
+		}
+	}
+
+	public void addNeighborsWithConnections(Node node, Boolean flag){
+		while(flag){
+			if(node.getRoutingTable().getNeighbors().size() < 8){
+				node.getRoutingTable().addNeighbor(getSimulatedNodes().get(rand.nextInt(getSimulatedNodes().size())));
+				node.setnConnection(routingTable.getNeighbors().size());
+			}else{
+				break;
+			}
 		}
 	}
 
