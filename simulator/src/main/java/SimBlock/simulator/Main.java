@@ -256,7 +256,11 @@ public class Main {
 		List<Integer> degreeList  = makeRandomList(degreeDistribution,true);
 
 		for(int id = 1; id <= numNodes; id++){
-			Node node = new Node(id,degreeList.get(id-1)+1,regionList.get(id-1),RandomPower(id),TABLE);
+			int connections = degreeList.get(id-1)+1;
+			Node node = new Node(id,connections,regionList.get(id-1),RandomPower(id),TABLE);
+			System.out.println("In Main: ID:" + id + " connections:" + connections);
+
+			
 			addNode(node);
 
 			// OUT_JSON_FILE.print("{");

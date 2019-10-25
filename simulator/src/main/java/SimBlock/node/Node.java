@@ -277,6 +277,7 @@ public class Node {
 	public void addNeighborsWithConnections(Node node, Boolean flag){
 		while(flag){
 			if(node.getRoutingTable().getNeighbors().size() < 8){
+				node.setnConnection(routingTable.getNeighbors().size()+1);
 				node.getRoutingTable().addNeighbor(getSimulatedNodes().get(rand.nextInt(getSimulatedNodes().size())));
 				node.setnConnection(routingTable.getNeighbors().size());
 			}else{
