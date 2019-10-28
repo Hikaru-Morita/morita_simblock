@@ -26,6 +26,8 @@ import java.util.HashSet;
 import java.util.Set;
 
 import java.util.Random;	//add
+import java.util.HashMap;	//add
+import java.util.Map;		//add
 
 import SimBlock.node.Score;		//add
 import SimBlock.node.routingTable.AbstractRoutingTable;
@@ -43,7 +45,8 @@ public class Node {
 
 	private Score score;					//add
 	private int update_node_num = 2;		//add
-	private Random rand = new Random();	//add
+	private Random rand = new Random();		//add
+	private Map<Node,Block> invQue = new HashMap<Node,Block>(); 	//add
 
 	private AbstractRoutingTable routingTable;
 
@@ -193,7 +196,6 @@ public class Node {
 					putTask(task);
 					downloadingBlocks.add(block);
 				}else{
-
 					// get orphan block
 					if(block != this.block.getBlockWithHeight(block.getHeight())){
 						AbstractMessageTask task = new RecMessageTask(this,from,block);
@@ -208,6 +210,9 @@ public class Node {
 				if(block.getTime() != -1){
 					score.addScore(m.getFrom(),m.getRecievedTime(),block.getTime());	
 				}
+
+				//add
+				this.recallINV(from,block);
 			}
 		}
 
@@ -285,5 +290,21 @@ public class Node {
 			}
 		}
 	}
+
+	public void recallINV(Node from, Block block){
+		if(!invQue.containsValue(block)){
+			invQue.put(from,block);
+		}
+		if(block.getHeight()%400 == 0){
+				for(Node node : invQue.keySet()){
+					for(Node neighbor : this.getNeighbors()){
+						if(node != neighbor){
+							this.removeNeighbor(neighbor);
+						}
+					}
+				}
+			invQue.clear();
+		}
+	} 
 
 }
