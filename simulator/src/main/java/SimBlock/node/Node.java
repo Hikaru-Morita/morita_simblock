@@ -212,7 +212,7 @@ public class Node {
 				}
 
 				//add
-				this.recallINV(from,block);
+				// this.recallINV(from,block);
 			}
 		}
 
@@ -233,7 +233,7 @@ public class Node {
 			// if(block.getTime() != 0){
 		
 			//10の倍数なら隣接ノードを更新
-			if(block.getId() % 10 == 0 && block.getId() != 0){
+			if(block.getId() % 10 == 0 && block.getId() != 0 && this.getnConnection() > 2){
 
 				remove_node = score.getWorstNodeWithRemove();
 				flag = routingTable.removeNeighbor(remove_node);
@@ -281,7 +281,7 @@ public class Node {
 
 	public void addNeighborsWithConnections(Node node, Boolean flag){
 		while(flag){
-			if(node.getRoutingTable().getNeighbors().size() < 8){
+			if(node.getRoutingTable().getNeighbors().size() < node.getnConnection()){
 				node.setnConnection(routingTable.getNeighbors().size()+1);
 				node.getRoutingTable().addNeighbor(getSimulatedNodes().get(rand.nextInt(getSimulatedNodes().size())));
 				node.setnConnection(routingTable.getNeighbors().size());
@@ -306,7 +306,4 @@ public class Node {
 			invQue.clear();
 		}
 	} 
-
-	//test
-
 }

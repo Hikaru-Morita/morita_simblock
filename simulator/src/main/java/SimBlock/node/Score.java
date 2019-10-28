@@ -39,7 +39,12 @@ public class Score{
 	}
 
 	public 	Map<Node,Double> getScores(){return scores;}
-	public double getScore(Node node){return scores.get(node);}
+
+	public double getScore(Node node){
+		if(scores.size() == 0){return 0;}
+		return scores.get(node);
+	}
+
 	public double getAverageScore(){
 		return average_score/score_count;
 	}

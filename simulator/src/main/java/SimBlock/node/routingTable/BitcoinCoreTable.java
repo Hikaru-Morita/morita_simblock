@@ -57,7 +57,7 @@ public class BitcoinCoreTable extends AbstractRoutingTable {
 	// if # of nodes in outbound is less than nConnection
 	public boolean addNeighbor(Node node){
 		System.out.println("addNeighbor: selfID:" + this.getSelfNode().getNodeID() + " addnodeID:" + node.getNodeID());
-		System.out.println("             connenction num:" + this.getnConnection());
+		System.out.println("             connenction num:" + (this.getnConnection()-1));
 		System.out.println("             inbound num    :" + inbound.size());
 		System.out.println("             outbound num   :" + outbound.size());
 		if(node == getSelfNode() || this.outbound.contains(node) || this.inbound.contains(node) || this.outbound.size() >= this.getnConnection()){
@@ -75,7 +75,12 @@ public class BitcoinCoreTable extends AbstractRoutingTable {
 	public boolean removeNeighbor(Node node){
 		if(this.outbound.remove(node) && node.getRoutingTable().removeInbound(getSelfNode())){
 			printRemoveLink(node);
+			System.out.println("remove outbound");
 			return true;
+		}else if(this.inbound.remove(node) && node.getRoutingTable().removeOutbound(getSelfNode())){	//add
+			printRemoveLink(node);																			//add
+			System.out.println("remove inbound");
+			return true;																						//add	
 		}
 		return false;
 	}
@@ -95,7 +100,16 @@ public class BitcoinCoreTable extends AbstractRoutingTable {
 		}
 		return false;
 	}
-	
+
+	//add
+	public boolean removeOutbound(Node from){
+		if(this.outbound.remove(from)){
+			printRemoveLink(from);
+			return true;
+		}
+		return false;
+	}
+
 	private void printAddLink(Node endNode){
 		// OUT_JSON_FILE.print("{");
 		// OUT_JSON_FILE.print(	"\"kind\":\"add-link\",");

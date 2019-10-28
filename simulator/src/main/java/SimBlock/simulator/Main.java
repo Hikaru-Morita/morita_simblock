@@ -258,7 +258,7 @@ public class Main {
 		for(int id = 1; id <= numNodes; id++){
 			int connections = degreeList.get(id-1)+1;
 			Node node = new Node(id,connections,regionList.get(id-1),RandomPower(id),TABLE);
-			System.out.println("In Main: ID:" + id + " connections:" + connections);
+			//System.out.println("In Main: ID:" + id + " connections:" + connections + " " + node.getnConnection());
 
 			
 			addNode(node);
