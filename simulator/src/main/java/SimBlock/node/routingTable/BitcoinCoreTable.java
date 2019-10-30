@@ -36,6 +36,9 @@ public class BitcoinCoreTable extends AbstractRoutingTable {
 		neighbors.addAll(inbound);
 		return neighbors;
 	}
+
+	//add
+	public int getOutboundSize(){return outbound.size();}
 	
 	// set nConnection random nodes to table
 	public void initTable(){
@@ -96,6 +99,7 @@ public class BitcoinCoreTable extends AbstractRoutingTable {
 	public boolean removeInbound(Node from){
 		if(this.inbound.remove(from)){
 			printRemoveLink(from);
+			//from.getRoutingTable().setnConnection(from.getRoutingTable().getOutboundSize());	//add
 			return true;
 		}
 		return false;
