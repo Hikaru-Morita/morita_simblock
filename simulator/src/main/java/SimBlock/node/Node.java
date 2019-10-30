@@ -30,6 +30,7 @@ import java.util.HashMap;	//add
 import java.util.Map;		//add
 
 import SimBlock.node.Score;		//add
+import SimBlock.settings.SimulationConfiguration;	//add
 import SimBlock.node.routingTable.AbstractRoutingTable;
 import SimBlock.task.AbstractMessageTask;
 import SimBlock.task.BlockMessageTask;
@@ -212,7 +213,7 @@ public class Node {
 				}
 
 				//add
-				//this.recallINV(from,block);
+				this.recallINV(from,block);
 			}
 		}
 
@@ -304,6 +305,7 @@ public class Node {
 					}
 				}
 			invQue.clear();
+			this.addNeighbor(getSimulatedNodes().get(rand.nextInt(NUM_OF_NODES)));
 		}
 	} 
 }
