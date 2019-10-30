@@ -36,6 +36,7 @@ public abstract class AbstractRoutingTable {
 	public int getINnConnection(){return this.INnConnection;}		//add
 	public int getOUTnConnection(){return this.OUTnConnection;}		//add
 	public abstract int getOutboundSize();		//add
+	public abstract ArrayList<Node> getOutbounds();		//add
 	public abstract void initTable();
 
 	public abstract ArrayList<Node> getNeighbors();

@@ -13,7 +13,15 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package SimBlock.node;
+import static SimBlock.settings.SimulationConfiguration.*;	//add
+import static SimBlock.simulator.Timer.*;		//add
+
+//add
+import java.util.HashSet;
+import java.util.Set;
+
 
 public class Block {
 	private int height;
@@ -22,6 +30,7 @@ public class Block {
 	private long generatedTime;
 	private int id;
 	private static int latestId = 0;
+	private Set<Node> node_contain = new HashSet<Node>();
 
 	public Block(int height, Block parent, Node creator,long generatedTime){
 		this.height = height;
@@ -37,6 +46,15 @@ public class Block {
 	public Node getCreator(){return this.creator;}
 	public long getTime(){return this.generatedTime;}
 	public int getId() {return this.id;}
+
+	//add
+	public void addContainList(Node node){
+		node_contain.add(node);
+		if(node_contain.size() >= NUM_OF_NODES){
+			Score.addBFT(getCurrentTime() - this.generatedTime);
+		}
+	}
+
 
 	// return ancestor block that height is {height}
 	public Block getBlockWithHeight(int height){

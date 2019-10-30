@@ -37,6 +37,12 @@ public class BitcoinCoreTable extends AbstractRoutingTable {
 		return neighbors;
 	}
 
+	public ArrayList<Node> getOutbounds(){
+		ArrayList<Node> neighbors = new ArrayList<Node>();
+		neighbors.addAll(outbound);
+		return neighbors;
+	}
+
 	//add
 	public int getOutboundSize(){return outbound.size();}
 	

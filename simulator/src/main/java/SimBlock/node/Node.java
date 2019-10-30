@@ -176,6 +176,8 @@ public class Node {
 			this.mining();
 			this.sendInv(receivedBlock);
 
+			receivedBlock.addContainList(this);
+
 		//orphan の処理
 		}else if(receivedBlock.getHeight() <= this.block.getHeight()){
 			sameHeightBlock = this.block.getBlockWithHeight(receivedBlock.getHeight());
@@ -213,7 +215,7 @@ public class Node {
 				}
 
 				//add
-				this.recallINV(from,block);
+				// this.recallINV(from,block);
 			}
 		}
 
@@ -293,19 +295,22 @@ public class Node {
 	}
 
 	public void recallINV(Node from, Block block){
-		if(!invQue.containsValue(block)){
-			invQue.put(from,block);
-		}
-		if(block.getHeight()%200 == 0){
-				for(Node node : invQue.keySet()){
-					for(Node neighbor : this.getNeighbors()){
-						if(node != neighbor){
-							this.removeNeighbor(neighbor);
-						}
-					}
-				}
-			invQue.clear();
-			this.addNeighbor(getSimulatedNodes().get(rand.nextInt(NUM_OF_NODES)));
-		}
+		// if(!invQue.containsValue(block)){
+		// 	invQue.put(from,block);
+		// }
+		// if(block.getHeight()%200 == 0){
+		// 		for(Node node : invQue.keySet()){
+		// 			for(Node neighbor : this.getNeighbors()){
+		// 				if(node != neighbor && this.getRoutingTable().getOutbounds().contains(node)){
+		// 					this.removeNeighbor(neighbor);
+		// 					while(this.addNeighbor(getSimulatedNodes().get(rand.nextInt(NUM_OF_NODES)))){
+		// 					}
+		// 				}else if(node != neighbor && this.getRoutingTable().getNeighbors().contains(node)){
+		// 					this.removeNeighbor(neighbor);
+		// 				}
+		// 			}
+		// 		}
+		// 	invQue.clear();
+		// }
 	} 
 }
