@@ -7,7 +7,7 @@ import java.util.Map;
 public class Score{
 	private Map<Node,Double> scores = new HashMap<Node,Double>();
 	private double score = 0;
-	public static double para = 0.2;
+	public static double para = 0.01;
 	private Node worst;
 	private Node this_node;
 
@@ -38,7 +38,7 @@ public class Score{
 		return average_bft/count;
 	}
 
-	public 	Map<Node,Double> getScores(){return scores;}
+	public Map<Node,Double> getScores(){return scores;}
 
 	public double getScore(Node node){
 		if(scores.size() == 0){return 0;}

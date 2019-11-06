@@ -192,7 +192,7 @@ public class Main {
 		// OUT_JSON_FILE.print("]"); //end json format
 		// OUT_JSON_FILE.close();
 
-		AVERAGE_BFT_FILE.print(Score.getAverageBFT() + "," + Score.para + "\n");
+		AVERAGE_BFT_FILE.print(Score.getAverageBFT() + "," + Score.para + "," + orphans.size() + "\n");
 		AVERAGE_BFT_FILE.close();
 		// AVERAGESCORE_JSON_FILE.print("\"0\"" + ":" + "\"0\"");
 		// AVERAGESCORE_JSON_FILE.print("}");	//add

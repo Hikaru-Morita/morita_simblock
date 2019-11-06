@@ -86,9 +86,10 @@ public class Node {
 	public Set<Block> getOrphans(){ return this.orphans; }
 	public void setRegion(int region){ this.region = region; }
 	public int getRegion(){ return this.region; }
+	public Score getScore(){return this.score;}
 
 	//
-	public boolean addNeighbor(Node node){ 
+	public boolean addNeighbor(Node node){
 		return this.routingTable.addNeighbor(node);  
 	}
 	public boolean removeNeighbor(Node node){ 
@@ -236,7 +237,7 @@ public class Node {
 			// if(block.getTime() != 0){
 		
 			//10の倍数なら隣接ノードを更新
-			if(block.getId() % 10 == 0 && block.getId() != 0 && this.getnConnection() > 2){
+			if(block.getId() % 10 == 0 && block.getId() != 0 && this.getnConnection() > 1){
 
 				remove_node = score.getWorstNodeWithRemove();
 				flag = routingTable.removeNeighbor(remove_node);
@@ -244,19 +245,19 @@ public class Node {
 				addNeighborsWithConnections(this, flag);	
 				addNeighborsWithConnections(remove_node, flag);
 					
-				for(int i=0; i < update_node_num; i++){
-					// System.out.println("neighbors num :" + this.getNeighbors().size());
-					if(score.getAverageScore()>=score.getScore(score.getWorstNode()) && score.getWorstNode() != null){
-						remove_node = score.getWorstNodeWithRemove();
-						flag = routingTable.removeNeighbor(remove_node);
+				// for(int i=0; i < update_node_num; i++){
+				// 	// System.out.println("neighbors num :" + this.getNeighbors().size());
+				// 	if(score.getAverageScore()>=score.getScore(score.getWorstNode()) && score.getWorstNode() != null){
+				// 		remove_node = score.getWorstNodeWithRemove();
+				// 		flag = routingTable.removeNeighbor(remove_node);
 						
-						addNeighborsWithConnections(this, flag);	
-						addNeighborsWithConnections(remove_node, flag);	
-					}
-					//最低１つは更新する
-					//routingTable.removeNeighbor(score.getWorstNodeWithRemove());
-					//routingTable.addNeighbor(getSimulatedNodes().get(rand.nextInt(getSimulatedNodes().size())));							
-				}
+				// 		addNeighborsWithConnections(this, flag);	
+				// 		addNeighborsWithConnections(remove_node, flag);	
+				// 	}
+				// 	//最低１つは更新する
+				// 	//routingTable.removeNeighbor(score.getWorstNodeWithRemove());
+				// 	//routingTable.addNeighbor(getSimulatedNodes().get(rand.nextInt(getSimulatedNodes().size())));							
+				// }
 			}
 		}
 	}
@@ -295,22 +296,22 @@ public class Node {
 	}
 
 	public void recallINV(Node from, Block block){
-		// if(!invQue.containsValue(block)){
-		// 	invQue.put(from,block);
-		// }
-		// if(block.getHeight()%200 == 0){
-		// 		for(Node node : invQue.keySet()){
-		// 			for(Node neighbor : this.getNeighbors()){
-		// 				if(node != neighbor && this.getRoutingTable().getOutbounds().contains(node)){
-		// 					this.removeNeighbor(neighbor);
-		// 					while(this.addNeighbor(getSimulatedNodes().get(rand.nextInt(NUM_OF_NODES)))){
-		// 					}
-		// 				}else if(node != neighbor && this.getRoutingTable().getNeighbors().contains(node)){
-		// 					this.removeNeighbor(neighbor);
-		// 				}
-		// 			}
-		// 		}
-		// 	invQue.clear();
-		// }
+		if(!invQue.containsValue(block)){
+			invQue.put(from,block);
+		}
+		if(block.getHeight()%100 == 0){
+				for(Node node : invQue.keySet()){
+					for(Node neighbor : this.getNeighbors()){
+						if(node != neighbor && this.getRoutingTable().getOutbounds().contains(node)){
+							this.removeNeighbor(neighbor);
+							while(this.addNeighbor(getSimulatedNodes().get(rand.nextInt(NUM_OF_NODES)))){
+							}
+						}else if(node != neighbor && this.getRoutingTable().getNeighbors().contains(node)){
+							this.removeNeighbor(neighbor);
+						}
+					}
+				}
+			invQue.clear();
+		}
 	} 
 }
