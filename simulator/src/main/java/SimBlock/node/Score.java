@@ -7,15 +7,15 @@ import java.util.Map;
 public class Score{
 	private Map<Node,Double> scores = new HashMap<Node,Double>();
 	private double score = 0;
-	public static double para = 0.6;
+	public static double para = 0.01;
 	private Node worst;
 	private Node this_node;
 
-	public static long bft_flag = 0;
+	public static boolean bft_flag = true;
 	public static double average_bft;
 	public static long count;
 
-	public static long score_flag = 0;
+	public static boolean score_flag = true;
 	public static int score_count = 0;
 	public static double average_score = 0;
 
@@ -25,10 +25,10 @@ public class Score{
 	}
 
 	public static void addBFT(long bft){
-		if(bft_flag == 0){
+		if(bft_flag){
 			average_bft = bft;
-			bft_flag = 1;
-		}else if(bft_flag == 1){
+			bft_flag = false;
+		}else {
 			average_bft = average_bft + bft;
 		}
 		count = count + 1;
@@ -38,8 +38,13 @@ public class Score{
 		return average_bft/count;
 	}
 
-	public 	Map<Node,Double> getScores(){return scores;}
-	public double getScore(Node node){return scores.get(node);}
+	public Map<Node,Double> getScores(){return scores;}
+
+	public double getScore(Node node){
+		if(scores.size() == 0){return 0;}
+		return scores.get(node);
+	}
+
 	public double getAverageScore(){
 		return average_score/score_count;
 	}
@@ -86,10 +91,10 @@ public class Score{
 		}
 
 		score_count++;
-		if(score_flag == 0){
+		if(score_flag){
 			average_score = score;
-			score_flag = 1;
-		}else if(score_flag == 1){
+			score_flag = false;
+		}else {
 			average_score = average_score + score;
 		}
 	}

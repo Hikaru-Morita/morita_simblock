@@ -60,7 +60,7 @@ public class BlockMessageTask extends AbstractMessageTask {
 		// OUT_JSON_FILE.print("},");
 		// OUT_JSON_FILE.flush();
 
-		Score.addBFT(this.interval);
+		//Score.addBFT(this.interval);
 
 		super.run();
 	}

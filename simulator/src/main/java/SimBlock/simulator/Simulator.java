@@ -26,6 +26,7 @@ import SimBlock.node.Block;
 import SimBlock.node.Node;
 import static SimBlock.simulator.Timer.*;
 
+import SimBlock.node.Score;	//add
 
 public class Simulator {
 	private static ArrayList<Node> SimulatedNodes = new ArrayList<Node>();
@@ -93,6 +94,7 @@ public class Simulator {
 	
 	public static void printPropagation(Block block,LinkedHashMap<Integer, Long> propagation){
 		System.out.println(block + ":" + block.getHeight());
+		System.out.println(SimulatedNodes.get(1).getScore().getAverageBFT());
 		for(Map.Entry<Integer, Long> timeEntry : propagation.entrySet()){
 		}
 		System.out.println();

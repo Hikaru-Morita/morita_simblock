@@ -192,7 +192,7 @@ public class Main {
 		// OUT_JSON_FILE.print("]"); //end json format
 		// OUT_JSON_FILE.close();
 
-		AVERAGE_BFT_FILE.print(Score.getAverageBFT() + "," + Score.para + "\n");
+		AVERAGE_BFT_FILE.print(Score.getAverageBFT() + "," + Score.para + "," + orphans.size() + "\n");
 		AVERAGE_BFT_FILE.close();
 		// AVERAGESCORE_JSON_FILE.print("\"0\"" + ":" + "\"0\"");
 		// AVERAGESCORE_JSON_FILE.print("}");	//add
@@ -256,7 +256,11 @@ public class Main {
 		List<Integer> degreeList  = makeRandomList(degreeDistribution,true);
 
 		for(int id = 1; id <= numNodes; id++){
-			Node node = new Node(id,degreeList.get(id-1)+1,regionList.get(id-1),RandomPower(id),TABLE);
+			int connections = degreeList.get(id-1)+1;
+			Node node = new Node(id,connections,regionList.get(id-1),RandomPower(id),TABLE);
+			//System.out.println("In Main: ID:" + id + " connections:" + connections + " " + node.getnConnection());
+
+			
 			addNode(node);
 
 			// OUT_JSON_FILE.print("{");
