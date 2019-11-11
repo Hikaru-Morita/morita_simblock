@@ -127,6 +127,8 @@ public class Main {
 			// 重要
 			runTask();										
 		}
+
+		//未出力のブロックを出力
 		printAllPropagation();								//ファイル出力のみ
 		
 		// ブロックを配列に順番に格納

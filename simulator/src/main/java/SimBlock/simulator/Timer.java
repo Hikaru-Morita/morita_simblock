@@ -39,9 +39,7 @@ public class Timer {
 			this.scheduledTime = scheduledTime;
 		}
 		
-		private Task getTask(){ 
-			return this.task; 
-		}
+		private Task getTask(){ return this.task; }
 		private long getScheduledTime(){ return this.scheduledTime; }
 		
 		public int compareTo(ScheduledTask o) {
