@@ -32,12 +32,15 @@ public class Block {
 	private static int latestId = 0;
 	private Set<Node> node_contain = new HashSet<Node>();
 
+	private int hops;
+
 	public Block(int height, Block parent, Node creator,long generatedTime){
 		this.height = height;
 		this.parent = parent;
 		this.creator = creator;
 		this.generatedTime = generatedTime;
 		this.id = latestId;
+		this.hops = 0;
 		latestId++;
 	}
 
@@ -46,6 +49,11 @@ public class Block {
 	public Node getCreator(){return this.creator;}
 	public long getTime(){return this.generatedTime;}
 	public int getId() {return this.id;}
+	public int getHops(){return this.hops;}
+
+	public Set<Node> getContainNodes(){return node_contain;}
+
+	public void addHops(){hops++;}
 
 	//add
 	public void addContainList(Node node){

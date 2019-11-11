@@ -22,16 +22,46 @@ import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.PrintWriter;
+import java.net.URI;
+import java.net.URISyntaxException;
+
 import SimBlock.node.Block;
 import SimBlock.node.Node;
 import static SimBlock.simulator.Timer.*;
 
 import SimBlock.node.Score;	//add
 
+
 public class Simulator {
 	private static ArrayList<Node> SimulatedNodes = new ArrayList<Node>();
 	private static long TargetInterval;// = 1000*60*10;//msec
 	private static double difficulty;
+
+	public static URI CONF_FILE_URI;
+	public static URI OUT_FILE_URI;
+	static {
+		try {
+			CONF_FILE_URI = ClassLoader.getSystemResource("simulator.conf").toURI();
+			OUT_FILE_URI = CONF_FILE_URI.resolve(new URI("../output/"));
+		} catch (URISyntaxException e) {
+			e.printStackTrace();
+		}
+	}
+
+	public static PrintWriter AVERAGE_CSV_FILE; 		//add
+
+	static {
+		try{
+			AVERAGE_CSV_FILE = new PrintWriter(new BufferedWriter(new FileWriter(new File(OUT_FILE_URI.resolve("./averageBFT.csv")))));
+		} catch (IOException e){
+			e.printStackTrace();
+		}
+	}
 	
 	public static ArrayList<Node> getSimulatedNodes(){ return SimulatedNodes; }
 	public static double getDifficulty(){ return difficulty; }
@@ -94,7 +124,12 @@ public class Simulator {
 	
 	public static void printPropagation(Block block,LinkedHashMap<Integer, Long> propagation){
 		System.out.println(block + ":" + block.getHeight());
-		System.out.println(SimulatedNodes.get(1).getScore().getAverageBFT());
+		// System.out.print(block.getHeight()+",");
+		// System.out.println(block.getHops());
+		if(block.getId()>0){
+			AVERAGE_CSV_FILE.print(block.getHeight()+","+block.getContainNodes().iterator().next().getScore().getAverageBFT()+"\n");
+		}
+		System.out.print(SimulatedNodes.get(1).getScore().getAverageBFT());
 		for(Map.Entry<Integer, Long> timeEntry : propagation.entrySet()){
 		}
 		System.out.println();

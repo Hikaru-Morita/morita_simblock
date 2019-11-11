@@ -4,6 +4,7 @@ import SimBlock.simulator.Main;
 import java.util.HashMap;
 import java.util.Map;
 
+
 public class Score{
 	private Map<Node,Double> scores = new HashMap<Node,Double>();
 	private double score = 0;

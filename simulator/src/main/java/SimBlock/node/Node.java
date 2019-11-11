@@ -192,6 +192,14 @@ public class Node {
 	public void receiveMessage(AbstractMessageTask message){
 		Node from = message.getFrom();
 
+		// for(int tt=0;tt<10000*10000;tt++){ß
+		// 	int a = 0;
+		// 	for(int ss=0;ss<100000*100000;ss++){
+		// 		a++;
+		// 	}
+		// 	// System.out.println("test");
+		// }
+
 		if(message instanceof InvMessageTask){
 			Block block = ((InvMessageTask) message).getBlock();
 			if(!this.orphans.contains(block) && !this.downloadingBlocks.contains(block)){
@@ -232,12 +240,14 @@ public class Node {
 			downloadingBlocks.remove(block);
 			this.receiveBlock(block);
 
+			block.addHops();
+
 			//送信元ノードのスコアを更新　add
 			BlockMessageTask m = (BlockMessageTask) message;
 			// if(block.getTime() != 0){
 		
 			//10の倍数なら隣接ノードを更新
-			if(block.getId() % 10 == 0 && block.getId() != 0 && this.getnConnection() > 1){
+			if(block.getId() % 10 == 0 && block.getId() != 0 && this.getnConnection() > 2){
 
 				remove_node = score.getWorstNodeWithRemove();
 				flag = routingTable.removeNeighbor(remove_node);
