@@ -107,8 +107,8 @@ public class Simulator {
 	
 	public static void arriveBlock(Block block,Node node){
 		if(observedBlocks.contains(block)){
-			// LinkedHashMap<Integer, Long> Propagation = observedPropagations.get(observedBlocks.indexOf(block));
-			// Propagation.put(node.getNodeID(), getCurrentTime() - block.getTime());
+			LinkedHashMap<Integer, Long> Propagation = observedPropagations.get(observedBlocks.indexOf(block));
+			Propagation.put(node.getNodeID(), getCurrentTime() - block.getTime());
 		}else{
 			if(observedBlocks.size() > 10){
 				printPropagation(observedBlocks.get(0),observedPropagations.get(0));
@@ -133,6 +133,7 @@ public class Simulator {
 		// System.out.print(SimulatedNodes.get(1).getScore().getAverageBFT());
 		System.out.print(propagation.values().iterator().next());
 		for(Map.Entry<Integer, Long> timeEntry : propagation.entrySet()){
+			System.out.println(timeEntry.getKey() + "," + timeEntry.getValue());
 		}
 		System.out.println();
 	}
@@ -142,5 +143,4 @@ public class Simulator {
 			printPropagation(observedBlocks.get(i), observedPropagations.get(i));
 		}
 	}
-	
 }
