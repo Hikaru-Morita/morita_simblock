@@ -32,36 +32,38 @@ import java.net.URISyntaxException;
 
 import SimBlock.node.Block;
 import SimBlock.node.Node;
+import SimBlock.node.Score;
+import SimBlock.settings.SimulationConfiguration;
 import static SimBlock.simulator.Timer.*;
 
 import SimBlock.node.Score;	//add
-
 
 public class Simulator {
 	private static ArrayList<Node> SimulatedNodes = new ArrayList<Node>();
 	private static long TargetInterval;// = 1000*60*10;//msec
 	private static double difficulty;
+	private static double averageBFT = 0;
 
-	// public static URI CONF_FILE_URI;
-	// public static URI OUT_FILE_URI;
-	// static {
-	// 	try {
-	// 		CONF_FILE_URI = ClassLoader.getSystemResource("simulator.conf").toURI();
-	// 		OUT_FILE_URI = CONF_FILE_URI.resolve(new URI("../output/"));
-	// 	} catch (URISyntaxException e) {
-	// 		e.printStackTrace();
-	// 	}
-	// }
+	public static URI CONF_FILE_URI;
+	public static URI OUT_FILE_URI;
+	static {
+		try {
+			CONF_FILE_URI = ClassLoader.getSystemResource("simulator.conf").toURI();
+			OUT_FILE_URI = CONF_FILE_URI.resolve(new URI("../output/"));
+		} catch (URISyntaxException e) {
+			e.printStackTrace();
+		}
+	}
 
-	// public static PrintWriter AVERAGE_CSV_FILE; 		//add
+	public static PrintWriter AVERAGE_CSV_FILE; 		//add
 
-	// static {
-	// 	try{
-	// 		AVERAGE_CSV_FILE = new PrintWriter(new BufferedWriter(new FileWriter(new File(OUT_FILE_URI.resolve("./averageBFT.csv")))));
-	// 	} catch (IOException e){
-	// 		e.printStackTrace();
-	// 	}
-	// }
+	static {
+		try{
+			AVERAGE_CSV_FILE = new PrintWriter(new BufferedWriter(new FileWriter(new File(OUT_FILE_URI.resolve("./averageBFT.csv")),true)));
+		} catch (IOException e){
+			e.printStackTrace();
+		}
+	}
 	
 	public static ArrayList<Node> getSimulatedNodes(){ return SimulatedNodes; }
 	public static double getDifficulty(){ return difficulty; }
@@ -107,6 +109,7 @@ public class Simulator {
 	
 	public static void arriveBlock(Block block,Node node){
 		if(observedBlocks.contains(block)){
+			//参照渡し
 			LinkedHashMap<Integer, Long> Propagation = observedPropagations.get(observedBlocks.indexOf(block));
 			Propagation.put(node.getNodeID(), getCurrentTime() - block.getTime());
 		}else{
@@ -125,16 +128,20 @@ public class Simulator {
 	
 	public static void printPropagation(Block block,LinkedHashMap<Integer, Long> propagation){
 		System.out.println(block + ":" + block.getHeight());
+		System.out.println("averagescore:" + SimulatedNodes.get(0).getAverageScore());
+
+		Long bft = 0L;
 		// System.out.print(block.getHeight()+",");
 		// System.out.println(block.getHops());
-		// if(block.getId()>0){
-		// 	AVERAGE_CSV_FILE.print(block.getHeight()+","+block.getContainNodes().iterator().next().getScore().getAverageBFT()+"\n");
-		// }
+		// if(block.getId()>0){}
 		// System.out.print(SimulatedNodes.get(1).getScore().getAverageBFT());
-		System.out.print(propagation.values().iterator().next());
 		for(Map.Entry<Integer, Long> timeEntry : propagation.entrySet()){
-			System.out.println(timeEntry.getKey() + "," + timeEntry.getValue());
+			// System.out.println("propagation:" + timeEntry.getKey() + "," + timeEntry.getValue());
+			bft = timeEntry.getValue();
 		}
+		System.out.println("propagation:" + bft);
+		averageBFT = averageBFT + bft;
+		AVERAGE_CSV_FILE.print(block.getHeight()+","+ bft +"\n");
 		System.out.println();
 	}
 	
@@ -142,5 +149,7 @@ public class Simulator {
 		for(int i=0;i < observedBlocks.size();i++){
 			printPropagation(observedBlocks.get(i), observedPropagations.get(i));
 		}
+		System.out.println(averageBFT/100);
+		AVERAGE_CSV_FILE.close();
 	}
 }

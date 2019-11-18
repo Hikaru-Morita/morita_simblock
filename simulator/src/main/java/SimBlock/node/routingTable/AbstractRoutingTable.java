@@ -22,7 +22,7 @@ import SimBlock.node.Node;
 public abstract class AbstractRoutingTable {
 	private Node selfNode;
 	private int nConnection = 8;
-	private final int INnConnection = 0;	//add
+	private int INnConnection = 0;			//add
 	private int OUTnConnection = 8;			//add
 
 	public AbstractRoutingTable(Node selfNode){
@@ -31,7 +31,8 @@ public abstract class AbstractRoutingTable {
 	protected Node getSelfNode(){return selfNode;}
 	public void setnConnection(int nConnection){this.nConnection = nConnection;}
 	//public void setINnConnection(int nConnection){this.INnConnection = INnConnection;}		//add
-	public void setOUTnConnection(int nConnection){this.OUTnConnection = OUTnConnection;}	//add
+	public void setOUTnConnection(int OUTnConnection){this.OUTnConnection = OUTnConnection;}	//add
+	public void setINnConnection(int INnConnection){this.INnConnection = INnConnection;}	//add
 	public int getnConnection(){return this.nConnection;}
 	public int getINnConnection(){return this.INnConnection;}		//add
 	public int getOUTnConnection(){return this.OUTnConnection;}		//add

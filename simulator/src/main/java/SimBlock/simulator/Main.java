@@ -191,8 +191,8 @@ public class Main {
 		// OUT_JSON_FILE.print(		"\"timestamp\":" + getCurrentTime());
 		// OUT_JSON_FILE.print(	"}");
 		// OUT_JSON_FILE.print("}");
-		// OUT_JSON_FILE.print("]"); //end json format
-		// OUT_JSON_FILE.close();
+		OUT_JSON_FILE.print("]"); //end json format
+		OUT_JSON_FILE.close();
 
 		AVERAGE_BFT_FILE.print(Score.getAverageBFT() + "," + Score.para + "," + orphans.size() + "\n");
 		AVERAGE_BFT_FILE.close();
