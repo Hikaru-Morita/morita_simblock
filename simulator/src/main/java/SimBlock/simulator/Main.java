@@ -92,9 +92,7 @@ public class Main {
 				MiningTask task = (MiningTask) getTask();
 				if(task.getParent().getHeight() == j) j++;
 				if(j > ENDBLOCKHEIGHT){break;}
-				//if(j%100==0 || j==2) 		このif文なに？
-				// System.out.println("write graph : " + j);  //追記
-				writeGraph(j);
+				if(j%100==0 || j==2) writeGraph(j);
 			}
 			runTask();
 		}
@@ -204,16 +202,10 @@ public class Main {
 		return list;
 	}
 
-	public static int RandomPower(int id){
+	public static int genMiningPower(){
 		double r = random.nextGaussian();
-		int averageHashRate = 400000;
-		int variance = 100000;
 
-		// if(id ==1 ){
-		// 	averageHashRate = 400000000;
-		// }
-
-		return  Math.max((int)(r * variance + averageHashRate),1);
+		return  Math.max((int)(r * STDEV_OF_MINING_POWER + AVERAGE_MINING_POWER),1);
 	}
 	public static void constructNetworkWithAllNode(int numNodes){
 		//List<String> regions = new ArrayList<>(Arrays.asList("NORTH_AMERICA", "EUROPE", "SOUTH_AMERICA", "ASIA_PACIFIC", "JAPAN", "AUSTRALIA", "OTHER"));
@@ -223,18 +215,18 @@ public class Main {
 		List<Integer> degreeList  = makeRandomList(degreeDistribution,true);
 
 		for(int id = 1; id <= numNodes; id++){
-			Node node = new Node(id,degreeList.get(id-1)+1,regionList.get(id-1),RandomPower(id),TABLE);
+			Node node = new Node(id,degreeList.get(id-1)+1,regionList.get(id-1), genMiningPower(),TABLE);
 			addNode(node);
 
-			// OUT_JSON_FILE.print("{");
-			// OUT_JSON_FILE.print(	"\"kind\":\"add-node\",");
-			// OUT_JSON_FILE.print(	"\"content\":{");
-			// OUT_JSON_FILE.print(		"\"timestamp\":0,");
-			// OUT_JSON_FILE.print(		"\"node-id\":" + id + ",");
-			// OUT_JSON_FILE.print(		"\"region-id\":" + regionList.get(id-1));
-			// OUT_JSON_FILE.print(	"}");
-			// OUT_JSON_FILE.print("},");
-			// OUT_JSON_FILE.flush();
+			OUT_JSON_FILE.print("{");
+			OUT_JSON_FILE.print(	"\"kind\":\"add-node\",");
+			OUT_JSON_FILE.print(	"\"content\":{");
+			OUT_JSON_FILE.print(		"\"timestamp\":0,");
+			OUT_JSON_FILE.print(		"\"node-id\":" + id + ",");
+			OUT_JSON_FILE.print(		"\"region-id\":" + regionList.get(id-1));
+			OUT_JSON_FILE.print(	"}");
+			OUT_JSON_FILE.print("},");
+			OUT_JSON_FILE.flush();
 
 		}
 
