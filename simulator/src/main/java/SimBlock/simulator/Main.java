@@ -164,7 +164,8 @@ public class Main {
 		long end = System.currentTimeMillis();
 		time1 += end -start;
 
-		System.out.println("Average Propagation: " + getAveProp());
+		//add
+		System.out.println("Average Propagation: " + getAveProp());	
 
 		System.out.println(time1);
 
