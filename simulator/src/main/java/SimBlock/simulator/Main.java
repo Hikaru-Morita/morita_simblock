@@ -134,7 +134,7 @@ public class Main {
 		for(Block orphan : orphans){
 			System.out.println(orphan+ ":" +orphan.getHeight());
 		}
-		System.out.println(averageOrhansSize);
+		System.out.println("averageOrhansSize: " + averageOrhansSize);
 
 		try {
 			FileWriter fw = new FileWriter(new File(OUT_FILE_URI.resolve("./blockList.txt")), false);
@@ -163,6 +163,9 @@ public class Main {
 		OUT_JSON_FILE.close();
 		long end = System.currentTimeMillis();
 		time1 += end -start;
+
+		System.out.println("Average Propagation: " + getAveProp());
+
 		System.out.println(time1);
 
 	}

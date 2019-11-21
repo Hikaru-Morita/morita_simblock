@@ -28,6 +28,11 @@ public class Simulator {
 	private static ArrayList<Node> simulatedNodes = new ArrayList<Node>();
 	private static long targetInterval;// = 1000*60*10;//msec
 	private static long averageDifficulty;
+
+	//add
+	public static long count = 0;			
+	public static double average_propagation = 0;
+	public static double getAveProp(){return average_propagation/count;}
 	
 	public static ArrayList<Node> getSimulatedNodes(){ return simulatedNodes; }
 	public static long getAverageDifficulty(){ return averageDifficulty; }
@@ -65,7 +70,6 @@ public class Simulator {
 	}
 
 	
-	
 	//
 	// Record block propagation time
 	// For saving memory, Record only the latest 10 Blocks
@@ -93,9 +97,21 @@ public class Simulator {
 	
 	public static void printPropagation(Block block,LinkedHashMap<Integer, Long> propagation){
 		System.out.println(block + ":" + block.getHeight());
+
+		long propagationTime = 0;	//add
+		count++; //add
+
 		for(Map.Entry<Integer, Long> timeEntry : propagation.entrySet()){
-			System.out.println(timeEntry.getKey() + "," + timeEntry.getValue());
+			// *
+			// System.out.println(timeEntry.getKey() + "," + timeEntry.getValue());
+
+			//add
+			propagationTime = timeEntry.getValue();  // time block propagated to all nodes. 
 		}
+
+		average_propagation = average_propagation + propagationTime;	//add
+		System.out.println("propagation: " + propagationTime);	//add
+
 		System.out.println();
 	}
 	
