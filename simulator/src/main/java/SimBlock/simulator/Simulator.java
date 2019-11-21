@@ -21,6 +21,7 @@ import java.util.Map;
 
 import SimBlock.node.Block;
 import SimBlock.node.Node;
+import SimBlock.node.Score;	//add
 import static SimBlock.simulator.Timer.*;
 
 
@@ -110,7 +111,8 @@ public class Simulator {
 		}
 
 		average_propagation = average_propagation + propagationTime;	//add
-		System.out.println("propagation: " + propagationTime);	//add
+		System.out.println("propagation   : " + propagationTime);	//add
+		System.out.println("Average Score : " + Score.getAverageScore());	//add
 
 		System.out.println();
 	}

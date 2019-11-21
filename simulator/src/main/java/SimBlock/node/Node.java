@@ -49,6 +49,9 @@ public class Node {
 
 	private long processingTime = 2;
 
+	//add
+	Score score = new Score(this);
+
 	public Node(int nodeID,int nConnection ,int region, long miningPower, String routingTableName){
 		this.nodeID = nodeID;
 		this.region = region;
@@ -175,6 +178,12 @@ public class Node {
 						putTask(task);
 						downloadingBlocks.add(block);
 					}
+				}
+
+				//reload score  //add
+				InvMessageTask m = (InvMessageTask) message;
+				if(block.getTime() != -1){
+					score.addScore(m.getFrom(),(int)getCurrentTime(),(int)m.getBlock().getTime());	
 				}
 			}
 		}
