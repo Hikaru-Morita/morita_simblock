@@ -79,6 +79,10 @@ public class Node {
 	public int getnConnection(){ return this.routingTable.getnConnection(); }
 
 
+	//add
+	public int getScoresSize(){return score.getScoresSize();}
+	public ArrayList<Node> getOutbounds(){return routingTable.getOutbounds();}
+
 	public void joinNetwork(){
 		this.routingTable.initTable();
 	}
@@ -219,7 +223,6 @@ public class Node {
 
 			putTask(messageTask);
 
-
 			//add
 			addBF(block,this,to);
 		}else{
@@ -227,4 +230,7 @@ public class Node {
 		}
 	}
 
-}
+	public void checkNode(){
+
+		routingTable.checkNode();}
+	}

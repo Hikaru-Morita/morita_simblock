@@ -10,31 +10,33 @@ public class Score{
 	private double score = 0;
 	public static double para = 0.6;
 	private Node worst;
-	private Node this_node;
+	private Node selfNode;
 
 	private static long score_count = 0;
 	private static double average_score = 0;
 
 	Score(Node node){
-		this_node = node;
+		selfNode = node;
 	}
 
 	public static double getAverageScore(){return average_score/score_count;}
 	public Map<Node,Double> getScores(){return scores;}
 	public double getScore(Node node){return scores.get(node);}
+	public int getScoresSize(){return scores.size();}
 
 	public void addScore(Node from, long t_inv, long t_block){
-
-		// calculate score
-		if(scores.get(from) == null){
-			score = (t_inv-t_block);
-			scores.put(from, score);
-		}
-		else{
-			score = scores.get(from);
-			scores.remove(from);
-			score = (1-para)*(score)+para*(t_inv-t_block);
-			scores.put(from, score);
+		if(selfNode.getOutbounds().contains(from)){
+			// calculate score
+			if(scores.get(from) == null){
+				score = (t_inv-t_block);
+				scores.put(from, score);
+			}
+			else{
+				score = scores.get(from);
+				scores.remove(from);
+				score = (1-para)*(score)+para*(t_inv-t_block);
+				scores.put(from, score);
+			}
 		}
 
 		// calcuate average of all neighbor nodes score 
@@ -55,7 +57,7 @@ public class Score{
 			}
 		}else{
 			System.out.println("getWorstNode: error     " + worst);
-			worst = this_node;
+			worst = selfNode;
 		}
 		return worst;
 	}

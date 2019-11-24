@@ -102,7 +102,7 @@ public class Simulator {
 
 		long propagationTime = 0;	//add
 		count++; //add
-		long num = 0;
+		long num = 0;	//add
 
 		for(Map.Entry<Integer, Long> timeEntry : propagation.entrySet()){
 			// *
@@ -110,19 +110,16 @@ public class Simulator {
 			
 			//add
 			propagationTime = timeEntry.getValue();  // time block propagated to all nodes. 
-
 			num++;
 		}
 
 		//add
 		// System.out.println(num);
 		// System.out.println(bf.get(block).size() + ", " + bf.get(block).get(0));
-
 		average_propagation = average_propagation + propagationTime;		//add
 		System.out.println("propagation   : " + propagationTime);			//add
 		System.out.println("Average Score : " + Score.getAverageScore());	//add
-
-		System.out.println();
+		simulatedNodes.get(599).getRoutingTable().checkNode();
 	}
 	
 	public static void printAllPropagation(){
@@ -132,7 +129,6 @@ public class Simulator {
 	}
 
 	//add
-	//ブロック生成時は考慮しない
 	public static void addBF(Block block, Node from, Node to){
 		ArrayList<Node> from_to = new ArrayList<>();
 		from_to.add(from);
@@ -147,5 +143,4 @@ public class Simulator {
 		return;
 	}
 
-	
 }

@@ -45,6 +45,9 @@ public class MiningTask implements Task {
 		Block createdBlock = new Block(this.parentBlock.getHeight() + 1, this.parentBlock, this.miningNode ,getCurrentTime());
 		this.miningNode.receiveBlock(createdBlock);
 
+		//add
+		addBF(createdBlock,miningNode,miningNode);
+
 	}
 
 	public Block getParent(){

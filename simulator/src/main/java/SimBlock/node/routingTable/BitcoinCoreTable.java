@@ -62,6 +62,7 @@ public class BitcoinCoreTable extends AbstractRoutingTable {
 		// System.out.println("             connenction num:" + (this.getnConnection()-1));
 		// System.out.println("             inbound num    :" + inbound.size());
 		// System.out.println("             outbound num   :" + outbound.size());
+		// System.out.println("             scores num     :" + node.getScoresSize());	
 
 		if(node == getSelfNode() || this.outbound.contains(node) || this.inbound.contains(node) || this.outbound.size() >= this.getnConnection()){
 			return false;
@@ -121,4 +122,15 @@ public class BitcoinCoreTable extends AbstractRoutingTable {
 		OUT_JSON_FILE.flush();
 	}
 
+	//add
+	public void checkNode(){
+		//add for debug
+		System.out.println("  selfID         :" + this.getSelfNode());
+		System.out.println("  connenction num:" + (this.getnConnection()-1));
+		System.out.println("  inbound num    :" + inbound.size());
+		System.out.println("  outbound num   :" + outbound.size());
+		System.out.println("  scores num     :" + this.getSelfNode().getScoresSize());	
+	}
+
+	public ArrayList<Node> getOutbounds(){return outbound;}
 }
