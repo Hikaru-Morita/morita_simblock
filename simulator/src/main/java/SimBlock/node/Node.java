@@ -32,6 +32,10 @@ import SimBlock.task.InvMessageTask;
 import SimBlock.task.MiningTask;
 import SimBlock.task.RecMessageTask;
 import SimBlock.task.Task;
+
+//add
+import java.util.Random;
+
 public class Node {
 	private int region;
 	private int nodeID;
@@ -204,6 +208,11 @@ public class Node {
 			Block block = ((BlockMessageTask) message).getBlock();
 			downloadingBlocks.remove(block);
 			this.receiveBlock(block);
+
+			//add
+			if(block.getId()%10 == 0 && block.getId()>1){
+				changeNeighbors();
+			}
 		}
 	}
 
@@ -230,7 +239,18 @@ public class Node {
 		}
 	}
 
-	public void checkNode(){
+	//add
+	public void checkNode(){routingTable.checkNode();}
 
-		routingTable.checkNode();}
+	//add
+	public void changeNeighbors(){
+		Random rand = new Random();
+		// System.out.println("before outbounds :" + getOutbounds().size());
+		removeNeighbor(score.getWorstNodeWithRemove());
+				while(true){
+			if(addNeighbor(getSimulatedNodes().get(rand.nextInt(599))))break;
+		}
+		// System.out.println("after outbounds  :" + getOutbounds().size());
+		
 	}
+}
