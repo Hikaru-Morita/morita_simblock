@@ -133,6 +133,7 @@ public class Node {
 		}
 	}
 
+
 	public void receiveBlock(Block receivedBlock){
 		Block sameHeightBlock;
 
@@ -217,6 +218,10 @@ public class Node {
 			BlockMessageTask messageTask = new BlockMessageTask(this, to, block, delay);
 
 			putTask(messageTask);
+
+
+			//add
+			addBF(block,this,to);
 		}else{
 			sendingBlock = false;
 		}

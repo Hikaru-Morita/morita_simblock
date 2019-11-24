@@ -18,6 +18,7 @@ package SimBlock.simulator;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.Map;
+import java.util.HashMap;	//add
 
 import SimBlock.node.Block;
 import SimBlock.node.Node;
@@ -34,6 +35,7 @@ public class Simulator {
 	public static long count = 0;			
 	public static double average_propagation = 0;
 	public static double getAveProp(){return average_propagation/count;}
+	public static Map<Block,ArrayList<ArrayList<Node>>> bf = new HashMap<Block,ArrayList<ArrayList<Node>>>();
 	
 	public static ArrayList<Node> getSimulatedNodes(){ return simulatedNodes; }
 	public static long getAverageDifficulty(){ return averageDifficulty; }
@@ -81,7 +83,6 @@ public class Simulator {
 	public static void arriveBlock(Block block,Node node){
 		if(observedBlocks.contains(block)){
 			LinkedHashMap<Integer, Long> Propagation = observedPropagations.get(observedBlocks.indexOf(block));
-		
 			Propagation.put(node.getNodeID(), getCurrentTime() - block.getTime());
 		}else{
 			if(observedBlocks.size() > 10){
@@ -101,17 +102,24 @@ public class Simulator {
 
 		long propagationTime = 0;	//add
 		count++; //add
+		long num = 0;
 
 		for(Map.Entry<Integer, Long> timeEntry : propagation.entrySet()){
 			// *
 			// System.out.println(timeEntry.getKey() + "," + timeEntry.getValue());
-
+			
 			//add
 			propagationTime = timeEntry.getValue();  // time block propagated to all nodes. 
+
+			num++;
 		}
 
-		average_propagation = average_propagation + propagationTime;	//add
-		System.out.println("propagation   : " + propagationTime);	//add
+		//add
+		// System.out.println(num);
+		// System.out.println(bf.get(block).size() + ", " + bf.get(block).get(0));
+
+		average_propagation = average_propagation + propagationTime;		//add
+		System.out.println("propagation   : " + propagationTime);			//add
 		System.out.println("Average Score : " + Score.getAverageScore());	//add
 
 		System.out.println();
@@ -122,5 +130,22 @@ public class Simulator {
 			printPropagation(observedBlocks.get(i), observedPropagations.get(i));
 		}
 	}
+
+	//add
+	//ブロック生成時は考慮しない
+	public static void addBF(Block block, Node from, Node to){
+		ArrayList<Node> from_to = new ArrayList<>();
+		from_to.add(from);
+		from_to.add(to);
+		if(!bf.containsKey(block)){
+			ArrayList<ArrayList<Node>> From_to = new ArrayList<ArrayList<Node>>();
+			From_to.add(from_to);
+			bf.put(block,From_to);
+			return;
+		}
+		bf.get(block).add(from_to);
+		return;
+	}
+
 	
 }
