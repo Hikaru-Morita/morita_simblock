@@ -234,6 +234,7 @@ public class Node {
 
 			//add
 			addBF(block,this,to);
+			
 		}else{
 			sendingBlock = false;
 		}
@@ -245,9 +246,12 @@ public class Node {
 	//add
 	public void changeNeighbors(){
 		Random rand = new Random();
+		Node removeNode;
 		// System.out.println("before outbounds :" + getOutbounds().size());
-		removeNeighbor(score.getWorstNodeWithRemove());
-				while(true){
+		removeNode = score.getWorstNodeWithRemove();
+		if(removeNode == this) return;
+		removeNeighbor(removeNode);
+		while(true){
 			if(addNeighbor(getSimulatedNodes().get(rand.nextInt(599))))break;
 		}
 		// System.out.println("after outbounds  :" + getOutbounds().size());

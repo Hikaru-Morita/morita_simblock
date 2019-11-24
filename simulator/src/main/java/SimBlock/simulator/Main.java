@@ -92,7 +92,8 @@ public class Main {
 				MiningTask task = (MiningTask) getTask();
 				if(task.getParent().getHeight() == j) j++;
 				if(j > ENDBLOCKHEIGHT){break;}
-				if(j%100==0 || j==2) writeGraph(j);
+				//*
+				// if(j%100==0 || j==2) writeGraph(j);
 			}
 			runTask();
 		}

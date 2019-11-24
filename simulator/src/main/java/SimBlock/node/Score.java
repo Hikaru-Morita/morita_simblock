@@ -8,7 +8,7 @@ import java.util.Map;
 public class Score{
 	private Map<Node,Double> scores = new HashMap<Node,Double>();
 	private double score = 0;
-	public static double para = 0.6;
+	public static double para = 0.5;
 	private Node worst;
 	private Node selfNode;
 
@@ -63,7 +63,10 @@ public class Score{
 	}
 
 	public Node getWorstNodeWithRemove(){
+		// System.out.println(scores.size());
+		if(scores.size() == 0) return selfNode;
 		worst = scores.keySet().iterator().next();
+		int num = 0;
 		for(Node i: scores.keySet()){
 			if(scores.get(worst)<scores.get(i)){
 				worst = i;
