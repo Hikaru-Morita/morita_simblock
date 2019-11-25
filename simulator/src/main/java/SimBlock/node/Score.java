@@ -76,4 +76,23 @@ public class Score{
 		return worst;
 	}
 
+	public Node getWorstNodeWithRemove_v2(){
+		// System.out.println(scores.size());
+		if(scores.size() == 0) return selfNode;
+		worst = scores.keySet().iterator().next();
+		int num = 0;
+		double worst_score = getAverageScore();
+		for(Node i: scores.keySet()){
+			if(scores.get(worst)<scores.get(i)){
+				worst = i;
+				worst_score = scores.get(i);
+			}
+		}
+		if(worst_score > this.getAverageScore()){
+			scores.remove(worst);
+			return worst;
+		}
+		return selfNode;
+	}
+
 }

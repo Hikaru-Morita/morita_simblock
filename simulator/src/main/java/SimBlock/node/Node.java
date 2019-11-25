@@ -212,7 +212,8 @@ public class Node {
 
 			//add
 			if(block.getId()%10 == 0 && block.getId()>1){
-				// changeNeighbors();
+				changeNeighbors();
+				// changeNeighbors_v2();
 			}
 		}
 	}
@@ -253,6 +254,7 @@ public class Node {
 		removeNode = score.getWorstNodeWithRemove();
 		if(removeNode == this) return;
 		removeNeighbor(removeNode);
+
 		while(true){
 			addNode = getSimulatedNodes().get(rand.nextInt(599));
 			if(addNode.getInbounds().size()>18){
@@ -260,5 +262,27 @@ public class Node {
 		}
 		// System.out.println("after outbounds  :" + getOutbounds().size());
 		
+	}
+
+	//add
+	public void changeNeighbors_v2(){
+		Random rand = new Random();
+		Node removeNode;
+		Node addNode;
+		// System.out.println("before outbounds :" + getOutbounds().size());
+
+		for(int i=0; i>this.getScoresSize();i++){
+			removeNode = score.getWorstNodeWithRemove_v2();
+			if(removeNode == this) return;
+			removeNeighbor(removeNode);
+
+			while(true){
+				addNode = getSimulatedNodes().get(rand.nextInt(599));
+				if(addNode.getInbounds().size()>18){
+				}else if(addNeighbor(addNode))break;
+			}
+		}
+		// System.out.println("after outbounds  :" + getOutbounds().size());
+		return;
 	}
 }
