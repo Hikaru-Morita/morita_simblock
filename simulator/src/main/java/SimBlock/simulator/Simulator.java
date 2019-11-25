@@ -113,7 +113,7 @@ public class Simulator {
 			num++;
 		}
 
-		//add
+		// add
 		// System.out.println(num);
 		// System.out.println(bf.get(block).size() + ", " + bf.get(block).get(0));
 
@@ -121,8 +121,12 @@ public class Simulator {
 		average_propagation = average_propagation + propagationTime;		//add
 		System.out.println("propagation   : " + propagationTime);			//add
 		System.out.println("Average Score : " + Score.getAverageScore());	//add
-		simulatedNodes.get(0).getRoutingTable().checkNode();
-	}
+		
+		//add
+		for(int i=0;i<600;i++){
+			// simulatedNodes.get(i).getRoutingTable().checkNode();
+		}
+	}	
 	
 	public static void printAllPropagation(){
 		for(int i=0;i < observedBlocks.size();i++){

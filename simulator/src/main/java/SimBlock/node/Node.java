@@ -86,6 +86,7 @@ public class Node {
 	//add
 	public int getScoresSize(){return score.getScoresSize();}
 	public ArrayList<Node> getOutbounds(){return routingTable.getOutbounds();}
+	public ArrayList<Node> getInbounds(){return routingTable.getInbounds();}
 
 	public void joinNetwork(){
 		this.routingTable.initTable();
@@ -211,7 +212,7 @@ public class Node {
 
 			//add
 			if(block.getId()%10 == 0 && block.getId()>1){
-				changeNeighbors();
+				// changeNeighbors();
 			}
 		}
 	}
@@ -247,12 +248,15 @@ public class Node {
 	public void changeNeighbors(){
 		Random rand = new Random();
 		Node removeNode;
+		Node addNode;
 		// System.out.println("before outbounds :" + getOutbounds().size());
 		removeNode = score.getWorstNodeWithRemove();
 		if(removeNode == this) return;
 		removeNeighbor(removeNode);
 		while(true){
-			if(addNeighbor(getSimulatedNodes().get(rand.nextInt(599))))break;
+			addNode = getSimulatedNodes().get(rand.nextInt(599));
+			if(addNode.getInbounds().size()>18){
+			}else if(addNeighbor(addNode))break;
 		}
 		// System.out.println("after outbounds  :" + getOutbounds().size());
 		

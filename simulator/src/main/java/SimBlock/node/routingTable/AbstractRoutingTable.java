@@ -41,5 +41,6 @@ public abstract class AbstractRoutingTable {
 	//add
 	public void checkNode(){};
 	public abstract ArrayList<Node> getOutbounds();
+	public abstract ArrayList<Node> getInbounds();
 
 }

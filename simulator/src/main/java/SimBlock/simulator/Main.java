@@ -223,15 +223,15 @@ public class Main {
 			Node node = new Node(id,degreeList.get(id-1)+1,regionList.get(id-1), genMiningPower(),TABLE);
 			addNode(node);
 
-			OUT_JSON_FILE.print("{");
-			OUT_JSON_FILE.print(	"\"kind\":\"add-node\",");
-			OUT_JSON_FILE.print(	"\"content\":{");
-			OUT_JSON_FILE.print(		"\"timestamp\":0,");
-			OUT_JSON_FILE.print(		"\"node-id\":" + id + ",");
-			OUT_JSON_FILE.print(		"\"region-id\":" + regionList.get(id-1));
-			OUT_JSON_FILE.print(	"}");
-			OUT_JSON_FILE.print("},");
-			OUT_JSON_FILE.flush();
+			// OUT_JSON_FILE.print("{");
+			// OUT_JSON_FILE.print(	"\"kind\":\"add-node\",");
+			// OUT_JSON_FILE.print(	"\"content\":{");
+			// OUT_JSON_FILE.print(		"\"timestamp\":0,");
+			// OUT_JSON_FILE.print(		"\"node-id\":" + id + ",");
+			// OUT_JSON_FILE.print(		"\"region-id\":" + regionList.get(id-1));
+			// OUT_JSON_FILE.print(	"}");
+			// OUT_JSON_FILE.print("},");
+			// OUT_JSON_FILE.flush();
 
 		}
 

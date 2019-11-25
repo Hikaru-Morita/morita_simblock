@@ -99,38 +99,41 @@ public class BitcoinCoreTable extends AbstractRoutingTable {
 	}
 	
 	private void printAddLink(Node endNode){
-		OUT_JSON_FILE.print("{");
-		OUT_JSON_FILE.print(	"\"kind\":\"add-link\",");
-		OUT_JSON_FILE.print(	"\"content\":{");
-		OUT_JSON_FILE.print(		"\"timestamp\":" + getCurrentTime() + ",");
-		OUT_JSON_FILE.print(		"\"begin-node-id\":" + getSelfNode().getNodeID() + ",");
-		OUT_JSON_FILE.print(		"\"end-node-id\":" + endNode.getNodeID());
-		OUT_JSON_FILE.print(	"}");
-		OUT_JSON_FILE.print("},");
-		OUT_JSON_FILE.flush();
+		// OUT_JSON_FILE.print("{");
+		// OUT_JSON_FILE.print(	"\"kind\":\"add-link\",");
+		// OUT_JSON_FILE.print(	"\"content\":{");
+		// OUT_JSON_FILE.print(		"\"timestamp\":" + getCurrentTime() + ",");
+		// OUT_JSON_FILE.print(		"\"begin-node-id\":" + getSelfNode().getNodeID() + ",");
+		// OUT_JSON_FILE.print(		"\"end-node-id\":" + endNode.getNodeID());
+		// OUT_JSON_FILE.print(	"}");
+		// OUT_JSON_FILE.print("},");
+		// OUT_JSON_FILE.flush();
 	}
 	
 	private void printRemoveLink(Node endNode){
-		OUT_JSON_FILE.print("{");
-		OUT_JSON_FILE.print(	"\"kind\":\"remove-link\",");
-		OUT_JSON_FILE.print(	"\"content\":{");
-		OUT_JSON_FILE.print(		"\"timestamp\":" + getCurrentTime() + ",");
-		OUT_JSON_FILE.print(		"\"begin-node-id\":" + getSelfNode().getNodeID() + ",");
-		OUT_JSON_FILE.print(		"\"end-node-id\":" + endNode.getNodeID());
-		OUT_JSON_FILE.print(	"}");
-		OUT_JSON_FILE.print("},");
-		OUT_JSON_FILE.flush();
+		// OUT_JSON_FILE.print("{");
+		// OUT_JSON_FILE.print(	"\"kind\":\"remove-link\",");
+		// OUT_JSON_FILE.print(	"\"content\":{");
+		// OUT_JSON_FILE.print(		"\"timestamp\":" + getCurrentTime() + ",");
+		// OUT_JSON_FILE.print(		"\"begin-node-id\":" + getSelfNode().getNodeID() + ",");
+		// OUT_JSON_FILE.print(		"\"end-node-id\":" + endNode.getNodeID());
+		// OUT_JSON_FILE.print(	"}");
+		// OUT_JSON_FILE.print("},");
+		// OUT_JSON_FILE.flush();
 	}
 
 	//add
 	public void checkNode(){
 		//add for debug
 		System.out.println("  selfID         :" + this.getSelfNode());
-		System.out.println("  connenction num:" + (this.getnConnection()-1));
+		// System.out.println("  connenction num:" + (this.getnConnection()));
 		System.out.println("  inbound num    :" + inbound.size());
 		System.out.println("  outbound num   :" + outbound.size());
-		System.out.println("  scores num     :" + this.getSelfNode().getScoresSize());	
+		// System.out.println("  scores num     :" + this.getSelfNode().getScoresSize());	
 	}
 
+	//add
 	public ArrayList<Node> getOutbounds(){return outbound;}
+	public ArrayList<Node> getInbounds(){return inbound;}
+	
 }

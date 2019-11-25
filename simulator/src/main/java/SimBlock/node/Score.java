@@ -8,7 +8,7 @@ import java.util.Map;
 public class Score{
 	private Map<Node,Double> scores = new HashMap<Node,Double>();
 	private double score = 0;
-	public static double para = 0.5;
+	public static double para = 0.01;
 	private Node worst;
 	private Node selfNode;
 

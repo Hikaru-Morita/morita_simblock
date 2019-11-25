@@ -47,22 +47,22 @@ public class Network {
 	}
 
 	public static void printRegion(){
-		STATIC_JSON_FILE.print("{\"region\":[");
+		// STATIC_JSON_FILE.print("{\"region\":[");
 
-		int id = 0;
-		for(; id < REGION_LIST.size() -1; id++){
-			STATIC_JSON_FILE.print("{");
-			STATIC_JSON_FILE.print(		"\"id\":" + id + ",");
-			STATIC_JSON_FILE.print(		"\"name\":\"" + REGION_LIST.get(id) + "\"");
-			STATIC_JSON_FILE.print("},");
-		}
+		// int id = 0;
+		// for(; id < REGION_LIST.size() -1; id++){
+		// 	STATIC_JSON_FILE.print("{");
+		// 	STATIC_JSON_FILE.print(		"\"id\":" + id + ",");
+		// 	STATIC_JSON_FILE.print(		"\"name\":\"" + REGION_LIST.get(id) + "\"");
+		// 	STATIC_JSON_FILE.print("},");
+		// }
 
-		STATIC_JSON_FILE.print(	   "{");
-		STATIC_JSON_FILE.print(			"\"id\":" + id + ",");
-		STATIC_JSON_FILE.print(			"\"name\":\"" + REGION_LIST.get(id) + "\"");
-		STATIC_JSON_FILE.print(    "}");
-		STATIC_JSON_FILE.print("]}");
-		STATIC_JSON_FILE.flush();
-		STATIC_JSON_FILE.close();
+		// STATIC_JSON_FILE.print(	   "{");
+		// STATIC_JSON_FILE.print(			"\"id\":" + id + ",");
+		// STATIC_JSON_FILE.print(			"\"name\":\"" + REGION_LIST.get(id) + "\"");
+		// STATIC_JSON_FILE.print(    "}");
+		// STATIC_JSON_FILE.print("]}");
+		// STATIC_JSON_FILE.flush();
+		// STATIC_JSON_FILE.close();
 	}
 }
