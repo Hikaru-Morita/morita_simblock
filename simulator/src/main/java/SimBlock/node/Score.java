@@ -7,6 +7,7 @@ import java.util.Map;
 
 public class Score{
 	private Map<Node,Double> scores = new HashMap<Node,Double>();
+	private static Map<Node,Double> allScores = new HashMap<Node,Double>();
 	private double score = 0;
 	public static double para = 0.01;
 	private Node worst;
@@ -19,10 +20,31 @@ public class Score{
 		selfNode = node;
 	}
 
-	public static double getAverageScore(){return average_score/score_count;}
 	public Map<Node,Double> getScores(){return scores;}
 	public double getScore(Node node){return scores.get(node);}
 	public int getScoresSize(){return scores.size();}
+
+	public static double getAverageScore(){
+		double average_score=0;
+
+		for(Map.Entry<Node,Double> i: allScores.entrySet()){
+			average_score=average_score+i.getValue();
+		}
+
+		return average_score/allScores.size();
+	}
+	
+
+	public boolean contains(Node node){
+		if(scores.containsKey(node))return true;
+		return false;
+	}
+
+	public boolean removeScore(Node node){
+		if(scores.remove(node)!=null)return true;
+		return false;
+
+	}
 
 	public void addScore(Node from, long t_inv, long t_block){
 		if(selfNode.getOutbounds().contains(from)){
@@ -40,8 +62,8 @@ public class Score{
 		}
 
 		// calcuate average of all neighbor nodes score 
-		score_count++;
-		average_score = average_score + score;
+		allScores.put(from,score);
+		//平均値がおかしい
 	}
 
 	public Node getWorstNode(){
@@ -72,6 +94,7 @@ public class Score{
 				worst = i;
 			}
 		}
+
 		scores.remove(worst);
 		return worst;
 	}

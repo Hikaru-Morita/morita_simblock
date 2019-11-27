@@ -60,9 +60,9 @@ public class BitcoinCoreTable extends AbstractRoutingTable {
 		// //add for debug
 		// System.out.println("addNeighbor: selfID:" + this.getSelfNode().getNodeID() + " addnodeID:" + node.getNodeID());
 		// System.out.println("             connenction num:" + (this.getnConnection()-1));
-		// System.out.println("             inbound num    :" + inbound.size());
-		// System.out.println("             outbound num   :" + outbound.size());
-		// System.out.println("             scores num     :" + node.getScoresSize());	
+		// System.out.println("             inbound num    :" + this.inbound.size());
+		// System.out.println("             outbound num   :" + this.outbound.size());
+		// System.out.println("             scores num     :" + this.getSelfNode().getScoresSize());	
 
 		if(node == getSelfNode() || this.outbound.contains(node) || this.inbound.contains(node) || this.outbound.size() >= this.getnConnection()){
 			return false;

@@ -35,6 +35,8 @@ import SimBlock.task.Task;
 
 //add
 import java.util.Random;
+import java.util.Map;
+import java.util.HashMap;
 
 public class Node {
 	private int region;
@@ -55,6 +57,7 @@ public class Node {
 
 	//add
 	Score score = new Score(this);
+	Random rand = new Random();
 
 	public Node(int nodeID,int nConnection ,int region, long miningPower, String routingTableName){
 		this.nodeID = nodeID;
@@ -84,7 +87,9 @@ public class Node {
 
 
 	//add
+	private ArrayList<Node> workerList = new ArrayList<Node>();
 	public int getScoresSize(){return score.getScoresSize();}
+	public double getScore(Node node){return score.getScore(node);}
 	public ArrayList<Node> getOutbounds(){return routingTable.getOutbounds();}
 	public ArrayList<Node> getInbounds(){return routingTable.getInbounds();}
 
@@ -211,10 +216,22 @@ public class Node {
 			this.receiveBlock(block);
 
 			//add
-			if(block.getId()%10 == 0 && block.getId()>1){
-				changeNeighbors();
-				// changeNeighbors_v2();
+			if(block.getId()%10 == 0 && block.getHeight()>1){
+				// System.out.println("in1");
+				// changeNeighbors();
+				changeNeighbors_v2();
 			}
+			// if(block.getId()%200 == 0 && block.getId()>1){
+			// 	System.out.println("in2");
+			// 	checkFrequency();
+			// }
+
+			//add
+			BlockMessageTask m = (BlockMessageTask) message;
+			// System.out.println("check workers");
+			// if(!workerList.contains(m.getFrom()))workerList.add(m.getFrom());
+			// System.out.println("end :check workers");
+			
 		}
 	}
 
@@ -255,6 +272,8 @@ public class Node {
 		if(removeNode == this) return;
 		removeNeighbor(removeNode);
 
+		workerList.remove(removeNode);
+
 		while(true){
 			addNode = getSimulatedNodes().get(rand.nextInt(599));
 			if(addNode.getInbounds().size()>18){
@@ -266,23 +285,58 @@ public class Node {
 
 	//add
 	public void changeNeighbors_v2(){
-		Random rand = new Random();
+		
 		Node removeNode;
 		Node addNode;
 		// System.out.println("before outbounds :" + getOutbounds().size());
 
-		for(int i=0; i>this.getScoresSize();i++){
-			removeNode = score.getWorstNodeWithRemove_v2();
-			if(removeNode == this) return;
-			removeNeighbor(removeNode);
+		changeNeighbors();
 
-			while(true){
-				addNode = getSimulatedNodes().get(rand.nextInt(599));
-				if(addNode.getInbounds().size()>18){
-				}else if(addNeighbor(addNode))break;
+		Map<Node,Double> scores = new HashMap<>();
+
+		for(Map.Entry<Node,Double> i: score.getScores().entrySet()){
+			scores.put(i.getKey(),i.getValue());
+		}
+
+		for(Map.Entry<Node,Double> i: scores.entrySet()){
+			if(i.getValue()>=score.getAverageScore()){
+
+				removeNode = score.getWorstNodeWithRemove_v2();
+				if(removeNode == this) return;
+				removeNeighbor(removeNode);
+
+				workerList.remove(removeNode);
+
+				while(true){
+					addNode = getSimulatedNodes().get(rand.nextInt(599));
+					if(addNode.getInbounds().size()>18){
+					}else if(addNeighbor(addNode))break;
+				}
+
+				// System.out.println("changed");
 			}
 		}
 		// System.out.println("after outbounds  :" + getOutbounds().size());
 		return;
+	}
+
+	//add
+	public void checkFrequency(){
+		ArrayList<Node> neighbors = this.getOutbounds();
+
+		for(int i=0;i<neighbors.size();i++){
+
+			Node node = neighbors.get(i);
+			score.removeScore(node);
+			if(!workerList.contains(node) && removeNeighbor(node)){
+				while(true){
+					Node addNode = getSimulatedNodes().get(rand.nextInt(599));
+					if(addNode.getInbounds().size()>18){
+					}else if(addNeighbor(addNode))break;
+				}
+				System.out.println("changed one neighbor");
+			}
+		}
+		return ;
 	}
 }
