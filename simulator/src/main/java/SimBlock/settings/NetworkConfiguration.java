@@ -42,7 +42,6 @@ public class NetworkConfiguration {
 
 	public static final long[][] LATENCY = LATENCY_2019;
 	
-
 	// Download bandwidth in each region, and last element is Inter-regional bandwidth
 	// Unit: bit per second
 	private static final long[] DOWNLOAD_BANDWIDTH_2015 = {25000000, 24000000, 6500000, 10000000, 17500000, 14000000, 6 * 1000000};

@@ -1,15 +1,19 @@
  
 package SimBlock.node;
 import SimBlock.simulator.Main;
+import SimBlock.simulator.Simulator;	//add
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.ArrayList;
+import java.util.List;
 
 public class Score{
 	private Map<Node,Double> scores = new HashMap<Node,Double>();
 	private static Map<Node,Double> allScores = new HashMap<Node,Double>();
+	private static ArrayList<Double> scoreList = new ArrayList<Double>();
 	private double score = 0;
-	public static double para = 0.01;
+	public static double para = 0.1;
 	private Node worst;
 	private Node selfNode;
 
@@ -23,6 +27,16 @@ public class Score{
 	public Map<Node,Double> getScores(){return scores;}
 	public double getScore(Node node){return scores.get(node);}
 	public int getScoresSize(){return scores.size();}
+
+	public static double getMedianScore(){
+		List<Double> list = new ArrayList<>();
+		for(Map.Entry<Node,Double> i : allScores.entrySet()){
+			list.add(i.getValue());
+		}
+		Double[] List = list.toArray(new Double[list.size()]);
+
+		return Simulator.median(Simulator.bubble_sort(List));
+	}
 
 	public static double getAverageScore(){
 		double average_score=0;
@@ -60,7 +74,6 @@ public class Score{
 				scores.put(from, score);
 			}
 		}
-
 		// calcuate average of all neighbor nodes score 
 		allScores.put(from,score);
 		//平均値がおかしい

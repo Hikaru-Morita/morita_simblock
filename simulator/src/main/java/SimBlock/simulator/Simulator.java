@@ -19,6 +19,7 @@ import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.HashMap;	//add
+import java.util.List;	//add
 
 import SimBlock.node.Block;
 import SimBlock.node.Node;
@@ -36,6 +37,7 @@ public class Simulator {
 	public static double average_propagation = 0;
 	public static double getAveProp(){return average_propagation/count;}
 	public static Map<Block,ArrayList<ArrayList<Node>>> bf = new HashMap<Block,ArrayList<ArrayList<Node>>>();
+	public static List<Double> propList = new ArrayList<>();
 	
 	public static ArrayList<Node> getSimulatedNodes(){ return simulatedNodes; }
 	public static long getAverageDifficulty(){ return averageDifficulty; }
@@ -117,15 +119,18 @@ public class Simulator {
 		// System.out.println(num);
 		// System.out.println(bf.get(block).size() + ", " + bf.get(block).get(0));
 
+		propList.add((double)propagationTime);	//add
 		// add
 		average_propagation = average_propagation + propagationTime;		//add
 		System.out.println("propagation   : " + propagationTime);			//add
 		System.out.println("Average Score : " + Score.getAverageScore());	//add
+		Double[] prop = propList.toArray(new Double[propList.size()]);
+		System.out.println("median propagation  :" + median(bubble_sort(prop)));
 		
 		//add
-		for(int i=0;i<600;i++){
-			// simulatedNodes.get(i).getRoutingTable().checkNode();
-		}
+		// for(int i=0;i<600;i++){
+		// 	simulatedNodes.get(i).getRoutingTable().checkNode();
+		// }
 	}	
 	
 	public static void printAllPropagation(){
@@ -147,6 +152,36 @@ public class Simulator {
 		}
 		bf.get(block).add(from_to);
 		return;
+	}
+
+	//add
+	public static Double[] bubble_sort(Double[] d) {
+        // iはi回目の交換する回数
+        for (int i = d.length-1; i > 0; i-- ) {
+            // j は交換する箇所の前からの番号を示している
+            for (int j = 0; j < i; j++) {
+                if(d[j]>d[j+1]){
+                  //降順にしたい場合は不等号を逆に
+                  double box = d[j];
+                  d[j] = d[j+1];
+                  d[j+1] = box;
+                  // System.out.println(d[j] + ":" +d[j+1]);
+                } else{
+                  //そのまま
+                }
+            }
+        }
+        return d;
+    }
+
+    //add
+    public static double median(Double[] m) {
+	    int middle = m.length/2;
+	    if (m.length%2 == 1) {
+	        return m[middle];
+	    } else {
+	        return (m[middle-1] + m[middle]) / 2.0;
+	    }
 	}
 
 }

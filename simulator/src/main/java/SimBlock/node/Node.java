@@ -221,15 +221,15 @@ public class Node {
 				// changeNeighbors();
 				changeNeighbors_v2();
 			}
-			// if(block.getId()%200 == 0 && block.getId()>1){
-			// 	System.out.println("in2");
-			// 	checkFrequency();
-			// }
+			if(block.getId()%400 == 0 && block.getId()>1){
+				// System.out.println("in2");
+				checkFrequency();
+			}
 
 			//add
 			BlockMessageTask m = (BlockMessageTask) message;
 			// System.out.println("check workers");
-			// if(!workerList.contains(m.getFrom()))workerList.add(m.getFrom());
+			if(!workerList.contains(m.getFrom()))workerList.add(m.getFrom());
 			// System.out.println("end :check workers");
 			
 		}
@@ -300,6 +300,7 @@ public class Node {
 
 		for(Map.Entry<Node,Double> i: scores.entrySet()){
 			if(i.getValue()>=score.getAverageScore()){
+			// if(i.getValue()>=score.getMedianScore()){
 
 				removeNode = score.getWorstNodeWithRemove_v2();
 				if(removeNode == this) return;
@@ -330,11 +331,13 @@ public class Node {
 			score.removeScore(node);
 			if(!workerList.contains(node) && removeNeighbor(node)){
 				while(true){
+
+					System.out.println("innnnn");
 					Node addNode = getSimulatedNodes().get(rand.nextInt(599));
 					if(addNode.getInbounds().size()>18){
 					}else if(addNeighbor(addNode))break;
 				}
-				System.out.println("changed one neighbor");
+				// System.out.println("changed one neighbor");
 			}
 		}
 		return ;

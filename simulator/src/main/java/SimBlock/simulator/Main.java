@@ -210,7 +210,11 @@ public class Main {
 	public static int genMiningPower(){
 		double r = random.nextGaussian();
 
-		return  Math.max((int)(r * STDEV_OF_MINING_POWER + AVERAGE_MINING_POWER),1);
+		int num = Math.max((int)(r * STDEV_OF_MINING_POWER + AVERAGE_MINING_POWER),1);
+
+		// System.out.println(num);
+
+		return num;
 	}
 	public static void constructNetworkWithAllNode(int numNodes){
 		//List<String> regions = new ArrayList<>(Arrays.asList("NORTH_AMERICA", "EUROPE", "SOUTH_AMERICA", "ASIA_PACIFIC", "JAPAN", "AUSTRALIA", "OTHER"));
@@ -219,8 +223,24 @@ public class Main {
 		double[] degreeDistribution = getDegreeDistribution();
 		List<Integer> degreeList  = makeRandomList(degreeDistribution,true);
 
-		for(int id = 1; id <= numNodes; id++){
+		for(int id = 1; id <= numNodes - 16; id++){
 			Node node = new Node(id,degreeList.get(id-1)+1,regionList.get(id-1), genMiningPower(),TABLE);
+			addNode(node);
+
+			// OUT_JSON_FILE.print("{");
+			// OUT_JSON_FILE.print(	"\"kind\":\"add-node\",");
+			// OUT_JSON_FILE.print(	"\"content\":{");
+			// OUT_JSON_FILE.print(		"\"timestamp\":0,");
+			// OUT_JSON_FILE.print(		"\"node-id\":" + id + ",");
+			// OUT_JSON_FILE.print(		"\"region-id\":" + regionList.get(id-1));
+			// OUT_JSON_FILE.print(	"}");
+			// OUT_JSON_FILE.print("},");
+			// OUT_JSON_FILE.flush();
+
+		}
+
+		for(int id = numNodes-16; id <= numNodes; id++){
+			Node node = new Node(id,degreeList.get(id-1)+1,regionList.get(id-1),0,TABLE);
 			addNode(node);
 
 			// OUT_JSON_FILE.print("{");
