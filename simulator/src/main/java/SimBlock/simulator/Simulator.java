@@ -25,6 +25,16 @@ import SimBlock.node.Block;
 import SimBlock.node.Node;
 import SimBlock.node.Score;	//add
 import static SimBlock.simulator.Timer.*;
+import static SimBlock.settings.SimulationConfiguration.*; //add
+
+//add
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.PrintWriter;
+import java.net.URI;
+import java.net.URISyntaxException;
 
 
 public class Simulator {
@@ -35,6 +45,7 @@ public class Simulator {
 	//add
 	public static long count = 0;			
 	public static double average_propagation = 0;
+	public static double average_propagation2 = 0;
 	public static double getAveProp(){return average_propagation/count;}
 	public static Map<Block,ArrayList<ArrayList<Node>>> bf = new HashMap<Block,ArrayList<ArrayList<Node>>>();
 	public static List<Double> propList = new ArrayList<>();
@@ -42,7 +53,28 @@ public class Simulator {
 	public static ArrayList<Node> getSimulatedNodes(){ return simulatedNodes; }
 	public static long getAverageDifficulty(){ return averageDifficulty; }
 	public static void setTargetInterval(long interval){ targetInterval = interval; }
+
+	//add
+	public static URI CONF_FILE_URI;
+	public static URI OUT_FILE_URI;
+	static {
+		try {
+			CONF_FILE_URI = ClassLoader.getSystemResource("simulator.conf").toURI();
+			OUT_FILE_URI = CONF_FILE_URI.resolve(new URI("../output/"));
+		} catch (URISyntaxException e) {
+			e.printStackTrace();
+		}
+	}
+	public static PrintWriter OUT_CSV_FILE;
+	static {
+		try{
+			OUT_CSV_FILE = new PrintWriter(new BufferedWriter(new FileWriter(new File(OUT_FILE_URI.resolve("./mpt.csv")),true)));
+		} catch (IOException e){
+			e.printStackTrace();
+		}
+	}
 	
+
 	public static void addNode(Node node){
 		simulatedNodes.add(node);
 		setAverageDifficulty();
@@ -106,31 +138,46 @@ public class Simulator {
 		count++; //add
 		long num = 0;	//add
 
+		long median = 0;
+
 		for(Map.Entry<Integer, Long> timeEntry : propagation.entrySet()){
 			// *
 			// System.out.println(timeEntry.getKey() + "," + timeEntry.getValue());
-			
+
 			//add
-			propagationTime = timeEntry.getValue();  // time block propagated to all nodes. 
+			if(num == (NUM_OF_NODES/2))median = timeEntry.getValue();
+			propagationTime += timeEntry.getValue();  // time block propagated to all nodes. 
+			propList.add((double)propagationTime);	//add
+
+			if(block.getHeight() >= ENDBLOCKHEIGHT-10){
+				// System.out.println(timeEntry.getValue());
+				OUT_CSV_FILE.print(timeEntry.getValue() + "\n");
+			}
 			num++;
 		}
-
+		// propList.add((double)propagationTime);	//add
 		// add
-		// System.out.println(num);
-		// System.out.println(bf.get(block).size() + ", " + bf.get(block).get(0));
+		average_propagation2 += propagationTime/NUM_OF_NODES;
+		System.out.println("average propagation 	: " + propagationTime/NUM_OF_NODES);			//add
+		// System.out.println("Average Score 	: " + Score.getAverageScore());	//add
+		// Double[] prop = propList.toArray(new Double[propList.size()]);
+		// median = median(bubble_sort(prop));
+		System.out.println("median propagation 	: " + median +"\n");
+		average_propagation = average_propagation + median;
+		if(count >= ENDBLOCKHEIGHT){
+			// System.out.println("\naverage median propagation : "+average_propagation/count);
+			System.out.println("\naverage median propagation : "+average_propagation2/count);
 
-		propList.add((double)propagationTime);	//add
-		// add
-		average_propagation = average_propagation + propagationTime;		//add
-		System.out.println("propagation   : " + propagationTime);			//add
-		System.out.println("Average Score : " + Score.getAverageScore());	//add
-		Double[] prop = propList.toArray(new Double[propList.size()]);
-		System.out.println("median propagation  :" + median(bubble_sort(prop)));
+			OUT_CSV_FILE.flush();
+		}
+		// System.out.println("median propagation  :" + median);
 		
 		//add
 		// for(int i=0;i<600;i++){
 		// 	simulatedNodes.get(i).getRoutingTable().checkNode();
 		// }
+
+		
 	}	
 	
 	public static void printAllPropagation(){

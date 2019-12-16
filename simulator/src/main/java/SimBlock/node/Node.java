@@ -37,6 +37,7 @@ import SimBlock.task.Task;
 import java.util.Random;
 import java.util.Map;
 import java.util.HashMap;
+import java.util.List;
 
 public class Node {
 	private int region;
@@ -56,8 +57,9 @@ public class Node {
 	private long processingTime = 2;
 
 	//add
-	Score score = new Score(this);
-	Random rand = new Random();
+	private Score score = new Score(this);
+	private Random rand = new Random();
+	private Map<Block,Integer> block_prop = new HashMap<Block,Integer>();
 
 	public Node(int nodeID,int nConnection ,int region, long miningPower, String routingTableName){
 		this.nodeID = nodeID;
@@ -201,6 +203,19 @@ public class Node {
 					score.addScore(m.getFrom(),(int)getCurrentTime(),(int)m.getBlock().getTime());	
 				}
 			}
+
+			//add
+			// if(!block_prop.containsKey(block)){
+			// 	block_prop.put(block,1);
+			// }else{
+			// 	int num = block_prop.get(block)+1;
+			// 	block_prop.put(block,num);
+			// 	if(num>=8){
+			// 		System.out.println(block.getHeight()+" "+(getCurrentTime()-block.getTime()));
+			// 		block_prop.remove(block);
+			// 		// num = 0;
+			// 	}
+			// }
 		}
 
 		if(message instanceof RecMessageTask){
@@ -216,14 +231,13 @@ public class Node {
 			this.receiveBlock(block);
 
 			//add
-			if(block.getId()%10 == 0 && block.getHeight()>1){
-				// System.out.println("in1");
-				// changeNeighbors();
-				changeNeighbors_v2();
-			}
-			if(block.getId()%400 == 0 && block.getId()>1){
+			if(block.getId()%300 == 0 && block.getId()>1){
 				// System.out.println("in2");
-				checkFrequency();
+				// checkFrequency();
+			}else if(block.getId()%10 == 0 && block.getHeight()>1){
+				// System.out.println("in1");
+				changeNeighbors();
+				// changeNeighbors_v2();
 			}
 
 			//add
@@ -275,8 +289,14 @@ public class Node {
 		workerList.remove(removeNode);
 
 		while(true){
-			addNode = getSimulatedNodes().get(rand.nextInt(599));
-			if(addNode.getInbounds().size()>18){
+			List<Node> keys = new ArrayList<Node>(score.getPreNodes());
+			// System.out.println(keys.get(rand.nextInt(keys.size())));
+			if(keys.size()>0){
+				addNode = keys.get(rand.nextInt(keys.size()));
+			}else{
+				addNode = getSimulatedNodes().get(rand.nextInt(NUM_OF_NODES-1));
+			}
+			if(addNode.getInbounds().size()>30){
 			}else if(addNeighbor(addNode))break;
 		}
 		// System.out.println("after outbounds  :" + getOutbounds().size());
@@ -309,8 +329,8 @@ public class Node {
 				workerList.remove(removeNode);
 
 				while(true){
-					addNode = getSimulatedNodes().get(rand.nextInt(599));
-					if(addNode.getInbounds().size()>18){
+					addNode = getSimulatedNodes().get(rand.nextInt(NUM_OF_NODES-1));
+					if(addNode.getInbounds().size()>30){
 					}else if(addNeighbor(addNode))break;
 				}
 
@@ -333,8 +353,8 @@ public class Node {
 				while(true){
 
 					System.out.println("innnnn");
-					Node addNode = getSimulatedNodes().get(rand.nextInt(599));
-					if(addNode.getInbounds().size()>18){
+					Node addNode = getSimulatedNodes().get(rand.nextInt(NUM_OF_NODES-1));
+					if(addNode.getInbounds().size()>30){
 					}else if(addNeighbor(addNode))break;
 				}
 				// System.out.println("changed one neighbor");

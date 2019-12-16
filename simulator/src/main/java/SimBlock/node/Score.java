@@ -13,7 +13,7 @@ public class Score{
 	private static Map<Node,Double> allScores = new HashMap<Node,Double>();
 	private static ArrayList<Double> scoreList = new ArrayList<Double>();
 	private double score = 0;
-	public static double para = 0.1;
+	public static double para = 0.3;
 	private Node worst;
 	private Node selfNode;
 
@@ -27,6 +27,16 @@ public class Score{
 	public Map<Node,Double> getScores(){return scores;}
 	public double getScore(Node node){return scores.get(node);}
 	public int getScoresSize(){return scores.size();}
+
+	public List<Node>getPreNodes(){
+		List<Node> nodes = new ArrayList<Node>(allScores.keySet());
+		for(Node i :scores.keySet()){
+			if(nodes.contains(i)){
+				nodes.remove(i);
+			}
+		}
+		return nodes;
+	}
 
 	public static double getMedianScore(){
 		List<Double> list = new ArrayList<>();
