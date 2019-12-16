@@ -13,7 +13,7 @@ public class Score{
 	private static Map<Node,Double> allScores = new HashMap<Node,Double>();
 	private static ArrayList<Double> scoreList = new ArrayList<Double>();
 	private double score = 0;
-	public static double para = 0.3;
+	public static double para = 0.5;
 	private Node worst;
 	private Node selfNode;
 
@@ -71,22 +71,19 @@ public class Score{
 	}
 
 	public void addScore(Node from, long t_inv, long t_block){
-		if(selfNode.getOutbounds().contains(from)){
 			// calculate score
-			if(scores.get(from) == null){
-				score = (t_inv-t_block);
-				scores.put(from, score);
-			}
-			else{
-				score = scores.get(from);
-				scores.remove(from);
-				score = (1-para)*(score)+para*(t_inv-t_block);
-				scores.put(from, score);
-			}
+		if(allScores.get(from) == null){
+			score = (t_inv-t_block);
+			// System.out.println("test1");
 		}
+		else{
+			score = allScores.get(from);
+			allScores.remove(from);
+			score = (1-para)*(score)+para*(t_inv-t_block);
+		}
+		allScores.put(from, score);
 		// calcuate average of all neighbor nodes score 
-		allScores.put(from,score);
-		//平均値がおかしい
+		if(selfNode.getOutbounds().contains(from))scores.put(from,score);
 	}
 
 	public Node getWorstNode(){

@@ -293,6 +293,7 @@ public class Node {
 			// System.out.println(keys.get(rand.nextInt(keys.size())));
 			if(keys.size()>0){
 				addNode = keys.get(rand.nextInt(keys.size()));
+				// System.out.println();
 			}else{
 				addNode = getSimulatedNodes().get(rand.nextInt(NUM_OF_NODES-1));
 			}
