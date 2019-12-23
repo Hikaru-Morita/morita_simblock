@@ -232,13 +232,18 @@ public class Node {
 
 			//add
 			if(block.getId()%300 == 0 && block.getId()>1){
-				// System.out.println("in2");
-				// checkFrequency();
+				System.out.println("in2");
+				checkFrequency();
 			}else if(block.getId()%10 == 0 && block.getHeight()>1){
 				// System.out.println("in1");
 				changeNeighbors();
 				// changeNeighbors_v2();
 			}
+			// if(block.getId()%10 == 0 && block.getHeight()>1){
+			// 	// System.out.println("in1");
+				// changeNeighbors();
+			// 	// changeNeighbors_v2();
+			// }
 
 			//add
 			BlockMessageTask m = (BlockMessageTask) message;
@@ -282,26 +287,56 @@ public class Node {
 		Node removeNode;
 		Node addNode;
 		// System.out.println("before outbounds :" + getOutbounds().size());
-		removeNode = score.getWorstNodeWithRemove();
-		if(removeNode == this) return;
-		removeNeighbor(removeNode);
 
+
+		if(this.getNodeID()==10){
+			System.out.println(score.getScores().values());
+			// System.out.println(removeNode +" "+addNode);
+		}
+
+		removeNode = score.getWorstNodeWithRemove();	
+		if(removeNode == this) return;
+	
+		// System.out.println("score: "+score.getScoresSize());
+
+		removeNeighbor(removeNode);
 		workerList.remove(removeNode);
 
+		// System.out.println("score    : "+score.getScoresSize());
+		// System.out.println("outbound : "+this.getOutbounds().size());
+
+		List<Node> keys = new ArrayList<Node>(score.getPreNodes());
+
+		// System.out.println("keys: "+keys.size());
+
 		while(true){
-			List<Node> keys = new ArrayList<Node>(score.getPreNodes());
 			// System.out.println(keys.get(rand.nextInt(keys.size())));
-			if(keys.size()>0){
+			// System.out.println("in-1");
+			if(keys.size()>8){
 				addNode = keys.get(rand.nextInt(keys.size()));
-				// System.out.println();
+				// System.out.println(addNode);
 			}else{
 				addNode = getSimulatedNodes().get(rand.nextInt(NUM_OF_NODES-1));
 			}
 			if(addNode.getInbounds().size()>30){
+				// System.out.println("in2");
+			}else if(addNode==removeNode){
+				// System.out.println("in3");
 			}else if(addNeighbor(addNode))break;
 		}
-		// System.out.println("after outbounds  :" + getOutbounds().size());
-		
+		//System.out.println("after outbounds  :" + getOutbounds().size());	
+
+		// while(true){
+		// 	addNode = getSimulatedNodes().get(rand.nextInt(NUM_OF_NODES-1));
+		// 	if(addNode.getInbounds().size()>30){
+		// 	}else if(addNeighbor(addNode))break;
+		// }
+
+		if(this.getNodeID()==10){
+			System.out.println(score.getScores().values());
+			// System.out.println(removeNode +" "+addNode);
+		}
+		// checkNode();
 	}
 
 	//add
@@ -329,11 +364,24 @@ public class Node {
 
 				workerList.remove(removeNode);
 
+				List<Node> keys = new ArrayList<Node>(score.getPreNodes());
+
 				while(true){
-					addNode = getSimulatedNodes().get(rand.nextInt(NUM_OF_NODES-1));
+					// System.out.println(keys.get(rand.nextInt(keys.size())));
+					// System.out.println("in-1");
+					if(keys.size()>8){
+						addNode = keys.get(rand.nextInt(keys.size()));
+						// System.out.println(addNode);
+					}else{
+						addNode = getSimulatedNodes().get(rand.nextInt(NUM_OF_NODES-1));
+					}
 					if(addNode.getInbounds().size()>30){
+						// System.out.println("in2");
+					}else if(addNode==removeNode){
+						// System.out.println("in3");
 					}else if(addNeighbor(addNode))break;
 				}
+				//System.out.println("after outbounds  :" + getOutbounds().size());	
 
 				// System.out.println("changed");
 			}
@@ -345,19 +393,33 @@ public class Node {
 	//add
 	public void checkFrequency(){
 		ArrayList<Node> neighbors = this.getOutbounds();
+		Node addNode;
 
 		for(int i=0;i<neighbors.size();i++){
 
 			Node node = neighbors.get(i);
 			score.removeScore(node);
 			if(!workerList.contains(node) && removeNeighbor(node)){
-				while(true){
+						List<Node> keys = new ArrayList<Node>(score.getPreNodes());
 
-					System.out.println("innnnn");
-					Node addNode = getSimulatedNodes().get(rand.nextInt(NUM_OF_NODES-1));
+				while(true){
+					// System.out.println(keys.get(rand.nextInt(keys.size())));
+					// System.out.println("in-1");
+					if(keys.size()>4){
+						addNode = keys.get(rand.nextInt(keys.size()));
+						// System.out.println(addNode);
+					}else{
+						addNode = getSimulatedNodes().get(rand.nextInt(NUM_OF_NODES-1));
+					}
+
 					if(addNode.getInbounds().size()>30){
+						// System.out.println("in2");
+					}else if(addNode==node){
+						// System.out.println("in3");
 					}else if(addNeighbor(addNode))break;
 				}
+				//System.out.println("after outbounds  :" + getOutbounds().size());	
+
 				// System.out.println("changed one neighbor");
 			}
 		}

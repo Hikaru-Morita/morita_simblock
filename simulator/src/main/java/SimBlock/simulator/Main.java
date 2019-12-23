@@ -43,6 +43,9 @@ public class Main {
 	public static Random random = new Random(10);
 	public static long time1 = 0;//a value to know the simation time.
 
+	//add
+	public static int miningCount = 0;
+
 	public static URI CONF_FILE_URI;
 	public static URI OUT_FILE_URI;
 	static {
@@ -74,6 +77,7 @@ public class Main {
 
 	public static void main(String[] args){
 		long start = System.currentTimeMillis();
+
 		setTargetInterval(INTERVAL);
 
 		OUT_JSON_FILE.print("["); //start json format
@@ -208,11 +212,11 @@ public class Main {
 	}
 
 	public static int genMiningPower(){
+		miningCount++;
 		double r = random.nextGaussian();
-
 		int num = Math.max((int)(r * STDEV_OF_MINING_POWER + AVERAGE_MINING_POWER),1);
 
-		// System.out.println(num);
+		// if(miningCount==(NUM_OF_NODES/16))num = num*1000;
 
 		return num;
 	}

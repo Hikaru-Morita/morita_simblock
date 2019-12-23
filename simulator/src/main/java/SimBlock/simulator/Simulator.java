@@ -73,7 +73,6 @@ public class Simulator {
 			e.printStackTrace();
 		}
 	}
-	
 
 	public static void addNode(Node node){
 		simulatedNodes.add(node);
@@ -105,7 +104,6 @@ public class Simulator {
 			averageDifficulty =  totalMiningPower * targetInterval;
 		}
 	}
-
 	
 	//
 	// Record block propagation time
@@ -135,7 +133,7 @@ public class Simulator {
 		System.out.println(block + ":" + block.getHeight());
 
 		long propagationTime = 0;	//add
-		count++; //add
+		// count++; //add
 		long num = 0;	//add
 
 		long median = 0;
@@ -146,7 +144,10 @@ public class Simulator {
 
 			//add
 			if(num == (NUM_OF_NODES/2))median = timeEntry.getValue();
-			propagationTime += timeEntry.getValue();  // time block propagated to all nodes. 
+			if(timeEntry.getKey()==10){
+				propagationTime += timeEntry.getValue();  // time block propagated to all nodes. 
+				count++;
+			}
 			propList.add((double)propagationTime);	//add
 
 			if(block.getHeight() >= ENDBLOCKHEIGHT-10){
@@ -159,24 +160,17 @@ public class Simulator {
 		// add
 		average_propagation2 += propagationTime/NUM_OF_NODES;
 		System.out.println("average propagation 	: " + propagationTime/NUM_OF_NODES);			//add
-		// System.out.println("Average Score 	: " + Score.getAverageScore());	//add
 		// Double[] prop = propList.toArray(new Double[propList.size()]);
 		// median = median(bubble_sort(prop));
 		System.out.println("median propagation 	: " + median +"\n");
 		average_propagation = average_propagation + median;
 		if(count >= ENDBLOCKHEIGHT){
 			// System.out.println("\naverage median propagation : "+average_propagation/count);
-			System.out.println("\naverage median propagation : "+average_propagation2/count);
-
-			OUT_CSV_FILE.flush();
+			System.out.println("\naverage oneNode propagation : "+average_propagation/count);
 		}
 		// System.out.println("median propagation  :" + median);
 		
-		//add
-		// for(int i=0;i<600;i++){
-		// 	simulatedNodes.get(i).getRoutingTable().checkNode();
-		// }
-
+		OUT_CSV_FILE.flush();
 		
 	}	
 	
