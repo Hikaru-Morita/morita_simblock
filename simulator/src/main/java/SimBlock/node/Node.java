@@ -232,8 +232,8 @@ public class Node {
 
 			//add
 			if(block.getId()%300 == 0 && block.getId()>1){
-				System.out.println("in2");
-				checkFrequency();
+				// System.out.println("in2");
+				// checkFrequency();
 			}else if(block.getId()%10 == 0 && block.getHeight()>1){
 				// System.out.println("in1");
 				changeNeighbors();
@@ -355,7 +355,7 @@ public class Node {
 		}
 
 		for(Map.Entry<Node,Double> i: scores.entrySet()){
-			if(i.getValue()>=score.getAverageScore()){
+			if(i.getValue()>=score.getAverageAllScore()){
 			// if(i.getValue()>=score.getMedianScore()){
 
 				removeNode = score.getWorstNodeWithRemove_v2();

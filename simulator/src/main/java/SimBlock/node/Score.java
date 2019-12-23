@@ -65,6 +65,16 @@ public class Score{
 
 		return average_score/scores.size();
 	}
+
+	public double getAverageAllScore(){
+		double average_score=0;
+
+		for(Map.Entry<Node,Double> i: getAllScores().entrySet()){
+			average_score=average_score+i.getValue();
+		}
+
+		return average_score/allScores.size();	
+	}
 	
 
 	public boolean contains(Node node){
