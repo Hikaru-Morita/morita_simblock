@@ -35,6 +35,8 @@ import java.util.List;
 import java.util.Random;
 import java.util.Set;
 
+import static java.lang.System.*;
+
 import SimBlock.node.Block;
 import SimBlock.node.Node;
 import SimBlock.task.MiningTask;
@@ -147,9 +149,9 @@ public class Main {
 
             for(Block b:blockList){
     			if(!orphans.contains(b)){
-    				pw.println("OnChain : "+b.getHeight()+" : "+b);
+    				pw.println("OnChain : "+b.getHeight()+" : "+b+" : "+b.getCreator());
     			}else{
-    				pw.println("Orphan : "+b.getHeight()+" : "+b);
+    				pw.println("Orphan  : "+b.getHeight()+" : "+b+" : "+b.getCreator());
     			}
             }
             pw.close();
@@ -171,7 +173,7 @@ public class Main {
 
 		//add
 		System.out.println("Average Propagation: " + getAveProp());
-
+		printPropagation(getAveProp(),orphans.size());
 		System.out.println(time1);
 
 	}
@@ -216,7 +218,7 @@ public class Main {
 		double r = random.nextGaussian();
 		int num = Math.max((int)(r * STDEV_OF_MINING_POWER + AVERAGE_MINING_POWER),1);
 
-		// if(miningCount==(NUM_OF_NODES/16))num = num*1000;
+		// if(miningCount==100) num = num*100000000;
 
 		return num;
 	}
@@ -243,8 +245,11 @@ public class Main {
 
 		// }
 
+		int miningpower=0;
 		for(int id =1; id <= numNodes; id++){
-			Node node = new Node(id,8,regionList.get(id-1),genMiningPower(),TABLE);
+			miningpower=genMiningPower();
+			// out.println(miningpower);
+			Node node = new Node(id,8,regionList.get(id-1),miningpower,TABLE);
 			addNode(node);
 			// OUT_JSON_FILE.print("{");
 			// OUT_JSON_FILE.print(	"\"kind\":\"add-node\",");

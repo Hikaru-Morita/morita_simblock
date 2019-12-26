@@ -1,4 +1,3 @@
- 
 package SimBlock.node;
 import SimBlock.simulator.Main;
 import SimBlock.simulator.Simulator;	//add
@@ -13,7 +12,8 @@ public class Score{
 	private Map<Node,Double> allScores = new HashMap<Node,Double>();
 	private static ArrayList<Double> scoreList = new ArrayList<Double>();
 	private double score = 0;
-	public static double para = 0.3;
+	public static double para_ = 5;
+	public static double para = para_/10;
 	private Node worst;
 	private Node selfNode;
 
@@ -28,10 +28,11 @@ public class Score{
 	public Map<Node,Double> getAllScores(){return allScores;}
 	public double getScore(Node node){return scores.get(node);}
 	public int getScoresSize(){return scores.size();}
+	public static double getPara(){return para;}
 
 	public List<Node>getPreNodes(){
 		List<Node> nodes = new ArrayList<Node>(allScores.keySet());
-		// System.out.println("previous nodesSize: "+nodes.size());
+		// System.out.println(previous nodesSize: +nodes.size());
 		for(Node i :scores.keySet()){
 			if(nodes.contains(i)){
 				nodes.remove(i);
@@ -42,7 +43,7 @@ public class Score{
 				nodes.remove(i);
 			}	
 		}
-		// System.out.println("after nodesSize: "+nodes.size());
+		// System.out.println(after nodesSize: +nodes.size());
 		return nodes;
 	}
 
@@ -92,7 +93,7 @@ public class Score{
 			// calculate score
 		if(allScores.get(from) == null){
 			score = (t_inv-t_block);
-			// System.out.println("test1");
+			// System.out.println(test1);
 		}
 		else{
 			score = allScores.get(from);
@@ -103,30 +104,9 @@ public class Score{
 		// calcuate average of all neighbor nodes score 
 		if(selfNode.getOutbounds().contains(from))scores.put(from,score);
 
-		// if(selfNode.getNodeID() == 10)System.out.println(getAverageScore() +" "+scores.size()+" "+ allScores.size());
+		// if(selfNode.getNodeID() == 10)System.out.println(getAverageScore() + +scores.size()+ + allScores.size());
 
-		// if(selfNode.getNodeID()==10)System.out.println(getAverageScore() +" "+scores.size()+" "+ allScores.size());
-	}
-
-	public Node getWorstNode(){
-		if(scores.keySet() != null){
-			for(Node i: scores.keySet()){
-				worst = i;
-				break;
-			}
-			for(Node i: scores.keySet()){
-				if(scores.get(worst)<scores.get(i)){
-					worst = i;
-				}
-			}
-		}else{
-			System.out.println("getWorstNode: error     " + worst);
-			worst = selfNode;
-		}
-
-		System.out.println(scores + "\n" + worst);
-			
-		return worst;
+		// if(selfNode.getNodeID()==10)System.out.println(getAverageScore() + +scores.size()+ + allScores.size());
 	}
 
 	public Node getWorstNodeWithRemove(){
@@ -140,10 +120,10 @@ public class Score{
 			}
 		}
 
-		if(selfNode.getNodeID()==10)System.out.println("worst score: "+scores.get(worst));
-		// System.out.println("scores: "+scores.size());
+		if(selfNode.getNodeID()==10)System.out.println("worst score:" +scores.get(worst));
+		// System.out.println(scores: +scores.size());
 		scores.remove(worst);
-		// System.out.println("scores: "+scores.size());
+		// System.out.println(scores: +scores.size());
 
 		return worst;
 	}
@@ -168,3 +148,4 @@ public class Score{
 	}
 
 }
+

@@ -49,10 +49,20 @@ public class Simulator {
 	public static double getAveProp(){return average_propagation/count;}
 	public static Map<Block,ArrayList<ArrayList<Node>>> bf = new HashMap<Block,ArrayList<ArrayList<Node>>>();
 	public static List<Double> propList = new ArrayList<>();
-	
+	public static Map<Integer,Integer> node_change_num = new HashMap<Integer,Integer>();
+	public static int change_count = 0;
+
 	public static ArrayList<Node> getSimulatedNodes(){ return simulatedNodes; }
 	public static long getAverageDifficulty(){ return averageDifficulty; }
 	public static void setTargetInterval(long interval){ targetInterval = interval; }
+	public static void nodeChangeNum(int changedNum){
+		if(node_change_num.containsKey(changedNum)){
+			node_change_num.put(changedNum,node_change_num.get(changedNum)+1);	
+		}else{
+			node_change_num.put(changedNum,1);		
+		}
+	}
+	// public static int changedSum(){}
 
 	//add
 	public static URI CONF_FILE_URI;
@@ -144,22 +154,22 @@ public class Simulator {
 
 			//add
 			if(num == (NUM_OF_NODES/2))median = timeEntry.getValue();
-			if(timeEntry.getKey()==10){
+			if(timeEntry.getKey()==100){
 				propagationTime += timeEntry.getValue();  // time block propagated to all nodes. 
 				count++;
 			}
 			propList.add((double)propagationTime);	//add
 
-			if(block.getHeight() >= ENDBLOCKHEIGHT-10){
-				// System.out.println(timeEntry.getValue());
-				OUT_CSV_FILE.print(timeEntry.getValue() + "\n");
-			}
+			// if(block.getHeight() >= ENDBLOCKHEIGHT-10){
+			// 	// System.out.println(timeEntry.getValue());
+			// 	OUT_CSV_FILE.print(timeEntry.getValue() + "\n");
+			// }
 			num++;
 		}
 		// propList.add((double)propagationTime);	//add
 		// add
 		average_propagation2 += propagationTime/NUM_OF_NODES;
-		System.out.println("average propagation 	: " + propagationTime/NUM_OF_NODES);			//add
+		System.out.println("average propagation 	: " + propagationTime);			//add
 		// Double[] prop = propList.toArray(new Double[propList.size()]);
 		// median = median(bubble_sort(prop));
 		System.out.println("median propagation 	: " + median +"\n");
@@ -170,7 +180,7 @@ public class Simulator {
 		}
 		// System.out.println("median propagation  :" + median);
 		
-		OUT_CSV_FILE.flush();
+		// OUT_CSV_FILE.flush();
 		
 	}	
 	
@@ -225,4 +235,10 @@ public class Simulator {
 	    }
 	}
 
+	//add 
+	public static void printPropagation(double propagation, int orphans){
+		OUT_CSV_FILE.print(propagation+","+orphans+","+Score.getPara()+","+node_change_num+"\n");
+		System.out.println(node_change_num);
+		OUT_CSV_FILE.flush();
+	}
 }

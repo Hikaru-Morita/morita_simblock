@@ -115,15 +115,15 @@ public class Node {
 	}
 
 	private void printAddBlock(Block newBlock){
-		OUT_JSON_FILE.print("{");
-		OUT_JSON_FILE.print(	"\"kind\":\"add-block\",");
-		OUT_JSON_FILE.print(	"\"content\":{");
-		OUT_JSON_FILE.print(		"\"timestamp\":" + getCurrentTime() + ",");
-		OUT_JSON_FILE.print(		"\"node-id\":" + this.getNodeID() + ",");
-		OUT_JSON_FILE.print(		"\"block-id\":" + newBlock.getId());
-		OUT_JSON_FILE.print(	"}");
-		OUT_JSON_FILE.print("},");
-		OUT_JSON_FILE.flush();
+	//	OUT_JSON_FILE.print("{");
+	//	OUT_JSON_FILE.print(	""kind":"add-block",");
+	//	OUT_JSON_FILE.print(	""content":{");
+	//	OUT_JSON_FILE.print(		""timestamp":" + getCurrentTime() + ",");
+	//	OUT_JSON_FILE.print(		""node-id":" + this.getNodeID() + ",");
+	//	OUT_JSON_FILE.print(		""block-id":" + newBlock.getId());
+	//	OUT_JSON_FILE.print(	"}");
+	//	OUT_JSON_FILE.print("},");
+	//	OUT_JSON_FILE.flush();
 	}
 
 	public void addOrphans(Block newBlock, Block correctBlock){
@@ -211,7 +211,7 @@ public class Node {
 			// 	int num = block_prop.get(block)+1;
 			// 	block_prop.put(block,num);
 			// 	if(num>=8){
-			// 		System.out.println(block.getHeight()+" "+(getCurrentTime()-block.getTime()));
+			// 		System.out.println(block.getHeight()+ +(getCurrentTime()-block.getTime()));
 			// 		block_prop.remove(block);
 			// 		// num = 0;
 			// 	}
@@ -231,13 +231,13 @@ public class Node {
 			this.receiveBlock(block);
 
 			//add
-			if(block.getId()%300 == 0 && block.getId()>1){
+			if(block.getId()%301 == 0 && block.getId()>1){
 				// System.out.println("in2");
-				// checkFrequency();
+				checkFrequency();
 			}else if(block.getId()%10 == 0 && block.getHeight()>1){
 				// System.out.println("in1");
-				changeNeighbors();
-				// changeNeighbors_v2();
+				//changeNeighbors();
+				changeNeighbors_v2();
 			}
 			// if(block.getId()%10 == 0 && block.getHeight()>1){
 			// 	// System.out.println("in1");
@@ -291,7 +291,7 @@ public class Node {
 
 		if(this.getNodeID()==10){
 			System.out.println(score.getScores().values());
-			// System.out.println(removeNode +" "+addNode);
+			// System.out.println(removeNode + +addNode);
 		}
 
 		removeNode = score.getWorstNodeWithRemove();	
@@ -334,7 +334,7 @@ public class Node {
 
 		if(this.getNodeID()==10){
 			System.out.println(score.getScores().values());
-			// System.out.println(removeNode +" "+addNode);
+			// System.out.println(removeNode + +addNode);
 		}
 		// checkNode();
 	}
@@ -345,6 +345,7 @@ public class Node {
 		Node removeNode;
 		Node addNode;
 		// System.out.println("before outbounds :" + getOutbounds().size());
+		int change_num = 1;
 
 		changeNeighbors();
 
@@ -379,7 +380,10 @@ public class Node {
 						// System.out.println("in2");
 					}else if(addNode==removeNode){
 						// System.out.println("in3");
-					}else if(addNeighbor(addNode))break;
+					}else if(addNeighbor(addNode)){
+						change_num++;
+						break;
+					}
 				}
 				//System.out.println("after outbounds  :" + getOutbounds().size());	
 
@@ -387,6 +391,7 @@ public class Node {
 			}
 		}
 		// System.out.println("after outbounds  :" + getOutbounds().size());
+		nodeChangeNum(change_num);
 		return;
 	}
 
@@ -400,7 +405,8 @@ public class Node {
 			Node node = neighbors.get(i);
 			score.removeScore(node);
 			if(!workerList.contains(node) && removeNeighbor(node)){
-						List<Node> keys = new ArrayList<Node>(score.getPreNodes());
+				List<Node> keys = new ArrayList<Node>(score.getPreNodes());
+				System.out.println("Aaaaaaaaaaaaaaaaaaaaaaaaaaaa");
 
 				while(true){
 					// System.out.println(keys.get(rand.nextInt(keys.size())));
