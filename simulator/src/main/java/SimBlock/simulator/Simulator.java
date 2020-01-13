@@ -237,7 +237,12 @@ public class Simulator {
 
 	//add 
 	public static void printPropagation(double propagation, int orphans){
-		OUT_CSV_FILE.print(propagation+","+orphans+","+Score.getPara()+","+node_change_num+"\n");
+		// OUT_CSV_FILE.print(propagation+","+orphans+","+Score.getPara()+","+node_change_num+"\n");
+		OUT_CSV_FILE.print(propagation+","+orphans+","+Score.getPara()+",");
+		for(int num :node_change_num.values()){
+			OUT_CSV_FILE.print(num+",");	
+		}
+		OUT_CSV_FILE.print("\n");	
 		System.out.println(node_change_num);
 		OUT_CSV_FILE.flush();
 	}

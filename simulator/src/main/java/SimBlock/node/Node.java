@@ -233,10 +233,10 @@ public class Node {
 			//add
 			if(block.getId()%301 == 0 && block.getId()>1){
 				// System.out.println("in2");
-				checkFrequency();
+				//checkFrequency();
 			}else if(block.getId()%10 == 0 && block.getHeight()>1){
 				// System.out.println("in1");
-				//changeNeighbors();
+				// changeNeighbors();
 				changeNeighbors_v2();
 			}
 			// if(block.getId()%10 == 0 && block.getHeight()>1){
@@ -345,7 +345,7 @@ public class Node {
 		Node removeNode;
 		Node addNode;
 		// System.out.println("before outbounds :" + getOutbounds().size());
-		int change_num = 1;
+		int count = 1;
 
 		changeNeighbors();
 
@@ -380,18 +380,14 @@ public class Node {
 						// System.out.println("in2");
 					}else if(addNode==removeNode){
 						// System.out.println("in3");
-					}else if(addNeighbor(addNode)){
-						change_num++;
-						break;
-					}
+					}else if(addNeighbor(addNode))break;
 				}
-				//System.out.println("after outbounds  :" + getOutbounds().size());	
 
-				// System.out.println("changed");
+				count++;
 			}
 		}
+		nodeChangeNum(count);
 		// System.out.println("after outbounds  :" + getOutbounds().size());
-		nodeChangeNum(change_num);
 		return;
 	}
 

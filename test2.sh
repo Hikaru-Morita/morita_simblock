@@ -1,4 +1,15 @@
-package SimBlock.node;
+for para in `seq 7`; do
+	cd /home/hikaru-morita/simblock/original/Simblock
+	echo para:$para
+	for num in `seq 100`; do
+		# sudo /home/hikaru-morita/simblock/original/Simblock/gradle simulator:run
+		sudo gradle simulator:run
+		# python3 /home/hikaru-morita/デスクトップ/readcsv.py
+		echo num:$num
+	done
+
+		cd /home/hikaru-morita/simblock/original/Simblock/simulator/src/main/java/SimBlock/node
+		echo "package SimBlock.node;
 import SimBlock.simulator.Main;
 import SimBlock.simulator.Simulator;	//add
 
@@ -12,7 +23,7 @@ public class Score{
 	private Map<Node,Double> allScores = new HashMap<Node,Double>();
 	private static ArrayList<Double> scoreList = new ArrayList<Double>();
 	private double score = 0;
-	public static double para_ = 3;
+	public static double para_ = $para;
 	public static double para = para_/10;
 	private Node worst;
 	private Node selfNode;
@@ -120,7 +131,7 @@ public class Score{
 			}
 		}
 
-		if(selfNode.getNodeID()==10)System.out.println("worst score:" +scores.get(worst));
+		if(selfNode.getNodeID()==10)System.out.println(\"worst score:\" +scores.get(worst));
 		// System.out.println(scores: +scores.size());
 		scores.remove(worst);
 		// System.out.println(scores: +scores.size());
@@ -148,4 +159,6 @@ public class Score{
 	}
 
 }
+" > Score.java
 
+done

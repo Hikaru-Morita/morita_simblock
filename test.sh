@@ -1,9 +1,9 @@
 #!/bin/sh
 for to in `seq 2`; do		
-	for para in `seq 5`; do
+	for para in `seq 5 10`; do
 		cd /home/hikaru-morita/simblock/original/Simblock
 		echo para:$para
-		for num in `seq 5`; do
+		for num in `seq 100`; do
 			# sudo /home/hikaru-morita/simblock/original/Simblock/gradle simulator:run
 			sudo gradle simulator:run
 			# python3 /home/hikaru-morita/デスクトップ/readcsv.py
@@ -755,14 +755,14 @@ done
 echo "/**
  * Copyright 2019 Distributed Systems Group
  *
- * Licensed under the Apache License, Version 2.0 (the \"License\");
+ * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
  * http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an \"AS IS\" BASIS,
+ * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
@@ -869,15 +869,6 @@ public class Node {
 	}
 
 	private void printAddBlock(Block newBlock){
-	//	OUT_JSON_FILE.print(\"{\");
-	//	OUT_JSON_FILE.print(	\"\"kind\":\"add-block\",\");
-	//	OUT_JSON_FILE.print(	\"\"content\":{\");
-	//	OUT_JSON_FILE.print(		\"\"timestamp\":\" + getCurrentTime() + \",\");
-	//	OUT_JSON_FILE.print(		\"\"node-id\":\" + this.getNodeID() + \",\");
-	//	OUT_JSON_FILE.print(		\"\"block-id\":\" + newBlock.getId());
-	//	OUT_JSON_FILE.print(	\"}\");
-	//	OUT_JSON_FILE.print(\"},\");
-	//	OUT_JSON_FILE.flush();
 	}
 
 	public void addOrphans(Block newBlock, Block correctBlock){
@@ -965,7 +956,7 @@ public class Node {
 			// 	int num = block_prop.get(block)+1;
 			// 	block_prop.put(block,num);
 			// 	if(num>=8){
-			// 		System.out.println(block.getHeight()+" "+(getCurrentTime()-block.getTime()));
+			// 		System.out.println(block.getHeight()+ +(getCurrentTime()-block.getTime()));
 			// 		block_prop.remove(block);
 			// 		// num = 0;
 			// 	}
@@ -986,18 +977,11 @@ public class Node {
 
 			//add
 			if(block.getId()%301 == 0 && block.getId()>1){
-				// System.out.println(\"in2\");
 				//checkFrequency();
 			}else if(block.getId()%10 == 0 && block.getHeight()>1){
-				// System.out.println(\"in1\");
-				changeNeighbors();
-				//changeNeighbors_v2();
-			}
-			// if(block.getId()%10 == 0 && block.getHeight()>1){
-			// 	// System.out.println(\"in1\");
 				// changeNeighbors();
-			// 	// changeNeighbors_v2();
-			// }
+				changeNeighbors_v2();
+			}
 
 			//add
 			BlockMessageTask m = (BlockMessageTask) message;
@@ -1040,24 +1024,17 @@ public class Node {
 		Random rand = new Random();
 		Node removeNode;
 		Node addNode;
-		// System.out.println(\"before outbounds :\" + getOutbounds().size());
-
 
 		if(this.getNodeID()==10){
 			System.out.println(score.getScores().values());
-			// System.out.println(removeNode +" "+addNode);
+			// System.out.println(removeNode + +addNode);
 		}
 
 		removeNode = score.getWorstNodeWithRemove();	
 		if(removeNode == this) return;
 	
-		// System.out.println(\"score: \"+score.getScoresSize());
-
 		removeNeighbor(removeNode);
 		workerList.remove(removeNode);
-
-		// System.out.println(\"score    : \"+score.getScoresSize());
-		// System.out.println(\"outbound : \"+this.getOutbounds().size());
 
 		List<Node> keys = new ArrayList<Node>(score.getPreNodes());
 
@@ -1065,7 +1042,6 @@ public class Node {
 
 		while(true){
 			// System.out.println(keys.get(rand.nextInt(keys.size())));
-			// System.out.println(\"in-1\");
 			if(keys.size()>8){
 				addNode = keys.get(rand.nextInt(keys.size()));
 				// System.out.println(addNode);
@@ -1073,9 +1049,7 @@ public class Node {
 				addNode = getSimulatedNodes().get(rand.nextInt(NUM_OF_NODES-1));
 			}
 			if(addNode.getInbounds().size()>30){
-				// System.out.println(\"in2\");
 			}else if(addNode==removeNode){
-				// System.out.println(\"in3\");
 			}else if(addNeighbor(addNode))break;
 		}
 		//System.out.println(\"after outbounds  :\" + getOutbounds().size());	
@@ -1088,7 +1062,7 @@ public class Node {
 
 		if(this.getNodeID()==10){
 			System.out.println(score.getScores().values());
-			// System.out.println(removeNode +" "+addNode);
+			// System.out.println(removeNode + +addNode);
 		}
 		// checkNode();
 	}
@@ -1099,6 +1073,7 @@ public class Node {
 		Node removeNode;
 		Node addNode;
 		// System.out.println(\"before outbounds :\" + getOutbounds().size());
+		int count = 1;
 
 		changeNeighbors();
 
@@ -1122,7 +1097,6 @@ public class Node {
 
 				while(true){
 					// System.out.println(keys.get(rand.nextInt(keys.size())));
-					// System.out.println(\"in-1\");
 					if(keys.size()>8){
 						addNode = keys.get(rand.nextInt(keys.size()));
 						// System.out.println(addNode);
@@ -1130,16 +1104,14 @@ public class Node {
 						addNode = getSimulatedNodes().get(rand.nextInt(NUM_OF_NODES-1));
 					}
 					if(addNode.getInbounds().size()>30){
-						// System.out.println(\"in2\");
 					}else if(addNode==removeNode){
-						// System.out.println(\"in3\");
 					}else if(addNeighbor(addNode))break;
 				}
-				//System.out.println(\"after outbounds  :\" + getOutbounds().size());	
 
-				// System.out.println(\"changed\");
+				count++;
 			}
 		}
+		nodeChangeNum(count);
 		// System.out.println(\"after outbounds  :\" + getOutbounds().size());
 		return;
 	}
@@ -1155,11 +1127,9 @@ public class Node {
 			score.removeScore(node);
 			if(!workerList.contains(node) && removeNeighbor(node)){
 				List<Node> keys = new ArrayList<Node>(score.getPreNodes());
-				System.out.println(\"Aaaaaaaaaaaaaaaaaaaaaaaaaaaa\");
 
 				while(true){
 					// System.out.println(keys.get(rand.nextInt(keys.size())));
-					// System.out.println(\"in-1\");
 					if(keys.size()>4){
 						addNode = keys.get(rand.nextInt(keys.size()));
 						// System.out.println(addNode);
@@ -1168,9 +1138,7 @@ public class Node {
 					}
 
 					if(addNode.getInbounds().size()>30){
-						// System.out.println(\"in2\");
 					}else if(addNode==node){
-						// System.out.println(\"in3\");
 					}else if(addNeighbor(addNode))break;
 				}
 				//System.out.println(\"after outbounds  :\" + getOutbounds().size());	
@@ -1180,4 +1148,5 @@ public class Node {
 		}
 		return ;
 	}
-}" > Node.java
+}
+" > Node.java
