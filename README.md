@@ -17,8 +17,3 @@ SimBlock has a visualization tool, by which you can see the transition of block 
 ## License
 
 SimBlock is licensed under the Apache License, Version2.0.
-
-## Contact
-
-E-mail: dsg-titech at googlegroups.com
-# Simblock
