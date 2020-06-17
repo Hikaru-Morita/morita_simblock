@@ -2,7 +2,7 @@
 https://github.com/dsg-titech/simblock
 
 ## What is this repositorie's purpose.
-Change original Simblock to use my own guraduate thesis.
+Change original Simblock to simulator for my own guraduate thesis.
 
 ## What is SimBlock?
 
