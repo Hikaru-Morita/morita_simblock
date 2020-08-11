@@ -183,14 +183,14 @@ public class Main {
             ex.printStackTrace();
         }
 
-		// OUT_JSON_FILE.print("{");
-		// OUT_JSON_FILE.print(	"\"kind\":\"simulation-end\",");
-		// OUT_JSON_FILE.print(	"\"content\":{");
-		// OUT_JSON_FILE.print(		"\"timestamp\":" + getCurrentTime());
-		// OUT_JSON_FILE.print(	"}");
-		// OUT_JSON_FILE.print("}");
-		// OUT_JSON_FILE.print("]"); //end json format
-		// OUT_JSON_FILE.close();
+		OUT_JSON_FILE.print("{");
+		OUT_JSON_FILE.print(	"\"kind\":\"simulation-end\",");
+		OUT_JSON_FILE.print(	"\"content\":{");
+		OUT_JSON_FILE.print(		"\"timestamp\":" + getCurrentTime());
+		OUT_JSON_FILE.print(	"}");
+		OUT_JSON_FILE.print("}");
+		OUT_JSON_FILE.print("]"); //end json format
+		OUT_JSON_FILE.close();
 
 		AVERAGE_BFT_FILE.print(Score.getAverageBFT() + "," + Score.para + "\n");
 		AVERAGE_BFT_FILE.close();
