@@ -48,17 +48,17 @@ public class BlockMessageTask extends AbstractMessageTask {
 		this.transmisson_timestamp = (getCurrentTime() - this.interval);		//add
 		this.reception_timestamp = getCurrentTime();							//add 
 
-		// OUT_JSON_FILE.print("{");
-		// OUT_JSON_FILE.print(	"\"kind\":\"flow-block\",");
-		// OUT_JSON_FILE.print(	"\"content\":{");
-		// OUT_JSON_FILE.print(		"\"transmission-timestamp\":" + transmisson_timestamp + ",");		//changed
-		// OUT_JSON_FILE.print(		"\"reception-timestamp\":" + reception_timestamp + ",");			//changed
-		// OUT_JSON_FILE.print(		"\"begin-node-id\":" + getFrom().getNodeID() + ",");
-		// OUT_JSON_FILE.print(		"\"end-node-id\":" + getTo().getNodeID() + ",");
-		// OUT_JSON_FILE.print(		"\"block-id\":" + block.getId());
-		// OUT_JSON_FILE.print(	"}");
-		// OUT_JSON_FILE.print("},");
-		// OUT_JSON_FILE.flush();
+		OUT_JSON_FILE.print("{");
+		OUT_JSON_FILE.print(	"\"kind\":\"flow-block\",");
+		OUT_JSON_FILE.print(	"\"content\":{");
+		OUT_JSON_FILE.print(		"\"transmission-timestamp\":" + transmisson_timestamp + ",");		//changed
+		OUT_JSON_FILE.print(		"\"reception-timestamp\":" + reception_timestamp + ",");			//changed
+		OUT_JSON_FILE.print(		"\"begin-node-id\":" + getFrom().getNodeID() + ",");
+		OUT_JSON_FILE.print(		"\"end-node-id\":" + getTo().getNodeID() + ",");
+		OUT_JSON_FILE.print(		"\"block-id\":" + block.getId());
+		OUT_JSON_FILE.print(	"}");
+		OUT_JSON_FILE.print("},");
+		OUT_JSON_FILE.flush();
 
 		Score.addBFT(this.interval);
 
