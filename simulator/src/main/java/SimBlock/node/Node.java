@@ -25,6 +25,10 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Set;
 
+//add 
+import java.util.HashMap;
+import java.util.Map;
+
 import java.util.Random;	//add
 
 import SimBlock.node.Score;		//add
@@ -55,6 +59,9 @@ public class Node {
 	private boolean sendingBlock = false;
 	private ArrayList<RecMessageTask> messageQue = new ArrayList<RecMessageTask>();
 	private Set<Block> downloadingBlocks = new HashSet<Block>();
+
+	// ホップのカウント用　フォークを考慮している
+	private Map<Block, Integer> hop_count = new HashMap<Block, Integer>();
 
 	private long processingTime = 2;
 
@@ -216,6 +223,7 @@ public class Node {
 				this.sendNextBlockMessage();
 			}
 		}
+
 
 		if(message instanceof BlockMessageTask){
 			Block block = ((BlockMessageTask) message).getBlock();

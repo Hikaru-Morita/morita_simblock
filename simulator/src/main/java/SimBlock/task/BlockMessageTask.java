@@ -31,7 +31,7 @@ public class BlockMessageTask extends AbstractMessageTask {
 	private long transmisson_timestamp;			//add
 	private long reception_timestamp;			//add
 
-	public BlockMessageTask(Node from, Node to, Block block ,long delay) {
+	public BlockMessageTask(Node from, Node to, Block block, long delay) {
 		super(from, to);
 		this.block = block;
 		this.interval = getLatency(this.getFrom().getRegion(), this.getTo().getRegion()) + delay;
@@ -60,7 +60,7 @@ public class BlockMessageTask extends AbstractMessageTask {
 		OUT_JSON_FILE.print("},");
 		OUT_JSON_FILE.flush();
 
-		Score.addBFT(this.interval);
+		Score.addSingleBFT(this.interval);
 
 		super.run();
 	}

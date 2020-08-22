@@ -12,8 +12,12 @@ public class Score{
 	private Node this_node;
 
 	public static long bft_flag = 0;
-	public static double average_bft;
-	public static long count;
+	public static double average_bft=0;
+	public static long bft_count;
+
+	public static long single_bft_flag = 0;
+	public static double average_single_bft=0;
+	public static long single_bft_count;
 
 	public static long score_flag = 0;
 	public static int score_count = 0;
@@ -24,18 +28,22 @@ public class Score{
 		this_node = node;
 	}
 
+	public static void addSingleBFT(long single_bft){
+		average_single_bft = average_single_bft + single_bft;
+		single_bft_count = single_bft_count + 1;
+	}
+
+	public static double getAverageSingleBFT(){
+		return average_single_bft/single_bft_count;
+	}
+
 	public static void addBFT(long bft){
-		if(bft_flag == 0){
-			average_bft = bft;
-			bft_flag = 1;
-		}else if(bft_flag == 1){
-			average_bft = average_bft + bft;
-		}
-		count = count + 1;
+		average_bft = average_bft + bft;
+		bft_count = bft_count + 1;
 	}
 
 	public static double getAverageBFT(){
-		return average_bft/count;
+		return average_bft/bft_count;
 	}
 
 	public 	Map<Node,Double> getScores(){return scores;}
