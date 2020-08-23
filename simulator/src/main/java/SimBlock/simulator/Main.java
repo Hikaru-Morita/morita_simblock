@@ -306,7 +306,7 @@ public class Main {
     				// neighter なんて単語存在しない
     				// neither ?
     				Node neighter = node.getNeighbors().get(i);
-    				pw.println(node.getNodeID()+" " +neighter.getNodeID());
+    				pw.println(node.getNodeID()+" " +neighter.getNodeID()+" "+node.getScore().getScore(neighter));
     			}
             }
             pw.close();

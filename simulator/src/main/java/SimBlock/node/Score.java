@@ -46,12 +46,20 @@ public class Score{
 	// 	return average_bft/bft_count;
 	// }
 
-	public 	Map<Node,Double> getScores(){return scores;}
-	public double getScore(Node node){return scores.get(node);}
+	public Map<Node,Double> getScores(){return scores;}
 	public double getAverageScore(){
 		return average_score/score_count;
 	}
 
+	public double getScore(Node node){
+		if(scores.get(node)==null){
+			return 0;
+		}else{
+			return scores.get(node);
+		}
+
+	}
+	
 	public Node getWorstNode(){
 		if(scores.keySet() != null){
 			for(Node i: scores.keySet()){

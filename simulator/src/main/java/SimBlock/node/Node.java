@@ -90,6 +90,9 @@ public class Node {
 	public void setRegion(int region){ this.region = region; }
 	public int getRegion(){ return this.region; }
 
+	//add
+	public Score getScore(){return this.score;}
+
 	//
 	public boolean addNeighbor(Node node){ 
 		return this.routingTable.addNeighbor(node);  
