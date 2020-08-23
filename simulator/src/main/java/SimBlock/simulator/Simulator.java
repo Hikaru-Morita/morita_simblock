@@ -93,6 +93,7 @@ public class Simulator {
 	
 	public static void printPropagation(Block block,LinkedHashMap<Integer, Long> propagation){
 		System.out.println(block + ":" + block.getHeight());
+		System.out.println("BFT:" + block.getBFT());
 		for(Map.Entry<Integer, Long> timeEntry : propagation.entrySet()){
 		}
 		System.out.println();

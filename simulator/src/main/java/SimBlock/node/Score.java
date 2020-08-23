@@ -11,9 +11,9 @@ public class Score{
 	private Node worst;
 	private Node this_node;
 
-	public static long bft_flag = 0;
-	public static double average_bft=0;
-	public static long bft_count;
+	// public static long bft_flag = 0;
+	// public static double average_bft=0;
+	// public static long bft_count;
 
 	public static long single_bft_flag = 0;
 	public static double average_single_bft=0;
@@ -37,14 +37,14 @@ public class Score{
 		return average_single_bft/single_bft_count;
 	}
 
-	public static void addBFT(long bft){
-		average_bft = average_bft + bft;
-		bft_count = bft_count + 1;
-	}
+	// public static void addBFT(long bft){
+	// 	average_bft = average_bft + bft;
+	// 	bft_count = bft_count + 1;
+	// }
 
-	public static double getAverageBFT(){
-		return average_bft/bft_count;
-	}
+	// public static double getAverageBFT(){
+	// 	return average_bft/bft_count;
+	// }
 
 	public 	Map<Node,Double> getScores(){return scores;}
 	public double getScore(Node node){return scores.get(node);}

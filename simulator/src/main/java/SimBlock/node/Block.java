@@ -54,7 +54,7 @@ public class Block {
 		recievedNodeCount++;
 		if(recievedNodeCount==NUM_OF_NODES){
 			// System.out.println("BFT");
-			BFT = getCurrentTime();
+			BFT = getCurrentTime() - this.generatedTime;
 		}
 	}
 
