@@ -15,6 +15,10 @@
  */
 package SimBlock.node;
 
+//add
+import static SimBlock.settings.SimulationConfiguration.*;
+import static SimBlock.simulator.Timer.*;
+
 public class Block {
 	private int height;
 	private Block parent;
@@ -22,6 +26,10 @@ public class Block {
 	private long generatedTime;
 	private int id;
 	private static int latestId = 0;
+
+	//add
+	private int recievedNodeCount = 0;
+	private long BFT = 0;
 
 	public Block(int height, Block parent, Node creator,long generatedTime){
 		this.height = height;
@@ -37,6 +45,18 @@ public class Block {
 	public Node getCreator(){return this.creator;}
 	public long getTime(){return this.generatedTime;}
 	public int getId() {return this.id;}
+
+	//add
+	public long getBFT(){return this.BFT;}
+
+	//add
+	public void addRecievedNodeCount(){
+		recievedNodeCount++;
+		if(recievedNodeCount==NUM_OF_NODES){
+			// System.out.println("BFT");
+			BFT = getCurrentTime();
+		}
+	}
 
 	// return ancestor block that height is {height}
 	public Block getBlockWithHeight(int height){

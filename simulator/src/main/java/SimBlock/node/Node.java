@@ -119,6 +119,9 @@ public class Node {
 		this.block = newBlock;
 		printAddBlock(newBlock);
 		arriveBlock(newBlock, this);
+
+		//add
+		newBlock.addRecievedNodeCount();
 	}
 
 	private void printAddBlock(Block newBlock){
