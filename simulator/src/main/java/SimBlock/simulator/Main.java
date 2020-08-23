@@ -64,6 +64,8 @@ public class Main {
 	public static PrintWriter STATIC_JSON_FILE;
 	public static PrintWriter AVERAGESCORE_CSV_FILE;	//add
 	public static PrintWriter AVERAGE_SINGLE_BFT_FILE; 		//add
+	public static PrintWriter AVERAGE_BFT_FILE; 		//add
+
 
 	static {
 		try{
@@ -97,6 +99,16 @@ public class Main {
 			e.printStackTrace();
 		}
 	}
+
+		//add
+	static {
+		try{
+			AVERAGE_BFT_FILE = new PrintWriter(new BufferedWriter(new FileWriter(new File(OUT_FILE_URI.resolve("./AverageBFT.txt")), true)));
+		} catch (IOException e){
+			e.printStackTrace();
+		}
+	}
+	
 
 	public static void main(String[] args){
 		long start = System.currentTimeMillis();				
@@ -192,8 +204,12 @@ public class Main {
 		OUT_JSON_FILE.print("]"); //end json format
 		OUT_JSON_FILE.close();
 
+		System.out.println("average BFT:" + Simulator.getAverageBFT());
+
 		AVERAGE_SINGLE_BFT_FILE.print(Score.getAverageSingleBFT() + "," + Score.para + "\n");
 		AVERAGE_SINGLE_BFT_FILE.close();
+		AVERAGE_BFT_FILE.print(Simulator.getAverageBFT() + "," + Score.para + "\n");
+		AVERAGE_BFT_FILE.close();
 		// AVERAGESCORE_JSON_FILE.print("\"0\"" + ":" + "\"0\"");
 		// AVERAGESCORE_JSON_FILE.print("}");	//add
 		AVERAGESCORE_CSV_FILE.close();		//add

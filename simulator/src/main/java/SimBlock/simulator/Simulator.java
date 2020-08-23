@@ -35,7 +35,16 @@ public class Simulator {
 	public static ArrayList<Node> getSimulatedNodes(){ return SimulatedNodes; }
 	public static double getDifficulty(){ return difficulty; }
 	public static void setTargetInterval(long interval){ TargetInterval = interval; }
+
+	//add	
+	private static double average_bft = 0;
+	private static int bft_count = 0;
+	private static long bft = 0;
 	
+	public static double getAverageBFT(){
+		return average_bft/bft_count;
+	}
+
 	public static void addNode(Node node){
 		SimulatedNodes.add(node);
 		setDifficulty();
@@ -93,7 +102,17 @@ public class Simulator {
 	
 	public static void printPropagation(Block block,LinkedHashMap<Integer, Long> propagation){
 		System.out.println(block + ":" + block.getHeight());
-		System.out.println("BFT:" + block.getBFT());
+		
+		//add
+		bft = block.getBFT();
+		if(bft!=0){
+			System.out.println("BFT:" + bft);
+			average_bft += bft;
+			bft_count ++;
+		}else{
+			System.out.println("BFT:Fork");
+		}
+
 		for(Map.Entry<Integer, Long> timeEntry : propagation.entrySet()){
 		}
 		System.out.println();
