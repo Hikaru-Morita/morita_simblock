@@ -7,7 +7,7 @@ import java.util.Map;
 public class Score{
 	private Map<Node,Double> scores = new HashMap<Node,Double>();
 	private double score = 0;
-	public static double para = 0.3;
+	public static double para = 0.8;
 	private Node worst;
 	private Node this_node;
 
@@ -79,14 +79,17 @@ public class Score{
 	}
 
 	public Node getWorstNodeWithRemove(){
-		worst = scores.keySet().iterator().next();
-		for(Node i: scores.keySet()){
-			if(scores.get(worst)<scores.get(i)){
-				worst = i;
+		if(!scores.isEmpty()){
+			worst = scores.keySet().iterator().next();
+			for(Node i: scores.keySet()){
+				if(scores.get(worst)<scores.get(i)){
+					worst = i;
+				}
 			}
+			scores.remove(worst);
+			return worst;
 		}
-		scores.remove(worst);
-		return worst;
+		return this.this_node;
 	}
 
 	public void addScore(Node from, long t_inv, long t_block){

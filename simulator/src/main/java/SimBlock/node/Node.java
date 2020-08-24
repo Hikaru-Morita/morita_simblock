@@ -30,6 +30,8 @@ import java.util.HashMap;
 import java.util.Map;
 
 import java.util.Random;	//add
+import java.util.LinkedHashMap;
+import java.util.Iterator;
 
 import SimBlock.node.Score;		//add
 import SimBlock.node.routingTable.AbstractRoutingTable;
@@ -40,6 +42,12 @@ import SimBlock.task.MiningTask;
 import SimBlock.task.RecMessageTask;
 import SimBlock.task.Task;
 
+class LinkedHashMap10 extends LinkedHashMap {
+    protected boolean removeEldestEntry(Map.Entry eldest) {
+        return size() > 10;
+    }
+}
+
 public class Node {
 	private int region;
 	private int nodeID;
@@ -48,6 +56,10 @@ public class Node {
 	private Score score;		//add
 	private int update_node_num = 2;		//add
 	private Random rand = new Random();	//add
+
+	//ブロック送信隣接ノードのカウント
+	private Map working_neighbors = new LinkedHashMap10();
+
 
 	private AbstractRoutingTable routingTable;
 
@@ -71,7 +83,13 @@ public class Node {
 	public Node(int nodeID,int nConnection ,int region, long power, String routingTableName){
 		this.nodeID = nodeID;
 		this.region = region;
-		this.miningRate = power;
+
+		//edit
+		// if(nodeID<20){
+			this.miningRate = power * 1000;
+		// }else{
+		// 	this.miningRate = power;
+		// }
 
 		score = new Score(this);		//add
 
@@ -112,6 +130,9 @@ public class Node {
 	public void genesisBlock(){
 		Block genesis = new Block(1, null, this, 0);
 		this.receiveBlock(genesis);
+
+		//add
+		hop_count.put(genesis,0);
 	}
 
 	public void addToChain(Block newBlock) {
@@ -236,14 +257,18 @@ public class Node {
 			downloadingBlocks.remove(block);
 			this.receiveBlock(block);
 
+			//add
+			hop_count.put(block, message.getFrom().getHopCount(block)+1);
+
 			//送信元ノードのスコアを更新　add
 			BlockMessageTask m = (BlockMessageTask) message;
 			// if(block.getTime() != 0){
+
+			// 送信隣接ノードを記録
+			working_neighbors.put(block, m.getFrom());
 		
 			//10の倍数なら隣接ノードを更新
 			if(block.getId() % 10 == 0 && block.getId() != 0){
-
-
 
 				remove_node = score.getWorstNodeWithRemove();
 				flag = routingTable.removeNeighbor(remove_node);
@@ -267,7 +292,8 @@ public class Node {
 					}
 				}
 					
-				for(int i=0; i < update_node_num; i++){
+				// for(int i=0; i < update_node_num; i++){
+				for(int i=0; i < 8; i++){
 					// System.out.println("neighbors num :" + this.getNeighbors().size());
 					if(score.getAverageScore()>=score.getScore(score.getWorstNode()) && score.getWorstNode() != null){
 						remove_node = score.getWorstNodeWithRemove();
@@ -291,11 +317,58 @@ public class Node {
 								break;
 							}
 						}
-					}
-					//最低１つは更新する
-					// routingTable.removeNeighbor(score.getWorstNodeWithRemove());
-					// routingTable.addNeighbor(getSimulatedNodes().get(rand.nextInt(getSimulatedNodes().size())));							
+					}else if(i==0){
+						//最低１つは更新する
+						remove_node = score.getWorstNodeWithRemove();
+						flag = routingTable.removeNeighbor(remove_node);
+						while(flag){
+							// System.out.println("1");
+							if(routingTable.getNeighbors().size() < 8){
+								routingTable.addNeighbor(getSimulatedNodes().get(rand.nextInt(getSimulatedNodes().size())));
+								this.setnConnection(routingTable.getNeighbors().size());
+								// System.out.println(routingTable.getNeighbors().size());
+							}else{
+								break;
+							}
+						}		
+						while(flag){
+							// System.out.println("2");
+							if(remove_node.getRoutingTable().getNeighbors().size() < 8){
+								remove_node.getRoutingTable().addNeighbor(getSimulatedNodes().get(rand.nextInt(getSimulatedNodes().size())));
+								remove_node.setnConnection(routingTable.getNeighbors().size());
+							}else{
+								break;
+							}
+						}
+					}					
 				}
+
+				// Iterator<Node> nodes = routingTable.getNeighbors().iterator(); 
+				// while(nodes.hasNext()){
+				// 	remove_node = nodes.next();
+				// 	if(!working_neighbors.containsValue(remove_node)){
+				// 		flag = routingTable.removeNeighbor(remove_node);
+				// 		while(flag){
+				// 			// System.out.println("1");
+				// 			if(routingTable.getNeighbors().size() < 8){
+				// 				routingTable.addNeighbor(getSimulatedNodes().get(rand.nextInt(getSimulatedNodes().size())));
+				// 				this.setnConnection(routingTable.getNeighbors().size());
+				// 				System.out.println(routingTable.getNeighbors().size());
+				// 			}else{
+				// 				break;
+				// 			}
+				// 		}		
+				// 		while(flag){
+				// 			// System.out.println("2");
+				// 			if(remove_node.getRoutingTable().getNeighbors().size() < 8){
+				// 				remove_node.getRoutingTable().addNeighbor(getSimulatedNodes().get(rand.nextInt(getSimulatedNodes().size())));
+				// 				remove_node.setnConnection(routingTable.getNeighbors().size());
+				// 			}else{
+				// 				break;
+				// 			}
+				// 		}
+				// 	}
+				// }
 			}
 		}
 	}
@@ -318,6 +391,15 @@ public class Node {
 			putTask(messageTask);
 		}else{
 			sendingBlock = false;
+		}
+	}
+
+	public int getHopCount(Block blcok){
+		if(hop_count.containsKey(block)){
+			System.out.println(hop_count.get(block));
+			return hop_count.get(block);
+		}else{
+			return 0;
 		}
 	}
 

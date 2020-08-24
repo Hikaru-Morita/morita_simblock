@@ -307,7 +307,7 @@ public class Main {
     				// neither ?
     				Node neighter = node.getNeighbors().get(i);
     				pw.println(node.getNodeID()+" " +neighter.getNodeID()+" "+node.getScore().getScore(neighter));
-    			}
+				}
             }
             pw.close();
         } catch (IOException ex) {

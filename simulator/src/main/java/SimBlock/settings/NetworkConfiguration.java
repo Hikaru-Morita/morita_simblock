@@ -35,6 +35,7 @@ public class NetworkConfiguration {
 
 	// Download bandwidth in each region, and last element is Inter-regional bandwidth
 	public static final long[] DOWNLOAD_BANDWIDTH = {25000000, 24000000, 6500000, 10000000, 17500000, 14000000, 6 * 1000000};
+	// public static final long[] DOWNLOAD_BANDWIDTH = {25000, 24000000, 6500, 10000000, 17500, 14000000, 6 * 1000000};
 
 	// Upload bandwidth in each region, and last element is Inter-regional bandwidth
 	public static final long[] UPLOAD_BANDWIDTH =  { 4700000,  8100000, 1800000,  5300000,  3400000,  5200000, 6 * 1000000};
