@@ -1,7 +1,7 @@
-for para in `seq 7`; do
+for para in `seq 1 10`; do
 	cd /home/hikaru-morita/simblock/original/Simblock
 	echo para:$para
-	for num in `seq 100`; do
+	for num in `seq 2`; do
 		# sudo /home/hikaru-morita/simblock/original/Simblock/gradle simulator:run
 		sudo gradle simulator:run
 		# python3 /home/hikaru-morita/デスクトップ/readcsv.py

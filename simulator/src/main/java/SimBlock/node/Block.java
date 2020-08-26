@@ -14,6 +14,7 @@
  * limitations under the License.
  */
 package SimBlock.node;
+import static SimBlock.settings.NetworkConfiguration.*;
 
 public class Block {
 	private int height;
@@ -31,6 +32,27 @@ public class Block {
 		this.generatedTime = generatedTime;
 		this.id = latestId;
 		latestId++;
+
+
+		// if(this.id==1000){
+		// 	long[] num = {24000000, 65000, 10000000, 175000, 14000000,250000, 6 * 1000000};
+		// 	change_dl_bw_2015(num);
+		// }
+
+		// if(this.id==2500){
+		// 	long[] num = {65000, 10000000, 175000, 14000000,250000, 24000000, 6 * 1000000};
+		// 	change_dl_bw_2015(num);
+		// }
+
+		// if(this.id==3000){
+		// 	long[] num = {10000000, 175000, 14000000,250000, 24000000, 65000, 6 * 1000000};
+		// 	change_dl_bw_2015(num);
+		// }
+
+		// if(this.id==4000){
+		// 	long[] num = {175000, 14000000,250000, 24000000, 65000, 10000000, 6 * 1000000};
+		// 	change_dl_bw_2015(num);
+		// }
 	}
 
 	public int getHeight(){return this.height;}

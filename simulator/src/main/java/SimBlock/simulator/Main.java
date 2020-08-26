@@ -250,6 +250,11 @@ public class Main {
 			miningpower=genMiningPower();
 			// out.println(miningpower);
 			Node node = new Node(id,8,regionList.get(id-1),miningpower,TABLE);
+
+			// if(id%(NUM_OF_NODES/10) == 0) {
+			// 	node = new Node(id,8,regionList.get(id-1),miningpower*100,TABLE);
+			// }
+			
 			addNode(node);
 			// OUT_JSON_FILE.print("{");
 			// OUT_JSON_FILE.print(	"\"kind\":\"add-node\",");

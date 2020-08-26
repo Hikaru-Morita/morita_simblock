@@ -44,12 +44,16 @@ public class NetworkConfiguration {
 	
 	// Download bandwidth in each region, and last element is Inter-regional bandwidth
 	// Unit: bit per second
-	private static final long[] DOWNLOAD_BANDWIDTH_2015 = {25000000, 24000000, 6500000, 10000000, 17500000, 14000000, 6 * 1000000};
+	// private static final long[] DOWNLOAD_BANDWIDTH_2015 = {25000000, 24000000, 6500000, 10000000, 17500000, 14000000, 6 * 1000000};
 	private static final long[] DOWNLOAD_BANDWIDTH_2019 = {52000000, 40000000, 18000000, 22800000, 22800000, 29900000, 6 * 1000000};
 
-	// private static final long[] DOWNLOAD_BANDWIDTH_2015 = {250000, 24000000, 65000, 10000000, 175000, 14000000, 6 * 1000000};
+	private static long[] DOWNLOAD_BANDWIDTH_2015 = {250000, 24000000, 65000, 10000000, 175000, 14000000, 6 * 1000000};
+	
+	public static void change_dl_bw_2015(long[] num){
+		DOWNLOAD_BANDWIDTH = num;
+	} 
 
-	public static final long[] DOWNLOAD_BANDWIDTH = DOWNLOAD_BANDWIDTH_2015;
+	public static long[] DOWNLOAD_BANDWIDTH = DOWNLOAD_BANDWIDTH_2015;
 
 	// Upload bandwidth in each region, and last element is Inter-regional bandwidth
 	// Unit: bit per second
