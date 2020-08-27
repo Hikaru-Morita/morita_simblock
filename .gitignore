@@ -18,8 +18,10 @@ blockList.txt
 nodeList.txt
 out.txt
 
+*.json
+
 # # To manage directory structure by git
-/simulator/src/dist/output/*
+./simulator/src/dist/output/*
 !/simulator/src/dist/output/graph/
 /simulator/src/dist/output/graph/*
 !/simulator/src/dist/output/graph/.gitkeep
