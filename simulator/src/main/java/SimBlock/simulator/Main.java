@@ -64,10 +64,7 @@ public class Main {
 	public static PrintWriter STATIC_JSON_FILE;
 	public static PrintWriter AVERAGESCORE_CSV_FILE;	//add
 	public static PrintWriter AVERAGE_SINGLE_BFT_FILE; 		//add
-<<<<<<< HEAD
 	public static PrintWriter AVERAGE_BFT_FILE; 		//add
-=======
->>>>>>> 38435db6d904f0ca3a2240fd5f81ad6eeeda953b
 
 
 	static {
@@ -98,7 +95,6 @@ public class Main {
 	static {
 		try{
 			AVERAGE_SINGLE_BFT_FILE = new PrintWriter(new BufferedWriter(new FileWriter(new File(OUT_FILE_URI.resolve("./AverageSingleBFT.txt")), true)));
-<<<<<<< HEAD
 		} catch (IOException e){
 			e.printStackTrace();
 		}
@@ -108,8 +104,6 @@ public class Main {
 	static {
 		try{
 			AVERAGE_BFT_FILE = new PrintWriter(new BufferedWriter(new FileWriter(new File(OUT_FILE_URI.resolve("./AverageBFT.txt")), true)));
-=======
->>>>>>> 38435db6d904f0ca3a2240fd5f81ad6eeeda953b
 		} catch (IOException e){
 			e.printStackTrace();
 		}
@@ -210,17 +204,12 @@ public class Main {
 		OUT_JSON_FILE.print("]"); //end json format
 		OUT_JSON_FILE.close();
 
-<<<<<<< HEAD
 		System.out.println("average BFT:" + Simulator.getAverageBFT());
 
 		AVERAGE_SINGLE_BFT_FILE.print(Score.getAverageSingleBFT() + "," + Score.para + "\n");
 		AVERAGE_SINGLE_BFT_FILE.close();
 		AVERAGE_BFT_FILE.print(Simulator.getAverageBFT() + "," + Score.para + "\n");
 		AVERAGE_BFT_FILE.close();
-=======
-		AVERAGE_SINGLE_BFT_FILE.print(Score.getAverageSingleBFT() + "," + Score.para + "\n");
-		AVERAGE_SINGLE_BFT_FILE.close();
->>>>>>> 38435db6d904f0ca3a2240fd5f81ad6eeeda953b
 		// AVERAGESCORE_JSON_FILE.print("\"0\"" + ":" + "\"0\"");
 		// AVERAGESCORE_JSON_FILE.print("}");	//add
 		AVERAGESCORE_CSV_FILE.close();		//add
@@ -317,13 +306,8 @@ public class Main {
     				// neighter なんて単語存在しない
     				// neither ?
     				Node neighter = node.getNeighbors().get(i);
-<<<<<<< HEAD
     				pw.println(node.getNodeID()+" " +neighter.getNodeID()+" "+node.getScore().getScore(neighter));
 				}
-=======
-    				pw.println(node.getNodeID()+" " +neighter.getNodeID());
-    			}
->>>>>>> parent of 2214536... add output score in graph
             }
             pw.close();
         } catch (IOException ex) {

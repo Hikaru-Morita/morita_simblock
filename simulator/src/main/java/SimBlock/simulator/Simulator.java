@@ -102,7 +102,6 @@ public class Simulator {
 	
 	public static void printPropagation(Block block,LinkedHashMap<Integer, Long> propagation){
 		System.out.println(block + ":" + block.getHeight());
-<<<<<<< HEAD
 		
 		//add
 		bft = block.getBFT();
@@ -114,9 +113,6 @@ public class Simulator {
 			System.out.println("BFT:Fork");
 		}
 
-=======
-		System.out.println("BFT:" + block.getBFT());
->>>>>>> 38435db6d904f0ca3a2240fd5f81ad6eeeda953b
 		for(Map.Entry<Integer, Long> timeEntry : propagation.entrySet()){
 		}
 		System.out.println();

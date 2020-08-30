@@ -52,11 +52,7 @@ public class Block {
 	//add
 	public void addRecievedNodeCount(){
 		recievedNodeCount++;
-<<<<<<< HEAD
 		if(recievedNodeCount==NUM_OF_NODES*0.5){
-=======
-		if(recievedNodeCount==NUM_OF_NODES){
->>>>>>> 38435db6d904f0ca3a2240fd5f81ad6eeeda953b
 			// System.out.println("BFT");
 			BFT = getCurrentTime() - this.generatedTime;
 		}
