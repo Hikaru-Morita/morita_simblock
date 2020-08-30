@@ -306,8 +306,13 @@ public class Main {
     				// neighter なんて単語存在しない
     				// neither ?
     				Node neighter = node.getNeighbors().get(i);
+<<<<<<< HEAD
     				pw.println(node.getNodeID()+" " +neighter.getNodeID()+" "+node.getScore().getScore(neighter));
 				}
+=======
+    				pw.println(node.getNodeID()+" " +neighter.getNodeID());
+    			}
+>>>>>>> parent of 2214536... add output score in graph
             }
             pw.close();
         } catch (IOException ex) {
