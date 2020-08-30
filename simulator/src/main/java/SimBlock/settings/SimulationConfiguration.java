@@ -19,6 +19,10 @@ public class SimulationConfiguration {
 	public static final int NUM_OF_NODES = 600; //600;//800;//6000;
 	public static final String TABLE = "SimBlock.node.routingTable.BitcoinCoreTable";
 	public static final long INTERVAL = 1000*60;//1000*60;//1000*30*5;//1000*60*10;
+<<<<<<< HEAD
 	public static final int ENDBLOCKHEIGHT = 2000;
+=======
+	public static final int ENDBLOCKHEIGHT = 10;
+>>>>>>> 38435db6d904f0ca3a2240fd5f81ad6eeeda953b
 	public static final long BLOCKSIZE = 8000;//6110;//8000;//535000;//0.5MB
 }

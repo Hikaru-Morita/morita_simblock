@@ -21,7 +21,11 @@ out.txt
 *.json
 
 # # To manage directory structure by git
+<<<<<<< HEAD
 ./simulator/src/dist/output/*
+=======
+/simulator/src/dist/output/*
+>>>>>>> 38435db6d904f0ca3a2240fd5f81ad6eeeda953b
 !/simulator/src/dist/output/graph/
 /simulator/src/dist/output/graph/*
 !/simulator/src/dist/output/graph/.gitkeep
