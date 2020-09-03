@@ -112,6 +112,8 @@ public class Node {
 		this.block = newBlock;
 		printAddBlock(newBlock);
 		arriveBlock(newBlock, this);
+
+		newBlock.addRecievedNodeCount();
 	}
 
 	private void printAddBlock(Block newBlock){
@@ -226,8 +228,8 @@ public class Node {
 			if(block.getId()% 60== 0 && block.getId()>1){
 				 checkFrequency();
 			}else if(block.getId()%10 == 0 && block.getHeight()>1){
-				// changeNeighbors();
-				changeNeighbors_v2();
+				changeNeighbors();
+				// changeNeighbors_v2();
 			}
 			
 			//add
@@ -295,6 +297,7 @@ public class Node {
 			}else{
 				addNode = getSimulatedNodes().get(rand.nextInt(NUM_OF_NODES-1));
 			}
+
 			if(addNode.getInbounds().size()>30){
 			}else if(addNode==removeNode){
 			}else if(addNeighbor(addNode))break;
@@ -320,6 +323,7 @@ public class Node {
 		Node removeNode;
 		Node addNode;
 		// System.out.println("before outbounds :" + getOutbounds().size());
+		// System.out.println("before inbounds :" + getInbounds().size());
 		int count = 1;
 
 		changeNeighbors();

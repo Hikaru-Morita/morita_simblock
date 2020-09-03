@@ -15,6 +15,8 @@
  */
 package SimBlock.node;
 import static SimBlock.settings.NetworkConfiguration.*;
+import static SimBlock.settings.SimulationConfiguration.*;
+import static SimBlock.simulator.Timer.*;
 
 public class Block {
 	private int height;
@@ -24,6 +26,9 @@ public class Block {
 	private int id;
 	private static int latestId = 0;
 
+	//add
+	private int recievedNodeCount = 0;
+	private long BFT = 0;
 
 	public Block(int height, Block parent, Node creator,long generatedTime){
 		this.height = height;
@@ -67,6 +72,17 @@ public class Block {
 			return this;
 		}else{
 			return this.parent.getBlockWithHeight(height);
+		}
+	}
+
+	//add
+	// this method is for mesure the propagation time 10% to 90%
+	public void addRecievedNodeCount(){
+		recievedNodeCount++;
+		if(recievedNodeCount==NUM_OF_NODES*0.3){
+			BFT = getCurrentTime() - this.generatedTime;
+
+			System.out.println("BFT_50% :" + BFT);
 		}
 	}
 
