@@ -20,35 +20,26 @@ import simblock.block.Block;
 import simblock.node.Node;
 
 /**
- * The type Inv message task, allows a node to advertise its knowledge of a block.
+ * The type GetBlockTxn message task.
  */
-// Bitcoin protocol Wiki: https://en.bitcoin.it/wiki/Protocol_documentation#inv
-public class InvMessageTask extends AbstractMessageTask {
+// Compact block relay protocol Wiki: https://github.com/bitcoin/bips/blob/master/bip-0152.mediawiki
+public class GetBlockTxnMessageTask extends AbstractMessageTask {
+	/**
+     * The {@link Block} that is sent by from as compact block.
+     */
+	private Block block;
 
-  /**
-   * Block to be advertised.
-   */
-  private final Block block;
-
-  /**
-   * Instantiates a new Inv message task.
-   *
-   * @param from  the sender
-   * @param to    the receiver
-   * @param block the block to be advertised
-   */
-  public InvMessageTask(Node from, Node to, Block block) {
-    super(from, to);
-    this.block = block;
-  }
-
-  /**
-   * Gets block.
-   *
-   * @return the block
-   */
-  public Block getBlock() {
-    return this.block;
-  }
-
+	public GetBlockTxnMessageTask(Node from, Node to, Block block) {
+		super(from, to);
+		this.block = block;
+	}
+    
+    /**
+     * Get block.
+     *
+     * @return the block
+     */
+	public Block getBlock(){
+		return this.block;
+	}	
 }

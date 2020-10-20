@@ -19,32 +19,21 @@ package simblock.task;
 import static simblock.simulator.Timer.getCurrentTime;
 
 import java.math.BigInteger;
-import simblock.block.ProofOfWorkBlock;
+import simblock.block.SamplePoSBlock;
 import simblock.node.Node;
 
-/**
- * The type Mining task.
- */
-public class MiningTask extends AbstractMintingTask {
+public class SampleStakingTask extends AbstractMintingTask {
   private final BigInteger difficulty;
 
-  /**
-   * Instantiates a new Mining task.
-   *
-   * @param minter     the minter
-   * @param interval   the interval
-   * @param difficulty the difficulty
-   */
-  //TODO how is the difficulty expressed and used here?
-  public MiningTask(Node minter, long interval, BigInteger difficulty) {
+  public SampleStakingTask(Node minter, long interval, BigInteger difficulty) {
     super(minter, interval);
     this.difficulty = difficulty;
   }
 
   @Override
   public void run() {
-    ProofOfWorkBlock createdBlock = new ProofOfWorkBlock(
-        (ProofOfWorkBlock) this.getParent(), this.getMinter(), getCurrentTime(),
+    SamplePoSBlock createdBlock = new SamplePoSBlock(
+        (SamplePoSBlock) this.getParent(), this.getMinter(), getCurrentTime(),
         this.difficulty
     );
     this.getMinter().receiveBlock(createdBlock);
