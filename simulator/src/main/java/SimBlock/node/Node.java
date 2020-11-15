@@ -54,6 +54,9 @@ public class Node {
 	private ArrayList<RecMessageTask> messageQue = new ArrayList<RecMessageTask>();
 	private Set<Block> downloadingBlocks = new HashSet<Block>();
 
+	// ホップのカウント用　フォークを考慮している
+	private Map<Block, Integer> hop_count = new HashMap<Block, Integer>();
+
 	private long processingTime = 2;
 
 	//add
@@ -102,6 +105,9 @@ public class Node {
 	public void genesisBlock(){
 		Block genesis = new Block(1, null, this, 0);
 		this.receiveBlock(genesis);
+
+		//add
+		hop_count.put(genesis,0);
 	}
 
 	public void addToChain(Block newBlock) {
@@ -223,6 +229,9 @@ public class Node {
 			Block block = ((BlockMessageTask) message).getBlock();
 			downloadingBlocks.remove(block);
 			this.receiveBlock(block);
+
+			//add
+			hop_count.put(block, message.getFrom().getHopCount(block)+1);
 
 			//add
 			if(block.getId()% 60== 0 && block.getId()>1){
@@ -405,6 +414,15 @@ public class Node {
 		}
 		nodeChangeNum(count);
 		return ;
+	}
+
+	public int getHopCount(Block blcok){
+		if(hop_count.containsKey(block)){
+			System.out.println(hop_count.get(block));
+			return hop_count.get(block);
+		}else{
+			return 0;
+		}
 	}
 }
 
