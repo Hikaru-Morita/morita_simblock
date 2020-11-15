@@ -231,9 +231,6 @@ public class Node {
 			this.receiveBlock(block);
 
 			//add
-			hop_count.put(block, message.getFrom().getHopCount(block)+1);
-
-			//add
 			if(block.getId()% 60== 0 && block.getId()>1){
 				 checkFrequency();
 			}else if(block.getId()%10 == 0 && block.getHeight()>1){
@@ -243,6 +240,11 @@ public class Node {
 			
 			//add
 			BlockMessageTask m = (BlockMessageTask) message;
+
+			//add
+			hop_count.put(block, message.getFrom().getHopCount(block)+1);
+			m.getInterval();
+
 			// System.out.println("check workers");
 			if(!workerList.contains(m.getFrom()))workerList.add(m.getFrom());
 			// System.out.println("end :check workers");

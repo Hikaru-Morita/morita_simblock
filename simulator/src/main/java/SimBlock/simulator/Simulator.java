@@ -52,6 +52,9 @@ public class Simulator {
 	public static Map<Integer,Integer> node_change_num = new HashMap<Integer,Integer>();
 	public static int change_count = 0;
 
+	public static double sum_interval = 0;
+	public static long interval_count = 0;
+
 	public static ArrayList<Node> getSimulatedNodes(){ return simulatedNodes; }
 	public static long getAverageDifficulty(){ return averageDifficulty; }
 	public static void setTargetInterval(long interval){ targetInterval = interval; }
@@ -176,13 +179,19 @@ public class Simulator {
 		average_propagation = average_propagation + median;
 		if(count >= ENDBLOCKHEIGHT){
 			// System.out.println("\naverage median propagation : "+average_propagation/count);
-			System.out.println("\naverage oneNode propagation : "+average_propagation/count);
+			// System.out.println("\naverage oneNode propagation : "+average_propagation/count);
+			System.out.println("\naverage interval : " + sum_interval/interval_count);
 		}
 		// System.out.println("median propagation  :" + median);
 		
 		// OUT_CSV_FILE.flush();
 		
 	}	
+
+	public static void countInterval(long interval){
+		sum_interval = sum_interval + interval;
+		interval_count++;
+	}
 	
 	public static void printAllPropagation(){
 		for(int i=0;i < observedBlocks.size();i++){
