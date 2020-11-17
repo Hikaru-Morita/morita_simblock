@@ -232,7 +232,7 @@ public class Node {
 
 			//add
 			if(block.getId()% 60== 0 && block.getId()>1){
-				 checkFrequency();
+				//  checkFrequency();
 			}else if(block.getId()%10 == 0 && block.getHeight()>1){
 				changeNeighbors();
 				// changeNeighbors_v2();
@@ -244,6 +244,7 @@ public class Node {
 			//add
 			hop_count.put(block, message.getFrom().getHopCount(block)+1);
 			countInterval(m.getInterval());
+			System.out.println("interval:" + m.getInterval());
 
 			// System.out.println("check workers");
 			if(!workerList.contains(m.getFrom()))workerList.add(m.getFrom());
@@ -420,7 +421,7 @@ public class Node {
 
 	public int getHopCount(Block blcok){
 		if(hop_count.containsKey(block)){
-			System.out.println(hop_count.get(block));
+			// System.out.println(hop_count.get(block));
 			return hop_count.get(block);
 		}else{
 			return 0;
