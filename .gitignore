@@ -26,3 +26,5 @@ out.txt
 
 #for MacOS
 .DS_Store
+
+.log
