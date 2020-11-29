@@ -152,9 +152,6 @@ public class Simulator {
 		long median = 0;
 
 		for(Map.Entry<Integer, Long> timeEntry : propagation.entrySet()){
-			// *
-			// System.out.println(timeEntry.getKey() + "," + timeEntry.getValue());
-
 			//add
 			if(num == (NUM_OF_NODES/2))median = timeEntry.getValue();
 

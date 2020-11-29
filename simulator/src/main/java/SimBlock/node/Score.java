@@ -10,15 +10,11 @@ import java.util.List;
 public class Score{
 	private Map<Node,Double> scores = new HashMap<Node,Double>();
 	private Map<Node,Double> allScores = new HashMap<Node,Double>();
-	private static ArrayList<Double> scoreList = new ArrayList<Double>();
 	private double score = 0;
 	public static double para_ = 8;
 	public static double para = para_/10;
 	private Node worst;
 	private Node selfNode;
-
-	private static long score_count = 0;
-	private static double average_score = 0;
 
 	Score(Node node){
 		selfNode = node;
@@ -32,7 +28,6 @@ public class Score{
 
 	public List<Node>getPreNodes(){
 		List<Node> nodes = new ArrayList<Node>(allScores.keySet());
-		// System.out.println(previous nodesSize: +nodes.size());
 		for(Node i :scores.keySet()){
 			if(nodes.contains(i)){
 				nodes.remove(i);
@@ -43,7 +38,6 @@ public class Score{
 				nodes.remove(i);
 			}	
 		}
-		// System.out.println(after nodesSize: +nodes.size());
 		return nodes;
 	}
 
@@ -93,7 +87,6 @@ public class Score{
 			// calculate score
 		if(allScores.get(from) == null){
 			score = (t_inv-t_block);
-			// System.out.println(test1);
 		}
 		else{
 			score = allScores.get(from);
@@ -121,9 +114,8 @@ public class Score{
 		}
 
 		if(selfNode.getNodeID()==10)System.out.println("worst score:" +scores.get(worst));
-		// System.out.println(scores: +scores.size());
+		
 		scores.remove(worst);
-		// System.out.println(scores: +scores.size());
 
 		return worst;
 	}
