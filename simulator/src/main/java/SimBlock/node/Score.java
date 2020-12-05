@@ -11,7 +11,7 @@ public class Score{
 	private Map<Node,Double> scores = new HashMap<Node,Double>();
 	private Map<Node,Double> allScores = new HashMap<Node,Double>();
 	private double score = 0;
-	public static double para_ = 8;
+	public static double para_ = 0.5;
 	public static double para = para_/10;
 	private Node worst;
 	private Node selfNode;
