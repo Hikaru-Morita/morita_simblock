@@ -16,7 +16,7 @@
 package SimBlock.settings;
 
 public class SimulationConfiguration {
-	public static final int NUM_OF_NODES = 600;//600;//800;//6000;
+	public static final int NUM_OF_NODES = 6000;//600;//800;//6000;
 
 	public static final String TABLE = "SimBlock.node.routingTable.BitcoinCoreTable";
 

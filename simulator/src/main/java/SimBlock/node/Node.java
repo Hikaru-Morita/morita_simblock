@@ -244,7 +244,7 @@ public class Node {
 			//add
 			hop_count.put(block, message.getFrom().getHopCount(block)+1);
 			countInterval(m.getInterval());
-			System.out.println("interval:" + m.getInterval());
+			// System.out.println("interval:" + m.getInterval());
 
 			// System.out.println("check workers");
 			if(!workerList.contains(m.getFrom()))workerList.add(m.getFrom());

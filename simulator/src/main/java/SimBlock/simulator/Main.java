@@ -229,42 +229,21 @@ public class Main {
 		double[] degreeDistribution = getDegreeDistribution();
 		List<Integer> degreeList  = makeRandomList(degreeDistribution,true);
 
-		// for(int id = 1; id <= numNodes - 16; id++){
-		// 	Node node = new Node(id,degreeList.get(id-1)+1,regionList.get(id-1), genMiningPower(),TABLE);
-		// 	addNode(node);
-
-		// 	// OUT_JSON_FILE.print("{");
-		// 	// OUT_JSON_FILE.print(	"\"kind\":\"add-node\",");
-		// 	// OUT_JSON_FILE.print(	"\"content\":{");
-		// 	// OUT_JSON_FILE.print(		"\"timestamp\":0,");
-		// 	// OUT_JSON_FILE.print(		"\"node-id\":" + id + ",");
-		// 	// OUT_JSON_FILE.print(		"\"region-id\":" + regionList.get(id-1));
-		// 	// OUT_JSON_FILE.print(	"}");
-		// 	// OUT_JSON_FILE.print("},");
-		// 	// OUT_JSON_FILE.flush();
-
-		// }
-
 		int miningpower=0;
 		for(int id =1; id <= numNodes; id++){
 			miningpower=genMiningPower();
-			// out.println(miningpower);
 			Node node = new Node(id,8,regionList.get(id-1),miningpower,TABLE);
-
-			// if(id%(NUM_OF_NODES/10) == 0) {
-			// 	node = new Node(id,8,regionList.get(id-1),miningpower*100,TABLE);
-			// }
-			
+		
 			addNode(node);
-			// OUT_JSON_FILE.print("{");
-			// OUT_JSON_FILE.print(	"\"kind\":\"add-node\",");
-			// OUT_JSON_FILE.print(	"\"content\":{");
-			// OUT_JSON_FILE.print(		"\"timestamp\":0,");
-			// OUT_JSON_FILE.print(		"\"node-id\":" + id + ",");
-			// OUT_JSON_FILE.print(		"\"region-id\":" + regionList.get(id-1));
-			// OUT_JSON_FILE.print(	"}");
-			// OUT_JSON_FILE.print("},");
-			// OUT_JSON_FILE.flush();
+			OUT_JSON_FILE.print("{");
+			OUT_JSON_FILE.print(	"\"kind\":\"add-node\",");
+			OUT_JSON_FILE.print(	"\"content\":{");
+			OUT_JSON_FILE.print(		"\"timestamp\":0,");
+			OUT_JSON_FILE.print(		"\"node-id\":" + id + ",");
+			OUT_JSON_FILE.print(		"\"region-id\":" + regionList.get(id-1));
+			OUT_JSON_FILE.print(	"}");
+			OUT_JSON_FILE.print("},");
+			OUT_JSON_FILE.flush();
 		}
 
 		for(Node node: getSimulatedNodes()){
