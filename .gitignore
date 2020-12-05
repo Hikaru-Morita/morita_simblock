@@ -18,14 +18,17 @@ blockList.txt
 nodeList.txt
 out.txt
 
-# # To manage directory structure by git
+# To manage directory structure by git
 /simulator/src/dist/output/*
 !/simulator/src/dist/output/graph/
 /simulator/src/dist/output/graph/*
 !/simulator/src/dist/output/graph/.gitkeep
 
-#for MacOS
+# for MacOS
 .DS_Store
 
 *.log
 *.csv
+*.json
+
+python-env/
