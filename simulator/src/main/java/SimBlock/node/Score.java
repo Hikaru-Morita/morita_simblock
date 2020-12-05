@@ -96,10 +96,6 @@ public class Score{
 		allScores.put(from, score);
 		// calcuate average of all neighbor nodes score 
 		if(selfNode.getOutbounds().contains(from))scores.put(from,score);
-
-		// if(selfNode.getNodeID() == 10)System.out.println(getAverageScore() + +scores.size()+ + allScores.size());
-
-		// if(selfNode.getNodeID()==10)System.out.println(getAverageScore() + +scores.size()+ + allScores.size());
 	}
 
 	public Node getWorstNodeWithRemove(){

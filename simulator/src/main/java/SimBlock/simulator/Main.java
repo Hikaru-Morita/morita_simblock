@@ -104,7 +104,6 @@ public class Main {
 			runTask();
 		}
 
-
 		printAllPropagation();
 
 		System.out.println();
