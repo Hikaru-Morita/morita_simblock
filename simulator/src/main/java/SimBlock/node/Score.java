@@ -99,14 +99,14 @@ public class Score{
 
 	public Node getWorstNodeWithRemove(){
 		
-		System.out.println("before getWorstNodeWithRemove:" + scores.size());
+		// System.out.println("before getWorstNodeWithRemove:" + scores.size());
 		
 		if(scores.size() == 0) return selfNode;
 		worst = scores.keySet().iterator().next();
 
 		for(Node i: scores.keySet()){
 
-			System.out.println("score " + i + ":" + scores.get(i));
+			// System.out.println("score " + i + ":" + scores.get(i));
 
 			if(scores.get(worst)<scores.get(i)){
 				worst = i;
@@ -116,7 +116,7 @@ public class Score{
 		System.out.println("remove " + worst + ":" + scores.get(worst));
 		scores.remove(worst);
 
-		System.out.println("after  getWorstNodeWithRemove:" + scores.size());
+		// System.out.println("after  getWorstNodeWithRemove:" + scores.size());
 			
 		return worst;
 	}
