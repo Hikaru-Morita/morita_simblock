@@ -129,8 +129,8 @@ public class Score{
 				worst = i;
 			}
 		}
-		if(selfNode.getNodeID()==10)System.out.println("worst score:" +scores.get(worst));
-		System.out.println("remove " + worst + ":" + scores.get(worst));
+		// if(selfNode.getNodeID()==10)System.out.println("worst score:" +scores.get(worst));
+		// System.out.println("remove " + worst + ":" + scores.get(worst));
 		scores.remove(worst);
 
 		// System.out.println("after  getWorstNodeWithRemove:" + scores.size());

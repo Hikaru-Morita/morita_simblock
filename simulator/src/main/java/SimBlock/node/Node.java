@@ -233,7 +233,6 @@ public class Node {
 				 checkFrequency();
 			}else if(block.getId()%10 == 0 && block.getHeight()>1){
 				changeNeighbors();
-				// changeNeighbors_v2();
 			}
 			
 			//add
@@ -279,11 +278,7 @@ public class Node {
 		Node removeNode;
 		Node addNode;
 
-		if(this.getNodeID()==10){
-			System.out.println(score.getScores().values());
-		}
-
-		removeNode = score.getWorstNodeWithRemove();	
+		removeNode = score.getWorstNodeWithRemove();
 		if(removeNode == this) return;
 	
 		removeNeighbor(removeNode);
@@ -324,7 +319,6 @@ public class Node {
 				while(true){
 					if(size>8 && addNode!=this){
 						addNode = score.getBestNodeFromAllScores(node_over30Inbounds);
-						System.out.println("size:" + size);
 					}else{
 						addNode = getSimulatedNodes().get(rand.nextInt(NUM_OF_NODES-1));
 					}
