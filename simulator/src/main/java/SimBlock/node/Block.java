@@ -79,10 +79,10 @@ public class Block {
 	// this method is for mesure the propagation time 10% to 90%
 	public void addRecievedNodeCount(){
 		recievedNodeCount++;
-		if(recievedNodeCount==NUM_OF_NODES*0.3){
+		int per = 50;
+		if(recievedNodeCount==NUM_OF_NODES*per/100){
 			BFT = getCurrentTime() - this.generatedTime;
-
-			System.out.println("BFT_50% :" + BFT);
+			// System.out.println("BFT_"+ per +"% :" + BFT);
 		}
 	}
 
