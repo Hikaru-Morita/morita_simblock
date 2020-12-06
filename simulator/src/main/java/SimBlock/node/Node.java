@@ -243,11 +243,6 @@ public class Node {
 			//add
 			hop_count.put(block, message.getFrom().getHopCount(block)+1);
 			countInterval(m.getInterval());
-<<<<<<< HEAD
-			// System.out.println("interval:" + m.getInterval());
-=======
->>>>>>> parent of 5123cfd... add comment
-
 			if(!workerList.contains(m.getFrom()))workerList.add(m.getFrom());			
 		}
 	}
