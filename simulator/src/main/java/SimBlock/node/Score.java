@@ -11,7 +11,7 @@ public class Score{
 	private Map<Node,Double> scores = new HashMap<Node,Double>();
 	private Map<Node,Double> allScores = new HashMap<Node,Double>();
 	private double score = 0;
-	public static double para_ = 8;
+	public static double para_ = 0.5;
 	public static double para = para_/10;
 	private Node worst;
 	private Node selfNode;
@@ -26,6 +26,7 @@ public class Score{
 	public int getScoresSize(){return scores.size();}
 	public static double getPara(){return para;}
 
+	//隣接ノード以外のノードリストを返す
 	public List<Node>getPreNodes(){
 		List<Node> nodes = new ArrayList<Node>(allScores.keySet());
 		for(Node i :scores.keySet()){
@@ -71,7 +72,6 @@ public class Score{
 		return average_score/allScores.size();	
 	}
 	
-
 	public boolean contains(Node node){
 		if(scores.containsKey(node))return true;
 		return false;
@@ -80,7 +80,6 @@ public class Score{
 	public boolean removeScore(Node node){
 		if(scores.remove(node)!=null)return true;
 		return false;
-
 	}
 
 	public void addScore(Node from, long t_inv, long t_block){
@@ -99,30 +98,37 @@ public class Score{
 	}
 
 	public Node getWorstNodeWithRemove(){
-		// System.out.println(scores.size());
+		
+		// System.out.println("before getWorstNodeWithRemove:" + scores.size());
+		
 		if(scores.size() == 0) return selfNode;
 		worst = scores.keySet().iterator().next();
-		int num = 0;
+
 		for(Node i: scores.keySet()){
+
+			// System.out.println("score " + i + ":" + scores.get(i));
+
 			if(scores.get(worst)<scores.get(i)){
 				worst = i;
 			}
 		}
-
 		if(selfNode.getNodeID()==10)System.out.println("worst score:" +scores.get(worst));
-		
+		System.out.println("remove " + worst + ":" + scores.get(worst));
 		scores.remove(worst);
 
+		// System.out.println("after  getWorstNodeWithRemove:" + scores.size());
+			
 		return worst;
 	}
 
 	public Node getWorstNodeWithRemove_v2(){
-		// System.out.println(scores.size());
+		
+		System.out.println("before getWorstNodeWithRemove_v2:" + scores.size());
+		
 		if(scores.size() == 0) return selfNode;
 		worst = scores.keySet().iterator().next();
-		int num = 0;
 		double worst_score = getAverageScore();
-		for(Node i: scores.keySet()){
+		for(Node i: scores.keySet()){	
 			if(scores.get(worst)<scores.get(i)){
 				worst = i;
 				worst_score = scores.get(i);
@@ -131,7 +137,10 @@ public class Score{
 		if(worst_score > this.getAverageScore()){
 			scores.remove(worst);
 			return worst;
+		
 		}
+		System.out.println("after  getWorstNodeWithRemove_v2:" + scores.size());
+		
 		return selfNode;
 	}
 

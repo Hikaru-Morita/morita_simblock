@@ -154,10 +154,8 @@ public class Simulator {
 		for(Map.Entry<Integer, Long> timeEntry : propagation.entrySet()){
 			//add
 			if(num == (NUM_OF_NODES/2))median = timeEntry.getValue();
-
-			//??? 100?
 			if(timeEntry.getKey()==100){
-				propagationTime += timeEntry.getValue();  // time block propagated to all nodes. ←これ大嘘？
+				propagationTime += timeEntry.getValue();  // time block propagated to all nodes. 
 				count++;
 			}
 			propList.add((double)propagationTime);	//add
@@ -171,7 +169,7 @@ public class Simulator {
 		// propList.add((double)propagationTime);	//add
 		// add
 		average_propagation2 += propagationTime/NUM_OF_NODES;
-		System.out.println("average propagation 違う!!	: " + propagationTime);			//add
+		System.out.println("average propagation 	: " + propagationTime);			//add
 		// Double[] prop = propList.toArray(new Double[propList.size()]);
 		// median = median(bubble_sort(prop));
 		System.out.println("median propagation 	: " + median +"\n");
