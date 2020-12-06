@@ -16,7 +16,6 @@
 package SimBlock.node;
 
 import static SimBlock.settings.SimulationConfiguration.*;
-import static SimBlock.simulator.Main.*;
 import static SimBlock.simulator.Network.*;
 import static SimBlock.simulator.Simulator.*;
 import static SimBlock.simulator.Timer.*;
@@ -234,7 +233,6 @@ public class Node {
 				 checkFrequency();
 			}else if(block.getId()%10 == 0 && block.getHeight()>1){
 				changeNeighbors();
-				// changeNeighbors_v2();
 			}
 			
 			//add
@@ -280,11 +278,7 @@ public class Node {
 		Node removeNode;
 		Node addNode;
 
-		if(this.getNodeID()==10){
-			System.out.println(score.getScores().values());
-		}
-
-		removeNode = score.getWorstNodeWithRemove();	
+		removeNode = score.getWorstNodeWithRemove();
 		if(removeNode == this) return;
 	
 		removeNeighbor(removeNode);
@@ -306,67 +300,25 @@ public class Node {
 	}
 
 	//add
-	public void changeNeighbors_v2(){
-		
-		Node removeNode;
-		Node addNode;
-		int count = 1;
-
-		changeNeighbors();
-
-		Map<Node,Double> scores = new HashMap<>();
-
-		for(Map.Entry<Node,Double> i: score.getScores().entrySet()){
-			scores.put(i.getKey(),i.getValue());
-		}
-
-		for(Map.Entry<Node,Double> i: scores.entrySet()){
-			if(i.getValue()>=score.getAverageAllScore()){
-
-				removeNode = score.getWorstNodeWithRemove_v2();
-				if(removeNode == this) return;
-				removeNeighbor(removeNode);
-
-				workerList.remove(removeNode);
-
-				List<Node> keys = new ArrayList<Node>(score.getPreNodes());
-
-				while(true){
-					if(keys.size()>8){
-						addNode = keys.get(rand.nextInt(keys.size()));
-					}else{
-						addNode = getSimulatedNodes().get(rand.nextInt(NUM_OF_NODES-1));
-					}
-					if(addNode.getInbounds().size()>30){
-					}else if(addNode==removeNode){
-					}else if(addNeighbor(addNode)){
-						count++;
-						break;
-					}
-				}
-			}
-		}
-		nodeChangeNum(count);
-		return;
-	}
-
-	//add
 	public void checkFrequency(){
 		ArrayList<Node> neighbors = this.getOutbounds();
-		Node addNode;
-		int count = 0;
+		ArrayList<Node> node_over30Inbounds = new ArrayList<Node>();
 
+		Node addNode = getSimulatedNodes().get(rand.nextInt(NUM_OF_NODES-1));
+		while(addNode == this)addNode = getSimulatedNodes().get(rand.nextInt(NUM_OF_NODES-1));
+
+		int count = 0;
 
 		for(int i=0;i<neighbors.size();i++){
 
 			Node node = neighbors.get(i);
 			score.removeScore(node);
 			if(!workerList.contains(node) && removeNeighbor(node)){
-				List<Node> keys = new ArrayList<Node>(score.getPreNodes());
+				int size = score.getPreNodes().size();
 
 				while(true){
-					if(keys.size()>4){
-						addNode = keys.get(rand.nextInt(keys.size()));
+					if(size>8 && addNode!=this){
+						addNode = score.getBestNodeFromAllScores(node_over30Inbounds);
 					}else{
 						addNode = getSimulatedNodes().get(rand.nextInt(NUM_OF_NODES-1));
 					}
@@ -377,6 +329,8 @@ public class Node {
 						count++;
 						break;
 					}
+
+					node_over30Inbounds.add(addNode);
 				}
 			}
 		}
@@ -386,7 +340,7 @@ public class Node {
 
 	public int getHopCount(Block blcok){
 		if(hop_count.containsKey(block)){
-			System.out.println(hop_count.get(block));
+			// System.out.println(hop_count.get(block));
 			return hop_count.get(block);
 		}else{
 			return 0;

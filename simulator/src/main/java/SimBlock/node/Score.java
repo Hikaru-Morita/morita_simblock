@@ -26,6 +26,23 @@ public class Score{
 	public int getScoresSize(){return scores.size();}
 	public static double getPara(){return para;}
 
+
+	public Node getBestNodeFromAllScores(List<Node> node_over30Inbounds){
+		List<Node> nodes = this.getPreNodes();
+		nodes.removeAll(node_over30Inbounds);
+		Node node = selfNode;
+		score = 0;
+		
+		for(Node i : nodes){
+			if(score > allScores.get(i)){
+				score = allScores.get(i);
+				node = i;
+			}
+		}
+
+		return node;
+	}
+
 	//隣接ノード以外のノードリストを返す
 	public List<Node>getPreNodes(){
 		List<Node> nodes = new ArrayList<Node>(allScores.keySet());
@@ -112,36 +129,13 @@ public class Score{
 				worst = i;
 			}
 		}
-		if(selfNode.getNodeID()==10)System.out.println("worst score:" +scores.get(worst));
-		System.out.println("remove " + worst + ":" + scores.get(worst));
+		// if(selfNode.getNodeID()==10)System.out.println("worst score:" +scores.get(worst));
+		// System.out.println("remove " + worst + ":" + scores.get(worst));
 		scores.remove(worst);
 
 		// System.out.println("after  getWorstNodeWithRemove:" + scores.size());
 			
 		return worst;
-	}
-
-	public Node getWorstNodeWithRemove_v2(){
-		
-		System.out.println("before getWorstNodeWithRemove_v2:" + scores.size());
-		
-		if(scores.size() == 0) return selfNode;
-		worst = scores.keySet().iterator().next();
-		double worst_score = getAverageScore();
-		for(Node i: scores.keySet()){	
-			if(scores.get(worst)<scores.get(i)){
-				worst = i;
-				worst_score = scores.get(i);
-			}
-		}
-		if(worst_score > this.getAverageScore()){
-			scores.remove(worst);
-			return worst;
-		
-		}
-		System.out.println("after  getWorstNodeWithRemove_v2:" + scores.size());
-		
-		return selfNode;
 	}
 
 }
