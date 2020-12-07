@@ -94,9 +94,17 @@ public class Simulator {
 		}
 	}
 	public static PrintWriter OUT_CSV_FILE;
+	public static PrintWriter OUT_INDIVIDUAL_CSV_FILE = OUT_CSV_FILE;
 	static {
 		try{
-			OUT_CSV_FILE = new PrintWriter(new BufferedWriter(new FileWriter(new File(OUT_FILE_URI.resolve("./mpt.csv")),true)));
+			OUT_CSV_FILE = new PrintWriter(new BufferedWriter(new FileWriter(new File(OUT_FILE_URI.resolve("./average_bpt.csv")),true)));
+		} catch (IOException e){
+			e.printStackTrace();
+		}
+	}
+	static {
+		try{
+			OUT_INDIVIDUAL_CSV_FILE = new PrintWriter(new BufferedWriter(new FileWriter(new File(OUT_FILE_URI.resolve("./individual_bpt.csv")),true)));
 		} catch (IOException e){
 			e.printStackTrace();
 		}
@@ -161,10 +169,12 @@ public class Simulator {
 		System.out.println(block + ":" + block.getHeight());
 		for(Map.Entry<Integer, Long> timeEntry : propagation.entrySet()){
 			// System.out.println(timeEntry.getValue());
+			OUT_INDIVIDUAL_CSV_FILE.print(timeEntry.getValue() + ",");
 		}
 		System.out.println();
-		// OUT_CSV_FILE.flush();
-		
+		OUT_INDIVIDUAL_CSV_FILE.print("\n");
+
+		OUT_INDIVIDUAL_CSV_FILE.flush();
 	}	
 
 	public static void countInterval(long interval){
