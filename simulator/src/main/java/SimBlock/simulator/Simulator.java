@@ -170,6 +170,7 @@ public class Simulator {
 		for(Map.Entry<Integer, Long> timeEntry : propagation.entrySet()){
 			// System.out.println(timeEntry.getValue());
 			OUT_INDIVIDUAL_CSV_FILE.print(timeEntry.getValue() + ",");
+			OUT_INDIVIDUAL_CSV_FILE.print("\n");
 		}
 		System.out.println();
 		OUT_INDIVIDUAL_CSV_FILE.print("\n");
