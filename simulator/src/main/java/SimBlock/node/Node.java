@@ -230,9 +230,9 @@ public class Node {
 
 			//add
 			if(block.getId()% 60== 0 && block.getId()>1){
-				//  checkFrequency();
+				// checkFrequency();
 			}else if(block.getId()%10 == 0 && block.getHeight()>1){
-				changeNeighbors();
+				// changeNeighbors();
 				// changeNeighbors_v2();
 			}
 			
@@ -264,7 +264,7 @@ public class Node {
 
 			//add
 			addBF(block,this,to);
-			
+
 		}else{
 			sendingBlock = false;
 		}
@@ -299,7 +299,7 @@ public class Node {
 	
 		Node removeNode;
 		Node addNode;
-		int count = 1;
+		int count = 0;
 
 		changeNeighbors();
 
@@ -319,8 +319,6 @@ public class Node {
 				workerList.remove(removeNode);
 
 				List<Node> keys = new ArrayList<Node>(score.getPreNodes());
-
-				System.out.println("roop");
 
 				while(true){
 					if(keys.size()>8){
@@ -367,13 +365,12 @@ public class Node {
 					}
 
 					if(addNode.getInbounds().size()>30){
+						node_over30Inbounds.add(addNode);
 					}else if(addNode==node){
 					}else if(addNeighbor(addNode)){
 						count++;
 						break;
 					}
-
-					node_over30Inbounds.add(addNode);
 				}
 			}
 		}
