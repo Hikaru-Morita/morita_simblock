@@ -18,6 +18,7 @@ package SimBlock.simulator;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.Map;
+import java.util.spi.TimeZoneNameProvider;
 import java.util.HashMap;	//add
 import java.util.List;	//add
 
@@ -167,12 +168,14 @@ public class Simulator {
 	
 	public static void printPropagation(Block block,LinkedHashMap<Integer, Long> propagation){
 		System.out.println(block + ":" + block.getHeight());
+		int count = 0;
 		for(Map.Entry<Integer, Long> timeEntry : propagation.entrySet()){
 			// System.out.println(timeEntry.getValue());
-			OUT_INDIVIDUAL_CSV_FILE.print(timeEntry.getValue() + ",");
-			OUT_INDIVIDUAL_CSV_FILE.print("\n");
+			count ++;
+			// if(count == NUM_OF_NODES/2)OUT_INDIVIDUAL_CSV_FILE.print(timeEntry.getValue() + ",");
+			// OUT_INDIVIDUAL_CSV_FILE.print(timeEntry.getValue() + ",");
+			// OUT_INDIVIDUAL_CSV_FILE.print("\n");
 		}
-		System.out.println();
 		OUT_INDIVIDUAL_CSV_FILE.print("\n");
 
 		OUT_INDIVIDUAL_CSV_FILE.flush();
