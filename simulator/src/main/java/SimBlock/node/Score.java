@@ -11,7 +11,7 @@ public class Score{
 	private Map<Node,Double> scores = new HashMap<Node,Double>();
 	private Map<Node,Double> allScores = new HashMap<Node,Double>();
 	private double score = 0;
-	public static double para_ = 0.5;
+	public static double para_ = 8;
 	public static double para = para_/10;
 	private Node worst;
 	private Node selfNode;
@@ -114,14 +114,11 @@ public class Score{
 		if(selfNode.getOutbounds().contains(from))scores.put(from,score);
 	}
 
-	public Node getWorstNodeWithRemove(){
-		
-		// System.out.println("before getWorstNodeWithRemove:" + scores.size());
-		
+	public Node getWorstNode(){
 		if(scores.size() == 0) return selfNode;
-		worst = scores.keySet().iterator().next();
+			worst = scores.keySet().iterator().next();
 
-		for(Node i: scores.keySet()){
+			for(Node i: scores.keySet()){
 
 			// System.out.println("score " + i + ":" + scores.get(i));
 
@@ -129,6 +126,15 @@ public class Score{
 				worst = i;
 			}
 		}
+		return worst;
+	}
+
+	public Node getWorstNodeWithRemove(){
+		
+		// System.out.println("before getWorstNodeWithRemove:" + scores.size());
+		
+		Node worst = getWorstNode();
+
 		// if(selfNode.getNodeID()==10)System.out.println("worst score:" +scores.get(worst));
 		// System.out.println("remove " + worst + ":" + scores.get(worst));
 		scores.remove(worst);

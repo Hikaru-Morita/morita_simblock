@@ -18,6 +18,7 @@ package SimBlock.simulator;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.Map;
+import java.util.spi.TimeZoneNameProvider;
 import java.util.HashMap;	//add
 import java.util.List;	//add
 
@@ -46,7 +47,6 @@ public class Simulator {
 	public static long count = 0;			
 	public static double average_propagation = 0;
 	public static double average_propagation2 = 0;
-	public static double getAveProp(){return average_propagation/count;}
 	public static Map<Block,ArrayList<ArrayList<Node>>> bf = new HashMap<Block,ArrayList<ArrayList<Node>>>();
 	public static List<Double> propList = new ArrayList<>();
 	public static Map<Integer,Integer> node_change_num = new HashMap<Integer,Integer>();
@@ -67,6 +67,22 @@ public class Simulator {
 	}
 	// public static int changedSum(){}
 
+	public static double getTotalAveProp(){
+		long sum_propagation = 0;
+		int count = 0;
+		for(LinkedHashMap<Integer, Long> timeEntry : observedPropagations){
+			int count_prop=0;
+			long propagation = 0;
+			for(long one_prop : timeEntry.values()){
+				propagation = propagation + one_prop;
+				count_prop++;
+			}
+			sum_propagation = sum_propagation + propagation/count_prop;
+			count++;
+		}
+		return sum_propagation/count;
+	}
+
 	//add
 	public static URI CONF_FILE_URI;
 	public static URI OUT_FILE_URI;
@@ -79,9 +95,17 @@ public class Simulator {
 		}
 	}
 	public static PrintWriter OUT_CSV_FILE;
+	public static PrintWriter OUT_INDIVIDUAL_CSV_FILE = OUT_CSV_FILE;
 	static {
 		try{
-			OUT_CSV_FILE = new PrintWriter(new BufferedWriter(new FileWriter(new File(OUT_FILE_URI.resolve("./mpt.csv")),true)));
+			OUT_CSV_FILE = new PrintWriter(new BufferedWriter(new FileWriter(new File(OUT_FILE_URI.resolve("./average_bpt.csv")),true)));
+		} catch (IOException e){
+			e.printStackTrace();
+		}
+	}
+	static {
+		try{
+			OUT_INDIVIDUAL_CSV_FILE = new PrintWriter(new BufferedWriter(new FileWriter(new File(OUT_FILE_URI.resolve("./individual_bpt.csv")),true)));
 		} catch (IOException e){
 			e.printStackTrace();
 		}
@@ -144,45 +168,17 @@ public class Simulator {
 	
 	public static void printPropagation(Block block,LinkedHashMap<Integer, Long> propagation){
 		System.out.println(block + ":" + block.getHeight());
-
-		long propagationTime = 0;	//add
-		// count++; //add
-		long num = 0;	//add
-
-		long median = 0;
-
+		int count = 0;
 		for(Map.Entry<Integer, Long> timeEntry : propagation.entrySet()){
-			//add
-			if(num == (NUM_OF_NODES/2))median = timeEntry.getValue();
-			if(timeEntry.getKey()==100){
-				propagationTime += timeEntry.getValue();  // time block propagated to all nodes. 
-				count++;
-			}
-			propList.add((double)propagationTime);	//add
+			// System.out.println(timeEntry.getValue());
+			count ++;
+			// if(count == NUM_OF_NODES/2)OUT_INDIVIDUAL_CSV_FILE.print(timeEntry.getValue() + ",");
+			// OUT_INDIVIDUAL_CSV_FILE.print(timeEntry.getValue() + ",");
+			// OUT_INDIVIDUAL_CSV_FILE.print("\n");
+		}
+		OUT_INDIVIDUAL_CSV_FILE.print("\n");
 
-			// if(block.getHeight() >= ENDBLOCKHEIGHT-10){
-			// 	// System.out.println(timeEntry.getValue());
-			// 	OUT_CSV_FILE.print(timeEntry.getValue() + "\n");
-			// }
-			num++;
-		}
-		// propList.add((double)propagationTime);	//add
-		// add
-		average_propagation2 += propagationTime/NUM_OF_NODES;
-		System.out.println("average propagation 	: " + propagationTime);			//add
-		// Double[] prop = propList.toArray(new Double[propList.size()]);
-		// median = median(bubble_sort(prop));
-		System.out.println("median propagation 	: " + median +"\n");
-		average_propagation = average_propagation + median;
-		if(count >= ENDBLOCKHEIGHT){
-			// System.out.println("\naverage median propagation : "+average_propagation/count);
-			// System.out.println("\naverage oneNode propagation : "+average_propagation/count);
-			System.out.println("\naverage interval : " + sum_interval/interval_count);
-		}
-		// System.out.println("median propagation  :" + median);
-		
-		// OUT_CSV_FILE.flush();
-		
+		OUT_INDIVIDUAL_CSV_FILE.flush();
 	}	
 
 	public static void countInterval(long interval){

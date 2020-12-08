@@ -230,9 +230,10 @@ public class Node {
 
 			//add
 			if(block.getId()% 60== 0 && block.getId()>1){
-				 checkFrequency();
+				// checkFrequency();
 			}else if(block.getId()%10 == 0 && block.getHeight()>1){
-				changeNeighbors();
+				// changeNeighbors();
+				// changeNeighbors_v2();
 			}
 			
 			//add
@@ -263,7 +264,7 @@ public class Node {
 
 			//add
 			addBF(block,this,to);
-			
+
 		}else{
 			sendingBlock = false;
 		}
@@ -284,19 +285,59 @@ public class Node {
 		removeNeighbor(removeNode);
 		workerList.remove(removeNode);
 
-		List<Node> keys = new ArrayList<Node>(score.getPreNodes());
-
 		while(true){
-			if(keys.size()>8){
-				addNode = keys.get(rand.nextInt(keys.size()));
-			}else{
-				addNode = getSimulatedNodes().get(rand.nextInt(NUM_OF_NODES-1));
-			}
-
+			addNode = getSimulatedNodes().get(rand.nextInt(NUM_OF_NODES));
+			
 			if(addNode.getInbounds().size()>30){
 			}else if(addNode==removeNode){
 			}else if(addNeighbor(addNode))break;
 		}
+	}
+
+	//add
+	public void changeNeighbors_v2(){
+	
+		Node removeNode;
+		Node addNode;
+		int count = 0;
+
+		changeNeighbors();
+
+		Map<Node,Double> scores = new HashMap<>();
+
+		for(Map.Entry<Node,Double> i: score.getScores().entrySet()){
+			scores.put(i.getKey(),i.getValue());
+		}
+
+		for(Map.Entry<Node,Double> i: scores.entrySet()){
+			if(i.getValue()>=score.getAverageAllScore()){
+
+				removeNode = score.getWorstNode();
+
+				if(removeNode == this) return;
+				removeNeighbor(removeNode);
+				workerList.remove(removeNode);
+
+				List<Node> keys = new ArrayList<Node>(score.getPreNodes());
+
+				while(true){
+					if(keys.size()>8){
+						addNode = keys.get(rand.nextInt(keys.size()));
+					}else{
+						addNode = getSimulatedNodes().get(rand.nextInt(NUM_OF_NODES-1));
+					}
+					if(addNode.getInbounds().size()>30){
+					}else if(addNode==removeNode){
+					}else if(addNeighbor(addNode)){
+						count++;
+						score.removeScore(removeNode);
+						break;
+					}
+				}
+			}
+		}
+		nodeChangeNum(count);
+		return;
 	}
 
 	//add
@@ -324,13 +365,12 @@ public class Node {
 					}
 
 					if(addNode.getInbounds().size()>30){
+						node_over30Inbounds.add(addNode);
 					}else if(addNode==node){
 					}else if(addNeighbor(addNode)){
 						count++;
 						break;
 					}
-
-					node_over30Inbounds.add(addNode);
 				}
 			}
 		}
@@ -347,4 +387,3 @@ public class Node {
 		}
 	}
 }
-
