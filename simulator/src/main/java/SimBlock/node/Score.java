@@ -11,7 +11,7 @@ public class Score{
 	private Map<Node,Double> scores = new HashMap<Node,Double>();
 	private Map<Node,Double> allScores = new HashMap<Node,Double>();
 	private double score = 0;
-	public static double para_ = 8;
+	public static double para_ = 5;
 	public static double para = para_/10;
 	private Node worst;
 	private Node selfNode;
@@ -34,7 +34,7 @@ public class Score{
 		score = 0;
 		
 		for(Node i : nodes){
-			if(score > allScores.get(i)){
+			if(score < allScores.get(i)){
 				score = allScores.get(i);
 				node = i;
 			}
@@ -122,7 +122,7 @@ public class Score{
 
 			// System.out.println("score " + i + ":" + scores.get(i));
 
-			if(scores.get(worst)<scores.get(i)){
+			if(scores.get(worst)>scores.get(i)){
 				worst = i;
 			}
 		}
