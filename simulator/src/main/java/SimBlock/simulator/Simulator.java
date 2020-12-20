@@ -178,7 +178,7 @@ public class Simulator {
 			for(Map.Entry<Integer, Long> timeEntry : propagation.entrySet()){
 				// System.out.println(timeEntry.getValue());
 				count ++;
-				if(count == NUM_OF_NODES/2)OUT_INDIVIDUAL_CSV_FILE.print(timeEntry.getValue() + ",");
+				// if(count == NUM_OF_NODES/2)OUT_INDIVIDUAL_CSV_FILE.print(timeEntry.getValue() + ",");
 				OUT_INDIVIDUAL_CSV_FILE.print(timeEntry.getValue() + ",");
 				// OUT_INDIVIDUAL_CSV_FILE.print("\n");
 			}
