@@ -233,7 +233,7 @@ public class Node {
 				checkFrequency();
 			}else if(block.getId()%10 == 0 && block.getHeight()>1){
 				// changeNeighbors();
-				// changeNeighbors_v2();
+				changeNeighbors_v2();
 			}
 			
 			//add
