@@ -174,8 +174,8 @@ public class Simulator {
 		10ブロックに一度ノード全体のブロック伝播をファイル"individual_bpt.csv"に出力
 		目的：出力ファイルのサイズ削減
 		**/
-		OUT_INDIVIDUAL_CSV_FILE.print(block.getHeight()+",");
 		if(propagation.size()==NUM_OF_NODES && block.getHeight()%10==0){
+			OUT_INDIVIDUAL_CSV_FILE.print(block.getHeight()+",");
 			for(Map.Entry<Integer, Long> timeEntry : propagation.entrySet()){
 				// System.out.println(timeEntry.getValue());
 				count ++;
