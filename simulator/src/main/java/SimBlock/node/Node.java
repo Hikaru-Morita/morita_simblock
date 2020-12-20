@@ -318,14 +318,9 @@ public class Node {
 				removeNeighbor(removeNode);
 				workerList.remove(removeNode);
 
-				List<Node> keys = new ArrayList<Node>(score.getPreNodes());
-
 				while(true){
-					if(keys.size()>8){
-						addNode = keys.get(rand.nextInt(keys.size()));
-					}else{
-						addNode = getSimulatedNodes().get(rand.nextInt(NUM_OF_NODES-1));
-					}
+					addNode = getSimulatedNodes().get(rand.nextInt(NUM_OF_NODES-1));
+				
 					if(addNode.getInbounds().size()>30){
 					}else if(addNode==removeNode){
 					}else if(addNeighbor(addNode)){
