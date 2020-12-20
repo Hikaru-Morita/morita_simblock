@@ -169,16 +169,23 @@ public class Simulator {
 	public static void printPropagation(Block block,LinkedHashMap<Integer, Long> propagation){
 		System.out.println(block + ":" + block.getHeight());
 		int count = 0;
-		for(Map.Entry<Integer, Long> timeEntry : propagation.entrySet()){
-			// System.out.println(timeEntry.getValue());
-			count ++;
-			// if(count == NUM_OF_NODES/2)OUT_INDIVIDUAL_CSV_FILE.print(timeEntry.getValue() + ",");
-			// OUT_INDIVIDUAL_CSV_FILE.print(timeEntry.getValue() + ",");
-			// OUT_INDIVIDUAL_CSV_FILE.print("\n");
-		}
-		OUT_INDIVIDUAL_CSV_FILE.print("\n");
 
-		OUT_INDIVIDUAL_CSV_FILE.flush();
+		/**
+		10ブロックに一度ノード全体のブロック伝播をファイル"individual_bpt.csv"に出力
+		目的：出力ファイルのサイズ削減
+		**/
+		if(propagation.size()==NUM_OF_NODES && block.getHeight()%10==0){
+			for(Map.Entry<Integer, Long> timeEntry : propagation.entrySet()){
+				// System.out.println(timeEntry.getValue());
+				count ++;
+				if(count == NUM_OF_NODES/2)OUT_INDIVIDUAL_CSV_FILE.print(timeEntry.getValue() + ",");
+				OUT_INDIVIDUAL_CSV_FILE.print(timeEntry.getValue() + ",");
+				// OUT_INDIVIDUAL_CSV_FILE.print("\n");
+			}
+			OUT_INDIVIDUAL_CSV_FILE.print("\n");
+
+			OUT_INDIVIDUAL_CSV_FILE.flush();
+		}
 	}	
 
 	public static void countInterval(long interval){

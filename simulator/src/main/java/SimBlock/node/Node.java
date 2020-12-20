@@ -230,7 +230,7 @@ public class Node {
 
 			//add
 			if(block.getId()% 60== 0 && block.getId()>1){
-				// checkFrequency();
+				checkFrequency();
 			}else if(block.getId()%10 == 0 && block.getHeight()>1){
 				// changeNeighbors();
 				// changeNeighbors_v2();
@@ -355,9 +355,8 @@ public class Node {
 			Node node = neighbors.get(i);
 			score.removeScore(node);
 			if(!workerList.contains(node) && removeNeighbor(node)){
-				int size = score.getPreNodes().size();
-
 				while(true){
+					int size = score.getPreNodes().size();
 					if(size>8 && addNode!=this){
 						addNode = score.getBestNodeFromAllScores(node_over30Inbounds);
 					}else{
@@ -365,12 +364,12 @@ public class Node {
 					}
 
 					if(addNode.getInbounds().size()>30){
-						node_over30Inbounds.add(addNode);
 					}else if(addNode==node){
 					}else if(addNeighbor(addNode)){
 						count++;
 						break;
 					}
+					node_over30Inbounds.add(addNode);
 				}
 			}
 		}
