@@ -16,6 +16,7 @@
 package SimBlock.simulator;
 
 import static SimBlock.settings.SimulationConfiguration.*;
+import static SimBlock.settings.NetworkConfiguration.*;
 import static SimBlock.simulator.Network.*;
 import static SimBlock.simulator.Simulator.*;
 import static SimBlock.simulator.Timer.*;
@@ -98,6 +99,10 @@ public class Main {
 				MiningTask task = (MiningTask) getTask();
 				if(task.getParent().getHeight() == j) j++;
 				if(j > ENDBLOCKHEIGHT){break;}
+				if(j == ENDBLOCKHEIGHT/2){
+					long[] num = {24000000, 250000, 10000000, 65000, 14000000, 175000, 6 * 1000000};
+					// change_dl_bw_2015(num);
+				}
 				//*
 				// if(j%100==0 || j==2) writeGraph(j);
 			}
