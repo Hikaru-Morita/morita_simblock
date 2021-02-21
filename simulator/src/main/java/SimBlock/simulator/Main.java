@@ -78,6 +78,7 @@ public class Main {
 	}
 
 	public static void main(String[] args){
+		setHeaderINDIVISUALCSV();
 		long start = System.currentTimeMillis();
 
 		setTargetInterval(INTERVAL);

@@ -105,10 +105,19 @@ public class Simulator {
 	}
 	static {
 		try{
-			OUT_INDIVIDUAL_CSV_FILE = new PrintWriter(new BufferedWriter(new FileWriter(new File(OUT_FILE_URI.resolve("./individual_bpt.csv")),true)));
+			OUT_INDIVIDUAL_CSV_FILE = new PrintWriter(new BufferedWriter(new FileWriter(new File(OUT_FILE_URI.resolve("./individual_bpt.csv")),false)));
 		} catch (IOException e){
 			e.printStackTrace();
 		}
+	}
+	// individual_bpt.csv にヘッダーを設定
+	public static void setHeaderINDIVISUALCSV(){
+		OUT_INDIVIDUAL_CSV_FILE.print("block height"+",");
+		for(int count=0;count<NUM_OF_NODES+1;count++){
+			OUT_INDIVIDUAL_CSV_FILE.print(count+",");
+		}
+		OUT_INDIVIDUAL_CSV_FILE.print("\n");
+		return ;
 	}
 
 	public static void addNode(Node node){
