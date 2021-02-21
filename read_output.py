@@ -2,25 +2,22 @@ import json
 from collections import OrderedDict
 import pprint
 
-with open('./simulator/src/dist/output/output.json') as f:
-    df_list = json.load(f)
+import pandas
 
-def print_jason():
-    pprint.pprint(df_list,width=40)
-    for list in df_list:
-        print(list.get("kind"))
+NUM_START = 50
 
-def getFlowBlock(blockID):
-    count = 0
-    propagation = 0
-    for list in df_list:
-        if list.get("kind") == "flow-block":
-            content = list.get("content")
-            if content.get("block-id") == blockID:
-                count = count + 1
-                propagation = propagation + content.get("reception-timestamp") - content.get("transmission-timestamp")
-    return [count, propagation]
+fname = './simulator/src/dist/output/individual_bpt.csv'
+reader = pandas.read_csv(fname, chunksize=100)
 
 if __name__ == "__main__":
-    for i in range(10):
-        print(getFlowBlock(i))
+    chunk_count = 0
+
+    for chunk in reader:
+        bpt_count = 0
+        chunk_count = chunk_count + 1
+        print(chunk['500'])
+
+        # chunk's stracture is (100, 1002)
+        if chunk_count >= NUM_START:
+            for bpt in chunk:
+                meadian_bpt = 1
