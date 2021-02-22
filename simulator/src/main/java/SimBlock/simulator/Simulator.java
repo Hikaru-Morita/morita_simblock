@@ -105,7 +105,7 @@ public class Simulator {
 	}
 	static {
 		try{
-			OUT_INDIVIDUAL_CSV_FILE = new PrintWriter(new BufferedWriter(new FileWriter(new File(OUT_FILE_URI.resolve("./individual_bpt.csv")),false)));
+			OUT_INDIVIDUAL_CSV_FILE = new PrintWriter(new BufferedWriter(new FileWriter(new File(OUT_FILE_URI.resolve("./individual/"+(int)(Score.getPara()*10)+".csv")),false)));
 		} catch (IOException e){
 			e.printStackTrace();
 		}
