@@ -113,8 +113,9 @@ public class Simulator {
 	// individual_bpt.csv にヘッダーを設定
 	public static void setHeaderINDIVISUALCSV(){
 		OUT_INDIVIDUAL_CSV_FILE.print("block height"+",");
-		for(int count=0;count<NUM_OF_NODES+1;count++){
-			OUT_INDIVIDUAL_CSV_FILE.print(count+",");
+		for(int count=1;count<=NUM_OF_NODES;count++){
+			if(count == NUM_OF_NODES) OUT_INDIVIDUAL_CSV_FILE.print(count);
+			else OUT_INDIVIDUAL_CSV_FILE.print(count+",");
 		}
 		OUT_INDIVIDUAL_CSV_FILE.print("\n");
 		return ;
@@ -189,7 +190,8 @@ public class Simulator {
 				// System.out.println(timeEntry.getValue());
 				count ++;
 				// if(count == NUM_OF_NODES/2)OUT_INDIVIDUAL_CSV_FILE.print(timeEntry.getValue() + ",");
-				OUT_INDIVIDUAL_CSV_FILE.print(timeEntry.getValue() + ",");
+				if(count == NUM_OF_NODES)OUT_INDIVIDUAL_CSV_FILE.print(timeEntry.getValue());
+				else OUT_INDIVIDUAL_CSV_FILE.print(timeEntry.getValue() + ",");
 				// OUT_INDIVIDUAL_CSV_FILE.print("\n");
 			}
 			OUT_INDIVIDUAL_CSV_FILE.print("\n");
