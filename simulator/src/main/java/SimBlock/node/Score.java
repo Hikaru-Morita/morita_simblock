@@ -11,7 +11,7 @@ public class Score{
 	private Map<Node,Double> scores = new HashMap<Node,Double>();
 	private Map<Node,Double> allScores = new HashMap<Node,Double>();
 	private double score = 0;
-	public static double para_ = 8;
+public static double para_ = 8;
 	public static double para = para_/10;
 	private Node worst;
 	private Node selfNode;
@@ -31,7 +31,7 @@ public class Score{
 		List<Node> nodes = this.getPreNodes();
 		nodes.removeAll(node_over30Inbounds);
 		Node node = selfNode;
-		score = 0;
+		score = 1000000000;
 		
 		for(Node i : nodes){
 			if(score < allScores.get(i)){
@@ -108,6 +108,7 @@ public class Score{
 			score = allScores.get(from);
 			allScores.remove(from);
 			score = (1-para)*(score)+para*(t_inv-t_block);
+
 		}
 		allScores.put(from, score);
 		// calcuate average of all neighbor nodes score 
@@ -122,7 +123,7 @@ public class Score{
 
 			// System.out.println("score " + i + ":" + scores.get(i));
 
-			if(scores.get(worst)>scores.get(i)){
+			if(scores.get(worst)<scores.get(i)){
 				worst = i;
 			}
 		}

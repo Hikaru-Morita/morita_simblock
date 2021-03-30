@@ -16,6 +16,7 @@
 package SimBlock.simulator;
 
 import static SimBlock.settings.SimulationConfiguration.*;
+import static SimBlock.settings.NetworkConfiguration.*;
 import static SimBlock.simulator.Network.*;
 import static SimBlock.simulator.Simulator.*;
 import static SimBlock.simulator.Timer.*;
@@ -78,6 +79,7 @@ public class Main {
 	}
 
 	public static void main(String[] args){
+		setHeaderINDIVISUALCSV();
 		long start = System.currentTimeMillis();
 
 		setTargetInterval(INTERVAL);
@@ -98,8 +100,8 @@ public class Main {
 				MiningTask task = (MiningTask) getTask();
 				if(task.getParent().getHeight() == j) j++;
 				if(j > ENDBLOCKHEIGHT){break;}
-				//*
 				// if(j%100==0 || j==2) writeGraph(j);
+				// if(j%72==0) change_bw_2015();
 			}
 			runTask();
 		}
