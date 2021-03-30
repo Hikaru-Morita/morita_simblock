@@ -51,12 +51,6 @@ public class NetworkConfiguration {
 	private static final long[] DOWNLOAD_BANDWIDTH_2015_3times = {8000000, 24000000, 2500000, 10000000, 17500000, 14000000, 6 * 1000000};
 	private static final long[] DOWNLOAD_BANDWIDTH_2015_3times_night = {25000000, 8000000, 6500000, 10000000, 5500000, 5000000, 6 * 1000000};
 	private static long[] DOWNLOAD_BANDWIDTH_2019_3times = {52000000, 20000000, 180000000, 7800000, 7800000, 9900000, 6 * 1000000};
-	
-	public static void change_dl_bw_2015(){
-		if(DOWNLOAD_BANDWIDTH == DOWNLOAD_BANDWIDTH_2015_3times)DOWNLOAD_BANDWIDTH = DOWNLOAD_BANDWIDTH_2015_3times_night;
-		else DOWNLOAD_BANDWIDTH = DOWNLOAD_BANDWIDTH_2015_3times;
-		return ;
-	} 
 
 	public static long[] DOWNLOAD_BANDWIDTH = DOWNLOAD_BANDWIDTH_2015_3times;
 
@@ -69,7 +63,19 @@ public class NetworkConfiguration {
 	private static final long[] UPLOAD_BANDWIDTH_2015_3times_night =  { 4700000,  4100000, 1800000,  5300000,  1400000,  2200000, 6 * 1000000};
 	private static final long[] UPLOAD_BANDWIDTH_2019_3times =  { 19200000,  10700000, 5800000,  8700000,  5200000,  5300000, 6 * 1000000};
 
-	public static final long[] UPLOAD_BANDWIDTH = UPLOAD_BANDWIDTH_2015_3times;
+	public static long[] UPLOAD_BANDWIDTH = UPLOAD_BANDWIDTH_2015_3times;
+
+	public static void change_bw_2015(){
+		if(DOWNLOAD_BANDWIDTH == DOWNLOAD_BANDWIDTH_2015_3times){
+			DOWNLOAD_BANDWIDTH = DOWNLOAD_BANDWIDTH_2015_3times_night;
+			UPLOAD_BANDWIDTH = UPLOAD_BANDWIDTH_2015_3times_night;
+		}
+		else {
+			DOWNLOAD_BANDWIDTH = DOWNLOAD_BANDWIDTH_2015_3times;
+			UPLOAD_BANDWIDTH = UPLOAD_BANDWIDTH_2015_3times;
+		}
+		return ;
+	} 
 
 	// Each value means the rate of the number of nodes in the corresponding region to the number of all nodes.
 	private static final double[] REGION_DISTRIBUTION_BITCOIN_2015 = { 0.3869, 0.5159, 0.0113, 0.0574, 0.0119, 0.0166};
