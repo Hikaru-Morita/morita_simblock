@@ -229,11 +229,11 @@ public class Node {
 			this.receiveBlock(block);
 
 			//add
-			if(block.getId()% 60== 0 && block.getId()>1){
+			if(block.getId()% 20== 0 && block.getId()>1){
 				checkFrequency();
 			}else if(block.getId()%10 == 0 && block.getHeight()>1){
 				// changeNeighbors();
-				changeNeighbors_v2();
+				// changeNeighbors_v2();
 			}
 			
 			//add
@@ -288,7 +288,7 @@ public class Node {
 		while(true){
 			addNode = getSimulatedNodes().get(rand.nextInt(NUM_OF_NODES));
 			
-			if(addNode.getInbounds().size()>30){
+			if(addNode.getInbounds().size()>=30){
 			}else if(addNode==removeNode){
 			}else if(addNeighbor(addNode))break;
 		}
@@ -353,7 +353,8 @@ public class Node {
 				while(true){
 					int size = score.getPreNodes().size();
 					if(size>8 && addNode!=this){
-						addNode = score.getBestNodeFromAllScores(node_over30Inbounds);
+						// addNode = score.getBestNodeFromAllScores(node_over30Inbounds);
+						addNode = getSimulatedNodes().get(rand.nextInt(NUM_OF_NODES-1));
 					}else{
 						addNode = getSimulatedNodes().get(rand.nextInt(NUM_OF_NODES-1));
 					}
@@ -363,6 +364,7 @@ public class Node {
 					}else if(addNeighbor(addNode)){
 						count++;
 						break;
+						// return;
 					}
 					node_over30Inbounds.add(addNode);
 				}
