@@ -55,7 +55,10 @@ public class Node {
 
 	// ホップのカウント用　フォークを考慮している
 	private Map<Block, Integer> hop_count = new HashMap<Block, Integer>();
-
+	private static Map<Integer, Integer> long_hop_count = new HashMap<Integer, Integer>();
+	private static long longHopTime = 0;
+	private static long totalLongHopTime = 0;
+	
 	private long processingTime = 2;
 
 	//add
@@ -227,6 +230,20 @@ public class Node {
 			Block block = ((BlockMessageTask) message).getBlock();
 			downloadingBlocks.remove(block);
 			this.receiveBlock(block);
+
+			// 異なる地域間でのブロック伝播
+			if(message.getTo().getRegion()!=message.getFrom().getRegion()){
+				if(!long_hop_count.containsKey(block.getHeight())){
+					long_hop_count.put(block.getHeight(),0);
+					totalLongHopTime = totalLongHopTime + longHopTime;
+					longHopTime = 0;
+				}
+				long_hop_count.put(block.getHeight(), long_hop_count.get(block.getHeight())+1);
+				// System.out.println(block.getHeight() + ": " + (getCurrentTime()-block.getTime()) + ": " + long_hop_count.get(block.getHeight()));
+				longHopTime = getCurrentTime()-block.getTime();
+				// if(block.getHeight()==500)System.out.println(long_hop_count);
+				System.out.println(totalLongHopTime);
+			}
 
 			//add
 			if(block.getId()% 20== 0 && block.getId()>1){
