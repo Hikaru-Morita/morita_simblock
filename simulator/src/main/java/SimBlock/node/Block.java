@@ -27,7 +27,7 @@ public class Block {
 	private static int latestId = 0;
 
 	//add
-	private int recievedNodeCount = 0;
+	private int receivedNodeCount = 0;
 	private long BFT = 0;
 
 	public Block(int height, Block parent, Node creator,long generatedTime){
@@ -77,10 +77,10 @@ public class Block {
 
 	//add
 	// this method is for mesure the propagation time 10% to 90%
-	public void addRecievedNodeCount(){
-		recievedNodeCount++;
+	public void addReceivedNodeCount(){
+		receivedNodeCount++;
 		int per = 50;
-		if(recievedNodeCount==NUM_OF_NODES*per/100){
+		if(receivedNodeCount==NUM_OF_NODES*per/100){
 			BFT = getCurrentTime() - this.generatedTime;
 			// System.out.println("BFT_"+ per +"% :" + BFT);
 		}
