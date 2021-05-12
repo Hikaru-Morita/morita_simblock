@@ -162,10 +162,15 @@ public class Node {
 	public void receiveBlock(Block receivedBlock){
 		Block sameHeightBlock;
 
+		// ノードがあるブロックを受信した場合にカウント
 		if(!node_has_block.containsKey(receivedBlock.getId())){
 			node_has_block.put(receivedBlock.getId(),1);
 		}else{
 			node_has_block.put(receivedBlock.getId(),node_has_block.get(receivedBlock.getId())+1);
+			// System.out.println("recieved block:"+ node_has_block.get(receivedBlock.getId()) + ":" + receivedBlock);
+			if(node_has_block.get(receivedBlock.getId())%10==0){
+				System.out.println(receivedBlock.getHeight() +  " 伝播率:" + node_has_block.get(receivedBlock.getId())/1000.0 + " vaild:" + vaild_inv_count + " all:" + all_inv_count);
+			}
 		}
 
 		if(this.block == null){
