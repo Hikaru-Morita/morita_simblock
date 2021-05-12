@@ -164,9 +164,8 @@ public class Node {
 		Block sameHeightBlock;
 		Integer[] list = {0,0,0};
 
-		// ノードがあるブロックを受信した場合にカウント
+		// ノードがブロックを受信した場合にカウント
 		if(!node_has_block.containsKey(receivedBlock.getId())){
-			list = node_has_block.get(receivedBlock.getId());
 			list[0] = list[0]+1;
 			node_has_block.put(receivedBlock.getId(),list);
 		}else{
@@ -175,7 +174,7 @@ public class Node {
 			node_has_block.put(receivedBlock.getId(),list);
 			// System.out.println("received block:"+ node_has_block.get(receivedBlock.getId()) + ":" + receivedBlock);
 			if(node_has_block.get(receivedBlock.getId())[0]%10==0){
-				System.out.println(receivedBlock.getHeight() +  " 伝播率:" + node_has_block.get(receivedBlock.getId())[0]/1000.0 + " vaild:" + vaild_inv_count + " all:" + all_inv_count);
+				System.out.println(receivedBlock +" "+ receivedBlock.getHeight() +  " 伝播率:" + node_has_block.get(receivedBlock.getId())[0] + " =" + node_has_block.get(receivedBlock.getId())[1] + "/" + node_has_block.get(receivedBlock.getId())[2]);
 			}
 		}
 
@@ -214,7 +213,8 @@ public class Node {
 					putTask(task);
 					downloadingBlocks.add(block);
 
-					vaild_inv_count = addInvCount(vaild_inv_count,block);
+					vaild_inv_count = node_has_block.get(block.getId())[1];
+					node_has_block.get(block.getId())[1] = addInvCount(vaild_inv_count,block);
 				}else{
 
 					// get orphan block
@@ -226,7 +226,8 @@ public class Node {
 						if(node_has_block.containsKey(block.getId())&&node_has_block.get(block.getId())[0]==490){
 							System.out.println(block + ":" + block.getId() + ":" + node_has_block.get(block.getId()));
 						}
-						vaild_inv_count = addInvCount(vaild_inv_count,block);
+						vaild_inv_count = node_has_block.get(block.getId())[1];
+						node_has_block.get(block.getId())[1] = addInvCount(vaild_inv_count,block);
 					}
 				}
 
@@ -235,12 +236,14 @@ public class Node {
 				if(block.getTime() != -1){
 					score.addScore(m.getFrom(),(int)getCurrentTime(),(int)m.getBlock().getTime());
 				}
-
-				// 総invメッセージのカウント
-				all_inv_count =addInvCount(all_inv_count,block);
-
-				// if(block.getHeight()==ENDBLOCKHEIGHT)System.out.println(vaild_inv_count + " : " + all_inv_count);
 			}
+
+			// 総invメッセージのカウント
+			all_inv_count = node_has_block.get(block.getId())[2];
+			node_has_block.get(block.getId())[2] = addInvCount(all_inv_count,block);
+
+			// if(block.getHeight()==ENDBLOCKHEIGHT)System.out.println(vaild_inv_count + " : " + all_inv_count);
+
 
 			//add
 			// if(!block_prop.containsKey(block)){
@@ -254,6 +257,7 @@ public class Node {
 			// 		// num = 0;
 			// 	}
 			// }
+			
 		}
 
 		if(message instanceof RecMessageTask){
@@ -294,9 +298,9 @@ public class Node {
 
 			//add
 			if(block.getId()% 20== 0 && block.getId()>1){
-				checkFrequency();
+				// checkFrequency();
 			}else if(block.getId()%10 == 0 && block.getHeight()>1){
-				// changeNeighbors();
+				changeNeighbors();
 				// changeNeighbors_v2();
 			}
 			
@@ -447,22 +451,24 @@ public class Node {
 		}
 	}
 
-	public int addInvCount(int inv_count, Block block){
-		if(node_has_block.containsKey(block.getId())){
-			if(block.getHeight()>(ENDBLOCKHEIGHT/2)){
-				inv_count++;
-			}
-		}
-		return inv_count;
-	}
-
 	// public int addInvCount(int inv_count, Block block){
 	// 	if(node_has_block.containsKey(block.getId())){
-	// 		if(block.getHeight()>(ENDBLOCKHEIGHT/2)&&node_has_block.get(block.getId())[0]<=(NUM_OF_NODES/2)){
+	// 		if(block.getHeight()>(ENDBLOCKHEIGHT/2)){
 	// 			inv_count++;
 	// 		}
 	// 	}
+
+	
 	// 	return inv_count;
 	// }
+
+	public int addInvCount(int inv_count, Block block){
+		if(node_has_block.containsKey(block.getId())){
+			if(block.getHeight()>(ENDBLOCKHEIGHT/2)&&node_has_block.get(block.getId())[0]<=(NUM_OF_NODES/5)){
+				inv_count++;
+			}
+		}else inv_count++;
+		return inv_count;
+	}
 
 }
