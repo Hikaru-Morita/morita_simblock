@@ -162,21 +162,21 @@ public class Node {
 
 	public void receiveBlock(Block receivedBlock){
 		Block sameHeightBlock;
-		Integer[] list = {0,0,0};
+		// Integer[] list = {0,0,0};
 
-		// ノードがブロックを受信した場合にカウント
-		if(!node_has_block.containsKey(receivedBlock.getId())){
-			list[0] = list[0]+1;
-			node_has_block.put(receivedBlock.getId(),list);
-		}else{
-			list = node_has_block.get(receivedBlock.getId());
-			list[0] = list[0]+1;
-			node_has_block.put(receivedBlock.getId(),list);
-			// System.out.println("received block:"+ node_has_block.get(receivedBlock.getId()) + ":" + receivedBlock);
-			if(node_has_block.get(receivedBlock.getId())[0]%10==0){
-				System.out.println(receivedBlock +" "+ receivedBlock.getHeight() +  " 伝播率:" + node_has_block.get(receivedBlock.getId())[0] + " =" + node_has_block.get(receivedBlock.getId())[1] + "/" + node_has_block.get(receivedBlock.getId())[2]);
-			}
-		}
+		// // ノードがブロックを受信した場合にカウント
+		// if(!node_has_block.containsKey(receivedBlock.getId())){
+		// 	list[0] = list[0]+1;
+		// 	node_has_block.put(receivedBlock.getId(),list);
+		// }else{
+		// 	list = node_has_block.get(receivedBlock.getId());
+		// 	list[0] = list[0]+1;
+		// 	node_has_block.put(receivedBlock.getId(),list);
+		// 	// System.out.println("received block:"+ node_has_block.get(receivedBlock.getId()) + ":" + receivedBlock);
+		// 	if(node_has_block.get(receivedBlock.getId())[0]%10==0){
+		// 		System.out.println(receivedBlock +" "+ receivedBlock.getHeight() +  " 伝播率:" + node_has_block.get(receivedBlock.getId())[0] + " =" + node_has_block.get(receivedBlock.getId())[1] + "/" + node_has_block.get(receivedBlock.getId())[2]);
+		// 	}
+		// }
 
 		if(this.block == null){
 			this.addToChain(receivedBlock);
@@ -213,6 +213,7 @@ public class Node {
 					putTask(task);
 					downloadingBlocks.add(block);
 
+					receivedNodeCount(block);
 					vaild_inv_count = node_has_block.get(block.getId())[1];
 					node_has_block.get(block.getId())[1] = addInvCount(vaild_inv_count,block);
 				}else{
@@ -226,6 +227,8 @@ public class Node {
 						if(node_has_block.containsKey(block.getId())&&node_has_block.get(block.getId())[0]==490){
 							System.out.println(block + ":" + block.getId() + ":" + node_has_block.get(block.getId()));
 						}
+
+						receivedNodeCount(block);
 						vaild_inv_count = node_has_block.get(block.getId())[1];
 						node_has_block.get(block.getId())[1] = addInvCount(vaild_inv_count,block);
 					}
@@ -464,11 +467,29 @@ public class Node {
 
 	public int addInvCount(int inv_count, Block block){
 		if(node_has_block.containsKey(block.getId())){
-			if(block.getHeight()>(ENDBLOCKHEIGHT/2)&&node_has_block.get(block.getId())[0]<=(NUM_OF_NODES/5)){
+			if(block.getHeight()>(ENDBLOCKHEIGHT/2)&&node_has_block.get(block.getId())[0]<=(NUM_OF_NODES)){
 				inv_count++;
 			}
 		}else inv_count++;
 		return inv_count;
+	}
+
+	public void receivedNodeCount(Block receivedBlock){
+		Integer[] list = {0,0,0};
+
+		// ノードがブロックを受信した場合にカウント
+		if(!node_has_block.containsKey(receivedBlock.getId())){
+			list[0] = list[0]+1;
+			node_has_block.put(receivedBlock.getId(),list);
+		}else{
+			list = node_has_block.get(receivedBlock.getId());
+			list[0] = list[0]+1;
+			node_has_block.put(receivedBlock.getId(),list);
+			// System.out.println("received block:"+ node_has_block.get(receivedBlock.getId()) + ":" + receivedBlock);
+			if(node_has_block.get(receivedBlock.getId())[0]%10==0){
+				System.out.println(receivedBlock +" "+ receivedBlock.getHeight() +  " 伝播率:" + node_has_block.get(receivedBlock.getId())[0] + " =" + node_has_block.get(receivedBlock.getId())[1] + "/" + node_has_block.get(receivedBlock.getId())[2]);
+			}
+		}
 	}
 
 }
