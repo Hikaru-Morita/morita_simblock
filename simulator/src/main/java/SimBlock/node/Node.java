@@ -486,8 +486,8 @@ public class Node {
 			list[0] = list[0]+1;
 			node_has_block.put(receivedBlock.getId(),list);
 			// System.out.println("received block:"+ node_has_block.get(receivedBlock.getId()) + ":" + receivedBlock);
-			if(node_has_block.get(receivedBlock.getId())[0]%10==0){
-				System.out.println(receivedBlock +" "+ receivedBlock.getHeight() +  " 伝播率:" + node_has_block.get(receivedBlock.getId())[0] + " =" + node_has_block.get(receivedBlock.getId())[1] + "/" + node_has_block.get(receivedBlock.getId())[2]);
+			if(receivedBlock.getHeight()>(ENDBLOCKHEIGHT/2)&&node_has_block.get(receivedBlock.getId())[0]%10==0){
+				System.out.println(receivedBlock +" "+ receivedBlock.getHeight() + " currentTime:" + (getCurrentTime()-receivedBlock.getTime()) + " 伝播率:" + node_has_block.get(receivedBlock.getId())[0] + " =" + node_has_block.get(receivedBlock.getId())[1] + "/" + node_has_block.get(receivedBlock.getId())[2]);
 			}
 		}
 	}
