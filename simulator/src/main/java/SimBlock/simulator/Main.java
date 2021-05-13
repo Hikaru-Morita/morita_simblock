@@ -173,7 +173,7 @@ public class Main {
 		time1 += end -start;
 
 		//add
-		System.out.println("Average Propagation: " + getTotalAveProp());
+		// System.out.println("Average Propagation: " + getTotalAveProp());
 		printPropagation(getTotalAveProp(),orphans.size());
 		System.out.println(time1);
 
