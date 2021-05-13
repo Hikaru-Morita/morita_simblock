@@ -84,6 +84,10 @@ public class Node {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+
+		// if(nodeID==NUM_OF_NODES/2){
+		// 	this.region = 0;
+		// }
 	}
 
 	public int getNodeID(){ return this.nodeID; }
@@ -147,6 +151,7 @@ public class Node {
 	}
 
 	public void mining(){
+		if(this.nodeID!=NUM_OF_NODES/2)return;
 		Task task = new MiningTask(this);
 		this.executingTask = task;
 		putTask(task);
@@ -487,7 +492,7 @@ public class Node {
 			node_has_block.put(receivedBlock.getId(),list);
 			// System.out.println("received block:"+ node_has_block.get(receivedBlock.getId()) + ":" + receivedBlock);
 			if(receivedBlock.getHeight()>(ENDBLOCKHEIGHT/2)&&node_has_block.get(receivedBlock.getId())[0]%10==0){
-				System.out.println(receivedBlock +" "+ receivedBlock.getHeight() + " currentTime:" + (getCurrentTime()-receivedBlock.getTime()) + " 伝播率:" + node_has_block.get(receivedBlock.getId())[0] + " =" + node_has_block.get(receivedBlock.getId())[1] + "/" + node_has_block.get(receivedBlock.getId())[2]);
+				// System.out.println(receivedBlock +" "+ receivedBlock.getHeight() + " currentTime:" + (getCurrentTime()-receivedBlock.getTime()) + " 伝播率:" + node_has_block.get(receivedBlock.getId())[0] + " =" + node_has_block.get(receivedBlock.getId())[1] + "/" + node_has_block.get(receivedBlock.getId())[2]);
 			}
 		}
 	}
