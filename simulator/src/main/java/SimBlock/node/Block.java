@@ -29,6 +29,7 @@ public class Block {
 	//add
 	private int receivedNodeCount = 0;
 	private long BFT = 0;
+	private static long[] average_BFT =  {0,0,0};
 
 	public Block(int height, Block parent, Node creator,long generatedTime){
 		this.height = height;
@@ -77,12 +78,27 @@ public class Block {
 
 	//add
 	// this method is for mesure the propagation time 10% to 90%
-	public void addReceivedNodeCount(){
+	public void addReceivedNodeCount(Block receivedBlock){
 		receivedNodeCount++;
 		int per = 50;
-		if(receivedNodeCount==NUM_OF_NODES*per/100){
+		if(receivedNodeCount==NUM_OF_NODES*30/100 && receivedBlock.getHeight()>ENDBLOCKHEIGHT/2){
 			BFT = getCurrentTime() - this.generatedTime;
+			average_BFT[0] = average_BFT[0] + BFT;
+			// System.out.println("BFT_"+ 30 +"% :" + BFT);
+		}else if(receivedNodeCount==NUM_OF_NODES*per/100 && receivedBlock.getHeight()>ENDBLOCKHEIGHT/2){
+			BFT = getCurrentTime() - this.generatedTime;
+			average_BFT[1] = average_BFT[1] + BFT;
 			// System.out.println("BFT_"+ per +"% :" + BFT);
+		}else if(receivedNodeCount==NUM_OF_NODES*80/100 && receivedBlock.getHeight()>ENDBLOCKHEIGHT/2){
+			BFT = getCurrentTime() - this.generatedTime;
+			average_BFT[2] = average_BFT[2] + BFT;
+			// System.out.println("BFT_"+ 80 +"% :" + BFT);
+		}
+
+		if(receivedBlock.getHeight()==ENDBLOCKHEIGHT){
+			System.out.println("30%:" + (average_BFT[0]/(ENDBLOCKHEIGHT/2)));
+			System.out.println("50%:" + (average_BFT[1]/(ENDBLOCKHEIGHT/2)));
+			System.out.println("80%:" + (average_BFT[2]/(ENDBLOCKHEIGHT/2)));
 		}
 	}
 

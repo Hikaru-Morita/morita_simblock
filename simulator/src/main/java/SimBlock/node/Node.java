@@ -133,8 +133,6 @@ public class Node {
 		this.block = newBlock;
 		printAddBlock(newBlock);
 		arriveBlock(newBlock, this);
-
-		newBlock.addReceivedNodeCount();
 	}
 
 	private void printAddBlock(Block newBlock){
@@ -151,7 +149,7 @@ public class Node {
 	}
 
 	public void mining(){
-		if(this.nodeID!=NUM_OF_NODES/2)return;
+		// if(this.nodeID!=NUM_OF_NODES/2)return;
 		Task task = new MiningTask(this);
 		this.executingTask = task;
 		putTask(task);
@@ -182,6 +180,8 @@ public class Node {
 		// 		System.out.println(receivedBlock +" "+ receivedBlock.getHeight() +  " 伝播率:" + node_has_block.get(receivedBlock.getId())[0] + " =" + node_has_block.get(receivedBlock.getId())[1] + "/" + node_has_block.get(receivedBlock.getId())[2]);
 		// 	}
 		// }
+
+		receivedBlock.addReceivedNodeCount(receivedBlock);
 
 		if(this.block == null){
 			this.addToChain(receivedBlock);
@@ -306,9 +306,9 @@ public class Node {
 
 			//add
 			if(block.getId()% 20== 0 && block.getId()>1){
-				// checkFrequency();
+				checkFrequency();
 			}else if(block.getId()%10 == 0 && block.getHeight()>1){
-				changeNeighbors();
+				// changeNeighbors();
 				// changeNeighbors_v2();
 			}
 			
@@ -482,7 +482,7 @@ public class Node {
 	public void receivedNodeCount(Block receivedBlock){
 		Integer[] list = {0,0,0};
 
-		// ノードがブロックを受信した場合にカウント
+		// ノードが有効Invを受信した場合にカウント
 		if(!node_has_block.containsKey(receivedBlock.getId())){
 			list[0] = list[0]+1;
 			node_has_block.put(receivedBlock.getId(),list);
