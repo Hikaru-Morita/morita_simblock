@@ -147,6 +147,14 @@ public class Node {
 	}
 
 	public void mining(){
+		// if(this.getNodeID()!=5);
+		// else if(this.getNodeID()!=500);
+		// else if(this.getNodeID()!=900);
+		// else return;
+		// if(this.getRegion()==4);
+		// else if(this.getNodeID()!=500);
+		// else if(this.getNodeID()!=900);
+		// else return;
 		Task task = new MiningTask(this);
 		this.executingTask = task;
 		putTask(task);
@@ -281,6 +289,11 @@ public class Node {
 			// 	node_has_block.put(block.getId(),node_has_block.get(block.getId())+1);
 			// }
 
+			// ブロック伝播時のスコアを出力
+			if(block.getHeight()>=ENDBLOCKHEIGHT/2 && from!=this && workerList.contains(from)){
+				System.out.println("block:" + block.getHeight() + "  score: " + this.getScore(from));
+			}
+
 			// 異なる地域間でのブロック伝播
 			if(message.getTo().getRegion()!=message.getFrom().getRegion()){
 				if(!long_hop_count.containsKey(block.getHeight())){
@@ -300,10 +313,10 @@ public class Node {
 			}
 
 			//add
-			if(block.getId()% 20== 0 && block.getId()>1){
-				checkFrequency();
+			if(block.getId()%8 == 0 && block.getId()>1){
+				// checkFrequency();
 			}else if(block.getId()%10 == 0 && block.getHeight()>1){
-				// changeNeighbors();
+				changeNeighbors();
 				// changeNeighbors_v2();
 			}
 			
@@ -487,7 +500,7 @@ public class Node {
 			node_has_block.put(receivedBlock.getId(),list);
 			// System.out.println("received block:"+ node_has_block.get(receivedBlock.getId()) + ":" + receivedBlock);
 			if(receivedBlock.getHeight()>(ENDBLOCKHEIGHT/2)&&node_has_block.get(receivedBlock.getId())[0]%10==0){
-				System.out.println(receivedBlock +" "+ receivedBlock.getHeight() + " currentTime:" + (getCurrentTime()-receivedBlock.getTime()) + " 伝播率:" + node_has_block.get(receivedBlock.getId())[0] + " =" + node_has_block.get(receivedBlock.getId())[1] + "/" + node_has_block.get(receivedBlock.getId())[2]);
+				System.out.println(receivedBlock +" "+ receivedBlock.getHeight() + " " + this.getNeighbors().size() + " currentTime:" + (getCurrentTime()-receivedBlock.getTime()) + " 伝播率:" + node_has_block.get(receivedBlock.getId())[0] + " =" + node_has_block.get(receivedBlock.getId())[1] + "/" + node_has_block.get(receivedBlock.getId())[2]);
 			}
 		}
 	}
