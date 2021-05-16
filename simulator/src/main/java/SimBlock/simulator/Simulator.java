@@ -55,6 +55,9 @@ public class Simulator {
 	public static double sum_interval = 0;
 	public static long interval_count = 0;
 
+	public static int divide_count = 0;
+	public static long sum_50percent = 0;
+
 	public static ArrayList<Node> getSimulatedNodes(){ return simulatedNodes; }
 	public static long getAverageDifficulty(){ return averageDifficulty; }
 	public static void setTargetInterval(long interval){ targetInterval = interval; }
@@ -181,15 +184,24 @@ public class Simulator {
 		int count = 0;
 
 		/**
-		10ブロックに一度ノード全体のブロック伝播をファイル"individual_bpt.csv"に出力
+		全体のブロック伝播をファイル"individual_bpt.csv"に出力
 		目的：出力ファイルのサイズ削減
 		**/
-		if(propagation.size()==NUM_OF_NODES && block.getHeight()%10==0){
+		if(propagation.size()==NUM_OF_NODES){
 			OUT_INDIVIDUAL_CSV_FILE.print(block.getHeight()+",");
 			for(Map.Entry<Integer, Long> timeEntry : propagation.entrySet()){
 				// System.out.println(timeEntry.getValue());
 				count ++;
-				// if(count == NUM_OF_NODES/2)OUT_INDIVIDUAL_CSV_FILE.print(timeEntry.getValue() + ",");
+				if(count == NUM_OF_NODES/2){
+					OUT_INDIVIDUAL_CSV_FILE.print(timeEntry.getValue() + ",");
+					
+					if(block.getHeight()>=ENDBLOCKHEIGHT/2){
+						sum_50percent = sum_50percent + timeEntry.getValue();
+						divide_count++;
+						System.out.println(timeEntry.getValue() + ":" + timeEntry.getValue());
+						System.out.println("median: " + sum_50percent/divide_count);
+					}
+				}
 				if(count == NUM_OF_NODES)OUT_INDIVIDUAL_CSV_FILE.print(timeEntry.getValue());
 				else OUT_INDIVIDUAL_CSV_FILE.print(timeEntry.getValue() + ",");
 				// OUT_INDIVIDUAL_CSV_FILE.print("\n");
