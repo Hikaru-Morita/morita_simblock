@@ -22,7 +22,7 @@ public static double para_ = 8;
 
 	public Map<Node,Double> getScores(){return scores;}
 	public Map<Node,Double> getAllScores(){return allScores;}
-	public double getScore(Node node){return scores.get(node);}
+	public double getScore(Node node){return allScores.get(node);}
 	public int getScoresSize(){return scores.size();}
 	public static double getPara(){return para;}
 
