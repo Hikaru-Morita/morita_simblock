@@ -55,8 +55,12 @@ public class Simulator {
 	public static double sum_interval = 0;
 	public static long interval_count = 0;
 
+	// 50%用
 	public static int divide_count = 0;
 	public static long sum_50percent = 0;
+	// 80%用
+	public static int divide_count2 = 0;
+	public static long sum_80percent = 0;
 
 	public static ArrayList<Node> getSimulatedNodes(){ return simulatedNodes; }
 	public static long getAverageDifficulty(){ return averageDifficulty; }
@@ -194,14 +198,20 @@ public class Simulator {
 				count ++;
 				if(count == NUM_OF_NODES/2){
 					OUT_INDIVIDUAL_CSV_FILE.print(timeEntry.getValue() + ",");
-					
 					if(block.getHeight()>=ENDBLOCKHEIGHT/2){
 						sum_50percent = sum_50percent + timeEntry.getValue();
 						divide_count++;
-						System.out.println(timeEntry.getValue() + ":" + timeEntry.getValue());
-						System.out.println("median: " + sum_50percent/divide_count);
+						System.out.println("50%: " + sum_50percent/divide_count);
 					}
 				}
+				if(count == NUM_OF_NODES*80/100){
+					if(block.getHeight()>=ENDBLOCKHEIGHT*80/100){
+						sum_80percent = sum_80percent + timeEntry.getValue();
+						divide_count2++;
+						System.out.println("80%: " + sum_80percent/divide_count2);
+					}
+				}
+
 				if(count == NUM_OF_NODES)OUT_INDIVIDUAL_CSV_FILE.print(timeEntry.getValue());
 				else OUT_INDIVIDUAL_CSV_FILE.print(timeEntry.getValue() + ",");
 				// OUT_INDIVIDUAL_CSV_FILE.print("\n");
