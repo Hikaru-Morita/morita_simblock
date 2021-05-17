@@ -11,7 +11,7 @@ public class Score{
 	private Map<Node,Double> scores = new HashMap<Node,Double>();
 	private Map<Node,Double> allScores = new HashMap<Node,Double>();
 	private double score = 0;
-public static double para_ = 8;
+public static double para_ = 3;
 	public static double para = para_/10;
 	private Node worst;
 	private Node selfNode;
@@ -76,7 +76,7 @@ public static double para_ = 8;
 			average_score=average_score+i.getValue();
 		}
 
-		return average_score/scores.size();
+		return average_score/getScores().size();
 	}
 
 	public double getAverageAllScore(){

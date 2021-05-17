@@ -69,6 +69,16 @@ public class Node {
 	
 	private long processingTime = 2;
 
+	// スコアが意味を成していない場合の確認用
+	private static Map<Integer, Integer> bad_score_count = new HashMap<Integer, Integer>();
+	private static int average_count =0;
+	// 働いていないノードの確認
+	private int worker_num = 0;
+	private static int worker_count = 0;
+	private static int average_worker_num =0;
+
+	private static int average_neighbor_num = 0;
+
 	//add
 	private Score score = new Score(this);
 	private Random rand = new Random();
@@ -290,8 +300,19 @@ public class Node {
 			// }
 
 			// ブロック伝播時のスコアを出力
-			if(block.getHeight()>=ENDBLOCKHEIGHT/2 && from!=this && workerList.contains(from)){
-				System.out.println("block:" + block.getHeight() + "  score: " + this.getScore(from));
+			if(block.getHeight()>=ENDBLOCKHEIGHT/2 && from!=this && !workerList.contains(from)){
+			// if(block.getId()>=ENDBLOCKHEIGHT/2 && from!=this && score.getAverageScore()<this.getScore(from)){
+			// if(block.getId()>=ENDBLOCKHEIGHT/2 && from!=this && !score.getScores().containsKey(from)){
+				if(!bad_score_count.containsKey(block.getId())){
+					bad_score_count.put(block.getId(),0);
+				}else{
+					bad_score_count.put(block.getId(),bad_score_count.get(block.getId())+1);
+				}
+				average_count=0;
+				for(Map.Entry<Integer,Integer> i: bad_score_count.entrySet()){
+					average_count = average_count + i.getValue();
+				}
+				System.out.println("block:" + block.getId() + " average_count:" + average_count/bad_score_count.size() + " count:" + bad_score_count.get(block.getId()) + "  averageScore: " + score.getAverageScore() + "  score: " + this.getScore(from));
 			}
 
 			// 異なる地域間でのブロック伝播
@@ -313,10 +334,10 @@ public class Node {
 			}
 
 			//add
-			if(block.getId()%8 == 0 && block.getId()>1){
-				// checkFrequency();
+			if(block.getId()%40 == 0 && block.getId()>1){
+				checkFrequency();
 			}else if(block.getId()%10 == 0 && block.getHeight()>1){
-				changeNeighbors();
+				// changeNeighbors();
 				// changeNeighbors_v2();
 			}
 			
@@ -376,6 +397,7 @@ public class Node {
 			}else if(addNode==removeNode){
 			}else if(addNeighbor(addNode))break;
 		}
+		workerList = new ArrayList<Node>();
 	}
 
 	//add
@@ -454,6 +476,7 @@ public class Node {
 				}
 			}
 		}
+		workerList = new ArrayList<Node>();
 		nodeChangeNum(count);
 		return ;
 	}
@@ -501,6 +524,19 @@ public class Node {
 			// System.out.println("received block:"+ node_has_block.get(receivedBlock.getId()) + ":" + receivedBlock);
 			if(receivedBlock.getHeight()>(ENDBLOCKHEIGHT/2)&&node_has_block.get(receivedBlock.getId())[0]%10==0){
 				System.out.println(receivedBlock +" "+ receivedBlock.getHeight() + " " + this.getNeighbors().size() + " currentTime:" + (getCurrentTime()-receivedBlock.getTime()) + " 伝播率:" + node_has_block.get(receivedBlock.getId())[0] + " =" + node_has_block.get(receivedBlock.getId())[1] + "/" + node_has_block.get(receivedBlock.getId())[2]);
+
+				average_neighbor_num = average_neighbor_num + this.getNeighbors().size();
+				// for(Map.Entry<Node,Double> i: score.getScores().entrySet()){
+				// 	if(!workerList.contains(i.getKey())){
+				// 		worker_num++;
+				// 	}
+				// }
+				// worker_count++;
+				// average_worker_num = average_worker_num+worker_num;
+				// System.out.println("average worker: " + average_worker_num/worker_count + ":" + worker_num + ":" + worker_count);
+				// worker_num=0;
+				
+				System.out.println("average_neighbor_num: " + average_neighbor_num/worker_count);
 			}
 		}
 	}
