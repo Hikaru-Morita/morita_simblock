@@ -58,6 +58,4 @@ public class BlockMessageTask extends AbstractMessageTask {
 	public Block getBlock(){
 		return this.block;
 	}
-
-
 }

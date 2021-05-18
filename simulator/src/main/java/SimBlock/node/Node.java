@@ -55,8 +55,29 @@ public class Node {
 
 	// ホップのカウント用　フォークを考慮している
 	private Map<Block, Integer> hop_count = new HashMap<Block, Integer>();
+	private static Map<Integer, Integer> long_hop_count = new HashMap<Integer, Integer>();
+	private static long longHopTime = 0;
+	private static long totalLongHopTime = 0;
 
+	// 有効invカウント用
+	private static int vaild_inv_count = 0;
+	private static int all_inv_count = 0;
+
+	// ブロック所持ノード数カウント
+	private static Map<Integer,Integer[]> node_has_block = new HashMap<Integer, Integer[]>();
+	private static Integer[] init_list = {0,0,0};
+	
 	private long processingTime = 2;
+
+	// スコアが意味を成していない場合の確認用
+	private static Map<Integer, Integer> bad_score_count = new HashMap<Integer, Integer>();
+	private static int average_count =0;
+	// 働いていないノードの確認
+	private int worker_num = 0;
+	private static int worker_count = 0;
+	private static int average_worker_num =0;
+
+	private static int average_neighbor_num = 0;
 
 	//add
 	private Score score = new Score(this);
@@ -107,6 +128,7 @@ public class Node {
 
 		//add
 		hop_count.put(genesis,0);
+		node_has_block.put(0,init_list);
 	}
 
 	public void addToChain(Block newBlock) {
@@ -135,6 +157,14 @@ public class Node {
 	}
 
 	public void mining(){
+		// if(this.getNodeID()!=5);
+		// else if(this.getNodeID()!=500);
+		// else if(this.getNodeID()!=900);
+		// else return;
+		// if(this.getRegion()==4);
+		// else if(this.getNodeID()!=500);
+		// else if(this.getNodeID()!=900);
+		// else return;
 		Task task = new MiningTask(this);
 		this.executingTask = task;
 		putTask(task);
@@ -150,6 +180,21 @@ public class Node {
 
 	public void receiveBlock(Block receivedBlock){
 		Block sameHeightBlock;
+		// Integer[] list = {0,0,0};
+
+		// // ノードがブロックを受信した場合にカウント
+		// if(!node_has_block.containsKey(receivedBlock.getId())){
+		// 	list[0] = list[0]+1;
+		// 	node_has_block.put(receivedBlock.getId(),list);
+		// }else{
+		// 	list = node_has_block.get(receivedBlock.getId());
+		// 	list[0] = list[0]+1;
+		// 	node_has_block.put(receivedBlock.getId(),list);
+		// 	// System.out.println("received block:"+ node_has_block.get(receivedBlock.getId()) + ":" + receivedBlock);
+		// 	if(node_has_block.get(receivedBlock.getId())[0]%10==0){
+		// 		System.out.println(receivedBlock +" "+ receivedBlock.getHeight() +  " 伝播率:" + node_has_block.get(receivedBlock.getId())[0] + " =" + node_has_block.get(receivedBlock.getId())[1] + "/" + node_has_block.get(receivedBlock.getId())[2]);
+		// 	}
+		// }
 
 		if(this.block == null){
 			this.addToChain(receivedBlock);
@@ -185,6 +230,10 @@ public class Node {
 					AbstractMessageTask task = new RecMessageTask(this,from,block);
 					putTask(task);
 					downloadingBlocks.add(block);
+
+					receivedNodeCount(block);
+					vaild_inv_count = node_has_block.get(block.getId())[1];
+					node_has_block.get(block.getId())[1] = addInvCount(vaild_inv_count,block);
 				}else{
 
 					// get orphan block
@@ -192,6 +241,14 @@ public class Node {
 						AbstractMessageTask task = new RecMessageTask(this,from,block);
 						putTask(task);
 						downloadingBlocks.add(block);
+						
+						if(node_has_block.containsKey(block.getId())&&node_has_block.get(block.getId())[0]==490){
+							System.out.println(block + ":" + block.getId() + ":" + node_has_block.get(block.getId()));
+						}
+
+						receivedNodeCount(block);
+						vaild_inv_count = node_has_block.get(block.getId())[1];
+						node_has_block.get(block.getId())[1] = addInvCount(vaild_inv_count,block);
 					}
 				}
 
@@ -201,6 +258,13 @@ public class Node {
 					score.addScore(m.getFrom(),(int)getCurrentTime(),(int)m.getBlock().getTime());
 				}
 			}
+
+			// 総invメッセージのカウント
+			all_inv_count = node_has_block.get(block.getId())[2];
+			node_has_block.get(block.getId())[2] = addInvCount(all_inv_count,block);
+
+			// if(block.getHeight()==ENDBLOCKHEIGHT)System.out.println(vaild_inv_count + " : " + all_inv_count);
+
 
 			//add
 			// if(!block_prop.containsKey(block)){
@@ -214,6 +278,7 @@ public class Node {
 			// 		// num = 0;
 			// 	}
 			// }
+			
 		}
 
 		if(message instanceof RecMessageTask){
@@ -228,8 +293,48 @@ public class Node {
 			downloadingBlocks.remove(block);
 			this.receiveBlock(block);
 
+			// if(!node_has_block.containsKey(block.getId())){
+			// 	node_has_block.put(block.getId(),1);
+			// }else{
+			// 	node_has_block.put(block.getId(),node_has_block.get(block.getId())+1);
+			// }
+
+			// ブロック伝播時のスコアを出力
+			if(block.getHeight()>=ENDBLOCKHEIGHT/2 && from!=this && !workerList.contains(from)){
+			// if(block.getId()>=ENDBLOCKHEIGHT/2 && from!=this && score.getAverageScore()<this.getScore(from)){
+			// if(block.getId()>=ENDBLOCKHEIGHT/2 && from!=this && !score.getScores().containsKey(from)){
+				if(!bad_score_count.containsKey(block.getId())){
+					bad_score_count.put(block.getId(),0);
+				}else{
+					bad_score_count.put(block.getId(),bad_score_count.get(block.getId())+1);
+				}
+				average_count=0;
+				for(Map.Entry<Integer,Integer> i: bad_score_count.entrySet()){
+					average_count = average_count + i.getValue();
+				}
+				System.out.println("block:" + block.getId() + " average_count:" + average_count/bad_score_count.size() + " count:" + bad_score_count.get(block.getId()) + "  averageScore: " + score.getAverageScore() + "  score: " + this.getScore(from));
+			}
+
+			// 異なる地域間でのブロック伝播
+			if(message.getTo().getRegion()!=message.getFrom().getRegion()){
+				if(!long_hop_count.containsKey(block.getHeight())){
+					long_hop_count.put(block.getHeight(),0);
+					totalLongHopTime = totalLongHopTime + longHopTime;
+					longHopTime = 0;
+				}
+				long_hop_count.put(block.getHeight(), long_hop_count.get(block.getHeight())+1);
+				// System.out.println(block.getHeight() + ": " + (getCurrentTime()-block.getTime()) + ": " + long_hop_count.get(block.getHeight()));
+				longHopTime = getCurrentTime()-block.getTime();
+				// if(block.getHeight()==500)System.out.println(long_hop_count);
+				
+				
+				// System.out.println(totalLongHopTime);
+
+
+			}
+
 			//add
-			if(block.getId()% 20== 0 && block.getId()>1){
+			if(block.getId()%40 == 0 && block.getId()>1){
 				checkFrequency();
 			}else if(block.getId()%10 == 0 && block.getHeight()>1){
 				// changeNeighbors();
@@ -292,6 +397,7 @@ public class Node {
 			}else if(addNode==removeNode){
 			}else if(addNeighbor(addNode))break;
 		}
+		workerList = new ArrayList<Node>();
 	}
 
 	//add
@@ -370,6 +476,7 @@ public class Node {
 				}
 			}
 		}
+		workerList = new ArrayList<Node>();
 		nodeChangeNum(count);
 		return ;
 	}
@@ -382,4 +489,56 @@ public class Node {
 			return 0;
 		}
 	}
+
+	// public int addInvCount(int inv_count, Block block){
+	// 	if(node_has_block.containsKey(block.getId())){
+	// 		if(block.getHeight()>(ENDBLOCKHEIGHT/2)){
+	// 			inv_count++;
+	// 		}
+	// 	}
+
+	
+	// 	return inv_count;
+	// }
+
+	public int addInvCount(int inv_count, Block block){
+		if(node_has_block.containsKey(block.getId())){
+			if(block.getHeight()>(ENDBLOCKHEIGHT/2)&&node_has_block.get(block.getId())[0]<=(NUM_OF_NODES)){
+				inv_count++;
+			}
+		}else inv_count++;
+		return inv_count;
+	}
+
+	public void receivedNodeCount(Block receivedBlock){
+		Integer[] list = {0,0,0};
+
+		// ノードがブロックを受信した場合にカウント
+		if(!node_has_block.containsKey(receivedBlock.getId())){
+			list[0] = list[0]+1;
+			node_has_block.put(receivedBlock.getId(),list);
+		}else{
+			list = node_has_block.get(receivedBlock.getId());
+			list[0] = list[0]+1;
+			node_has_block.put(receivedBlock.getId(),list);
+			// System.out.println("received block:"+ node_has_block.get(receivedBlock.getId()) + ":" + receivedBlock);
+			if(receivedBlock.getHeight()>(ENDBLOCKHEIGHT/2)&&node_has_block.get(receivedBlock.getId())[0]%10==0){
+				System.out.println(receivedBlock +" "+ receivedBlock.getHeight() + " " + this.getNeighbors().size() + " currentTime:" + (getCurrentTime()-receivedBlock.getTime()) + " 伝播率:" + node_has_block.get(receivedBlock.getId())[0] + " =" + node_has_block.get(receivedBlock.getId())[1] + "/" + node_has_block.get(receivedBlock.getId())[2]);
+
+				average_neighbor_num = average_neighbor_num + this.getNeighbors().size();
+				// for(Map.Entry<Node,Double> i: score.getScores().entrySet()){
+				// 	if(!workerList.contains(i.getKey())){
+				// 		worker_num++;
+				// 	}
+				// }
+				// worker_count++;
+				// average_worker_num = average_worker_num+worker_num;
+				// System.out.println("average worker: " + average_worker_num/worker_count + ":" + worker_num + ":" + worker_count);
+				// worker_num=0;
+				
+				System.out.println("average_neighbor_num: " + average_neighbor_num/worker_count);
+			}
+		}
+	}
+
 }
