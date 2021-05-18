@@ -54,6 +54,8 @@ public class Simulator {
 
 	public static double sum_interval = 0;
 	public static long interval_count = 0;
+	private static long[] average_BFT =  {0,0,0};
+	private static int per50_count = 0;
 
 	public static ArrayList<Node> getSimulatedNodes(){ return simulatedNodes; }
 	public static long getAverageDifficulty(){ return averageDifficulty; }
@@ -181,14 +183,22 @@ public class Simulator {
 		int count = 0;
 
 		/**
-		10ブロックに一度ノード全体のブロック伝播をファイル"individual_bpt.csv"に出力
+		ノード全体のブロック伝播をファイル"individual_bpt.csv"に出力
 		目的：出力ファイルのサイズ削減
 		**/
-		if(propagation.size()==NUM_OF_NODES && block.getHeight()%10==0){
+		if(propagation.size()==NUM_OF_NODES){
 			OUT_INDIVIDUAL_CSV_FILE.print(block.getHeight()+",");
 			for(Map.Entry<Integer, Long> timeEntry : propagation.entrySet()){
-				// System.out.println(timeEntry.getValue());
 				count ++;
+				if(count == NUM_OF_NODES/2){
+					if(block.getHeight()>=ENDBLOCKHEIGHT/2){
+						per50_count++;
+						average_BFT[1] = average_BFT[1]+timeEntry.getValue(); 
+						System.out.println("average BFT: " + average_BFT[1]/per50_count);
+						System.out.println("per50_count: " + per50_count);
+					}
+					System.out.println(timeEntry.getValue());
+				}
 				// if(count == NUM_OF_NODES/2)OUT_INDIVIDUAL_CSV_FILE.print(timeEntry.getValue() + ",");
 				if(count == NUM_OF_NODES)OUT_INDIVIDUAL_CSV_FILE.print(timeEntry.getValue());
 				else OUT_INDIVIDUAL_CSV_FILE.print(timeEntry.getValue() + ",");

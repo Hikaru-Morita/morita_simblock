@@ -181,7 +181,7 @@ public class Node {
 		// 	}
 		// }
 
-		receivedBlock.addReceivedNodeCount(receivedBlock);
+		receivedBlock.addReceivedNodeCount(receivedBlock,this);
 
 		if(this.block == null){
 			this.addToChain(receivedBlock);
@@ -305,10 +305,10 @@ public class Node {
 			}
 
 			//add
-			if(block.getId()% 20== 0 && block.getId()>1){
-				checkFrequency();
+			if(block.getId()% 10== 0 && block.getId()>1){
+				// checkFrequency();
 			}else if(block.getId()%10 == 0 && block.getHeight()>1){
-				// changeNeighbors();
+				changeNeighbors();
 				// changeNeighbors_v2();
 			}
 			
