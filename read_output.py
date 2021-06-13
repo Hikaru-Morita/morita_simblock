@@ -5,7 +5,6 @@ import matplotlib.pyplot as plt
 # 全体行数/2 を指定　chunksize*NUM_START=全体行数
 threshold = 1
 
-
 def plot_hist():
     fname_shudo = '/home/moritta/Documents/simblock_result/shudo/3times_2015/'+ str(9) +'.csv'
     fname_my = '/home/moritta/Documents/simblock_result/my/3times_2015/'+ str(5) +'.csv'
@@ -27,7 +26,7 @@ def plot_hist():
                 for i in range(1,1000):
                     hist_plot.append(np.average([int(i) for i in chunk.iloc[:,i].values]))
     plt.tight_layout()
-    plt.hist(hist_plot,bins=100)
+    plt.hist(hist_plot,bins=100, alpha=0.5)
     hist_plot=[]
     chunk_count = 0
 
@@ -41,7 +40,10 @@ def plot_hist():
                     hist_plot.append(np.average([int(i) for i in chunk.iloc[:,i].values]))
 
     plt.tight_layout()
-    plt.hist(hist_plot,bins=100,color='g')
+    plt.hist(hist_plot,bins=100,alpha=0.5,color='orange')
+    plt.xlabel("ブロック伝播時間[ms]",fontname="IPAexGothic")
+    plt.ylabel("ノード数[個]",fontname="IPAexGothic")
+    plt.subplots_adjust(left=0.1,bottom=0.1)
     hist_fig.savefig('./simulator/src/dist/output/fig/conpare.png')
 
     return 

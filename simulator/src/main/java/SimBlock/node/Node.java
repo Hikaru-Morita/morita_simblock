@@ -334,9 +334,14 @@ public class Node {
 			}
 
 			//add
-			if(block.getId()%40 == 0 && block.getId()>1){
+			if(block.getId()%5 == 0 && block.getId()>1){
 				checkFrequency();
-			}else if(block.getId()%10 == 0 && block.getHeight()>1){
+			}
+			if(block.getId()%40 == 0 && block.getId()>1){
+				workerList = new ArrayList<Node>();
+			}
+			
+			if(block.getId()%10 == 0 && block.getHeight()>1){
 				// changeNeighbors();
 				// changeNeighbors_v2();
 			}
@@ -476,7 +481,7 @@ public class Node {
 				}
 			}
 		}
-		workerList = new ArrayList<Node>();
+		// workerList = new ArrayList<Node>();
 		nodeChangeNum(count);
 		return ;
 	}
@@ -531,7 +536,7 @@ public class Node {
 				// 		worker_num++;
 				// 	}
 				// }
-				// worker_count++;
+				worker_count++;
 				// average_worker_num = average_worker_num+worker_num;
 				// System.out.println("average worker: " + average_worker_num/worker_count + ":" + worker_num + ":" + worker_count);
 				// worker_num=0;
