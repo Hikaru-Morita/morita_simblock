@@ -79,6 +79,9 @@ public class Node {
 
 	private static int average_neighbor_num = 0;
 
+	// 隣接ノード数
+	private static int sum_neighbor_num = 0;
+
 	//add
 	private Score score = new Score(this);
 	private Random rand = new Random();
@@ -312,7 +315,7 @@ public class Node {
 				for(Map.Entry<Integer,Integer> i: bad_score_count.entrySet()){
 					average_count = average_count + i.getValue();
 				}
-				System.out.println("block:" + block.getId() + " average_count:" + average_count/bad_score_count.size() + " count:" + bad_score_count.get(block.getId()) + "  averageScore: " + score.getAverageScore() + "  score: " + this.getScore(from));
+				// System.out.println("block:" + block.getId() + " average_count:" + average_count/bad_score_count.size() + " count:" + bad_score_count.get(block.getId()) + "  averageScore: " + score.getAverageScore() + "  score: " + this.getScore(from));
 			}
 
 			// 異なる地域間でのブロック伝播
@@ -330,14 +333,17 @@ public class Node {
 				
 				// System.out.println(totalLongHopTime);
 
-
 			}
+
+			// 隣接ノード数を算出
+			// if()
 
 			//add
-			if(block.getId()%5 == 0 && block.getId()>1){
+			if(block.getId()%10 == 0 && block.getId()>1){
 				checkFrequency();
 			}
-			if(block.getId()%40 == 0 && block.getId()>1){
+
+			if(block.getId()%10 == 0 && block.getId()>1){
 				workerList = new ArrayList<Node>();
 			}
 			
@@ -459,6 +465,7 @@ public class Node {
 		for(int i=0;i<neighbors.size();i++){
 
 			Node node = neighbors.get(i);
+			// Node node = neighbors.get(rand.nextInt(NUM_OF_NODES-1));
 			score.removeScore(node);
 			if(!workerList.contains(node) && removeNeighbor(node)){
 				while(true){
@@ -480,6 +487,7 @@ public class Node {
 					node_over30Inbounds.add(addNode);
 				}
 			}
+			if(count==4)break;
 		}
 		// workerList = new ArrayList<Node>();
 		nodeChangeNum(count);
@@ -541,7 +549,8 @@ public class Node {
 				// System.out.println("average worker: " + average_worker_num/worker_count + ":" + worker_num + ":" + worker_count);
 				// worker_num=0;
 				
-				System.out.println("average_neighbor_num: " + average_neighbor_num/worker_count);
+				// System.out.println("average_neighbor_num: " + average_neighbor_num/worker_count);
+				
 			}
 		}
 	}
