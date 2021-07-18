@@ -1,6 +1,7 @@
 package SimBlock.node;
 import SimBlock.simulator.Main;
 import SimBlock.simulator.Simulator;	//add
+import static SimBlock.settings.SimulationConfiguration.*;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -11,13 +12,14 @@ public class Score{
 	private Map<Node,Double> scores = new HashMap<Node,Double>();
 	private Map<Node,Double> allScores = new HashMap<Node,Double>();
 	private double score = 0;
-public static double para_ = 8;
+	public static double para_ = 8;
 	public static double para = para_/10;
 	private Node worst;
 	private Node selfNode;
 
 	Score(Node node){
 		selfNode = node;
+		para = PARAMATOR;
 	}
 
 	public Map<Node,Double> getScores(){return scores;}
@@ -133,6 +135,8 @@ public static double para_ = 8;
 			if(scores.get(worst)<scores.get(i)){
 				worst = i;
 			}
+
+			System.out.println(para);
 		}
 		return worst;
 	}

@@ -339,15 +339,16 @@ public class Node {
 			// if()
 
 			//add
-			if(block.getId()%10 == 0 && block.getId()>1){
+			if(SIMULATION_TYPE == 2 && block.getId()%10 == 0 && block.getId()>1){
 				checkFrequency();
+				System.out.println(block.getId());
 			}
 
-			if(block.getId()%10 == 0 && block.getId()>1){
+			if(SIMULATION_TYPE == 2 && block.getId()%10 == 0 && block.getId()>1){
 				workerList = new ArrayList<Node>();
 			}
 			
-			if(block.getId()%10 == 0 && block.getHeight()>1){
+			if(SIMULATION_TYPE == 1 && block.getId()%10 == 0 && block.getHeight()>1){
 				// changeNeighbors();
 				// changeNeighbors_v2();
 			}

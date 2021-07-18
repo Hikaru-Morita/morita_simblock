@@ -31,4 +31,15 @@ public class SimulationConfiguration {
 
 	// Unit: byte
 	public static final long BLOCKSIZE = 535000;//6110;//8000;//535000;//0.5MB
+
+	// score paramator
+	public static final double PARAMATOR = 4; 
+
+	// simulation type
+	// 1: previous research
+	// 2: my research 
+	public static final int SIMULATION_TYPE = 2;
+
+	// 
+	// public static final
 }
