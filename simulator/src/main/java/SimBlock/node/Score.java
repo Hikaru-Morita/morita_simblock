@@ -11,7 +11,7 @@ public class Score{
 	private Map<Node,Double> scores = new HashMap<Node,Double>();
 	private Map<Node,Double> allScores = new HashMap<Node,Double>();
 	private double score = 0;
-public static double para_ = 3;
+public static double para_ = 8;
 	public static double para = para_/10;
 	private Node worst;
 	private Node selfNode;
@@ -101,12 +101,19 @@ public static double para_ = 3;
 
 	public void addScore(Node from, long t_inv, long t_block){
 			// calculate score
-		if(allScores.get(from) == null){
+		// if(allScores.get(from) == null){
+		// 	score = (t_inv-t_block);
+		// }
+		if(scores.get(from) == null){
 			score = (t_inv-t_block);
 		}
 		else{
-			score = allScores.get(from);
-			allScores.remove(from);
+			// score = allScores.get(from);
+			// allScores.remove(from);
+			// score = (1-para)*(score)+para*(t_inv-t_block);
+
+			score = scores.get(from);
+			scores.remove(from);
 			score = (1-para)*(score)+para*(t_inv-t_block);
 
 		}
