@@ -339,20 +339,16 @@ public class Node {
 			// if()
 
 			//add
-			if(SIMULATION_TYPE == 2 && block.getId()%10 == 0 && block.getId()>1){
-				checkFrequency();
-				System.out.println(block.getId());
+			if(block.getId()%10 == 0 && block.getId()>1){
+				if(SIMULATION_TYPE == 2){
+					checkFrequency();
+					workerList = new ArrayList<Node>();
+				}else if(SIMULATION_TYPE == 1){
+					changeNeighbors();
+				// changeNeighbors_v2();
+				}
 			}
 
-			if(SIMULATION_TYPE == 2 && block.getId()%10 == 0 && block.getId()>1){
-				workerList = new ArrayList<Node>();
-			}
-			
-			if(SIMULATION_TYPE == 1 && block.getId()%10 == 0 && block.getHeight()>1){
-				// changeNeighbors();
-				// changeNeighbors_v2();
-			}
-			
 			//add
 			BlockMessageTask m = (BlockMessageTask) message;
 
@@ -487,8 +483,8 @@ public class Node {
 					}
 					node_over30Inbounds.add(addNode);
 				}
+				// if(count==1)break;
 			}
-			if(count==4)break;
 		}
 		// workerList = new ArrayList<Node>();
 		nodeChangeNum(count);
