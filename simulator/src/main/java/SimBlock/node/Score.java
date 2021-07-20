@@ -135,8 +135,6 @@ public class Score{
 			if(scores.get(worst)<scores.get(i)){
 				worst = i;
 			}
-
-			System.out.println(para);
 		}
 		return worst;
 	}
