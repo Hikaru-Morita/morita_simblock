@@ -82,6 +82,9 @@ public class Node {
 	// 隣接ノード数
 	private static int sum_neighbor_num = 0;
 
+	// ワーカーカウント変数
+	private int worker_tmp = 0;
+
 	//add
 	private Score score = new Score(this);
 	private Random rand = new Random();
@@ -220,7 +223,6 @@ public class Node {
 				arriveBlock(receivedBlock, this);
 			}
 		}
-
 	}
 
 	public void receiveMessage(AbstractMessageTask message){
@@ -339,7 +341,16 @@ public class Node {
 			// if()
 
 			//add
-			if(block.getId()%10 == 0 && block.getId()>1){
+			if(block.getId()%30 == 0 && block.getId()>1){
+
+				for(Node i: workerList){
+					if(routingTable.getOutbounds().contains(i)){
+						worker_tmp ++;
+					}
+				}
+				System.out.println(worker_tmp);
+				worker_tmp = 0;
+
 				if(SIMULATION_TYPE == 2){
 					checkFrequency();
 					workerList = new ArrayList<Node>();
