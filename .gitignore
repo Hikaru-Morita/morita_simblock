@@ -32,3 +32,4 @@ out.txt
 *.json
 
 python-env/
+/simulator/src/dist/output/static.json
