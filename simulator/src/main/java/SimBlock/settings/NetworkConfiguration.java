@@ -56,7 +56,7 @@ public class NetworkConfiguration {
 
 	// public static long[] DOWNLOAD_BANDWIDTH = DOWNLOAD_BANDWIDTH_2015_3times;
 	// public static long[] DOWNLOAD_BANDWIDTH = DOWNLOAD_BANDWIDTH_2015;
-	public static long[] DOWNLOAD_BANDWIDTH = DOWNLOAD_BANDWIDTH_2015_large;
+	public static long[] DOWNLOAD_BANDWIDTH = DOWNLOAD_BANDWIDTH_2015_3times;
 
 	// Upload bandwidth in each region, and last element is Inter-regional bandwidth
 	// Unit: bit per second
@@ -71,7 +71,7 @@ public class NetworkConfiguration {
 
 	// public static long[] UPLOAD_BANDWIDTH = UPLOAD_BANDWIDTH_2015_3times;
 	// public static long[] UPLOAD_BANDWIDTH = UPLOAD_BANDWIDTH_2015;
-	public static long[] UPLOAD_BANDWIDTH = UPLOAD_BANDWIDTH_2015_large;
+	public static long[] UPLOAD_BANDWIDTH = UPLOAD_BANDWIDTH_2015_3times;
 
 	public static void change_bw_2015(){
 		if(DOWNLOAD_BANDWIDTH == DOWNLOAD_BANDWIDTH_2015_3times){
