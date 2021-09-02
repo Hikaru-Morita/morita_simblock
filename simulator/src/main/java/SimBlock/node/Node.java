@@ -72,6 +72,7 @@ public class Node {
 	// スコアが意味を成していない場合の確認用
 	private static Map<Integer, Integer> bad_score_count = new HashMap<Integer, Integer>();
 	private static int average_count =0;
+
 	// 働いていないノードの確認
 	private int worker_num = 0;
 	private static int worker_count = 0;
@@ -84,10 +85,11 @@ public class Node {
 
 	// ワーカーカウント変数
 	private int worker_tmp = 0;
+	
 	private int inbound_num = 0;
 	private int outbound_num = 0;
 
-	//add
+	// add
 	private Score score = new Score(this);
 	private Random rand = new Random();
 	private Map<Block,Integer> block_prop = new HashMap<Block,Integer>();
@@ -279,7 +281,7 @@ public class Node {
 			// }else{
 			// 	int num = block_prop.get(block)+1;
 			// 	block_prop.put(block,num);
-			// 	if(num>=8){
+			// 	if(num>=OUTBOUND_NUM){
 			// 		System.out.println(block.getHeight()+ +(getCurrentTime()-block.getTime()));
 			// 		block_prop.remove(block);
 			// 		// num = 0;
@@ -343,7 +345,7 @@ public class Node {
 			// if()
 
 			//add
-			if(block.getId()%20 == 0 && block.getId()>1){
+			if(block.getId()%BLOCK_FREQ == 0 && block.getId()>1){
 
 				for(Node i: workerList){
 					if(routingTable.getOutbounds().contains(i)){
@@ -352,7 +354,7 @@ public class Node {
 						inbound_num ++;
 					}
 				}
-				System.out.println(inbound_num + " : "+ outbound_num);
+				// System.out.println(inbound_num + " : "+ outbound_num);
 				outbound_num = 0;
 				inbound_num = 0;
 
@@ -417,7 +419,7 @@ public class Node {
 		while(true){
 			addNode = getSimulatedNodes().get(rand.nextInt(NUM_OF_NODES));
 			
-			if(addNode.getInbounds().size()>=30){
+			if(addNode.getInbounds().size()>=INBOUND_NUM){
 			}else if(addNode==removeNode){
 			}else if(addNeighbor(addNode))break;
 		}
@@ -451,7 +453,7 @@ public class Node {
 				while(true){
 					addNode = getSimulatedNodes().get(rand.nextInt(NUM_OF_NODES-1));
 				
-					if(addNode.getInbounds().size()>30){
+					if(addNode.getInbounds().size()>OUTBOUND_NUM){
 					}else if(addNode==removeNode){
 					}else if(addNeighbor(addNode)){
 						count++;
@@ -483,14 +485,14 @@ public class Node {
 			if(!workerList.contains(node) && removeNeighbor(node)){
 				while(true){
 					int size = score.getPreNodes().size();
-					if(size>8 && addNode!=this){
+					if(size>OUTBOUND_NUM && addNode!=this){
 						// addNode = score.getBestNodeFromAllScores(node_over30Inbounds);
 						addNode = getSimulatedNodes().get(rand.nextInt(NUM_OF_NODES-1));
 					}else{
 						addNode = getSimulatedNodes().get(rand.nextInt(NUM_OF_NODES-1));
 					}
 
-					if(addNode.getInbounds().size()>30){
+					if(addNode.getInbounds().size()>INBOUND_NUM){
 					}else if(addNode==node){
 					}else if(addNeighbor(addNode)){
 						count++;
