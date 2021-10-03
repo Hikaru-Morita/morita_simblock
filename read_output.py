@@ -26,7 +26,7 @@ def plot_hist():
                 for i in range(1,1000):
                     hist_plot.append(np.average([int(i) for i in chunk.iloc[:,i].values]))
     plt.tight_layout()
-    plt.hist(hist_plot,bins=100, alpha=0.5)
+    plt.hist(hist_plot, label="PNS", bins=100, alpha=0.5)
     hist_plot=[]
     chunk_count = 0
 
@@ -40,9 +40,11 @@ def plot_hist():
                     hist_plot.append(np.average([int(i) for i in chunk.iloc[:,i].values]))
 
     plt.tight_layout()
-    plt.hist(hist_plot,bins=100,alpha=0.5,color='orange')
-    plt.xlabel("ブロック伝播時間[ms]",fontname="IPAexGothic")
-    plt.ylabel("ノード数[個]",fontname="IPAexGothic")
+    plt.hist(hist_plot, bins=100, alpha=0.5, color='orange', label="Proposal method")
+    plt.rc('legend', fontsize=12)
+    plt.legend(ncol=2)
+    plt.xlabel("Block propagation time[ms]",fontname="IPAexGothic",fontsize=15)
+    plt.ylabel("Number of nodes",fontname="IPAexGothic",fontsize=15)
     plt.subplots_adjust(left=0.1,bottom=0.1)
     hist_fig.savefig('./simulator/src/dist/output/fig/conpare.png')
 
