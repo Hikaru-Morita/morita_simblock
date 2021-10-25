@@ -41,9 +41,9 @@ public class SimulationConfiguration {
 	public static final int SIMULATION_TYPE = 2;
 
 	// number of inbound, outbound connections
-	public static final int INBOUND_NUM = 60;
-	public static final int OUTBOUND_NUM = 15;
+	public static final int INBOUND_NUM = 110;
+	public static final int OUTBOUND_NUM = 8;
 
 	// number of block per node change
-	public static final int BLOCK_FREQ = 135;
+	public static final int BLOCK_FREQ = 30;
 }
