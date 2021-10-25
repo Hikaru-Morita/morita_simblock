@@ -85,9 +85,13 @@ public class Node {
 
 	// ワーカーカウント変数
 	private int worker_tmp = 0;
-	
+
 	private int inbound_num = 0;
 	private int outbound_num = 0;
+
+	// ブロック伝播が Inbound, Outbound どちらからかをカウントする
+	private int propByInbound_num = 0;
+	private int propByOutbound_num = 0;
 
 	// add
 	private Score score = new Score(this);
@@ -274,7 +278,6 @@ public class Node {
 
 			// if(block.getHeight()==ENDBLOCKHEIGHT)System.out.println(vaild_inv_count + " : " + all_inv_count);
 
-
 			//add
 			// if(!block_prop.containsKey(block)){
 			// 	block_prop.put(block,1);
@@ -302,11 +305,13 @@ public class Node {
 			downloadingBlocks.remove(block);
 			this.receiveBlock(block);
 
-			// if(!node_has_block.containsKey(block.getId())){
-			// 	node_has_block.put(block.getId(),1);
-			// }else{
-			// 	node_has_block.put(block.getId(),node_has_block.get(block.getId())+1);
-			// }
+			// ブロック伝播時に Inbound, Outbound どちらからなのか判別
+			if(this.getInbounds().contains(message.getFrom())){
+				propByInbound_num++;
+			}else{
+				propByOutbound_num++;
+			}
+			System.out.println("Inbound : " + propByInbound_num + " \tOutbound : " + propByOutbound_num);
 
 			// ブロック伝播時のスコアを出力
 			if(block.getHeight()>=ENDBLOCKHEIGHT/2 && from!=this && !workerList.contains(from)){
@@ -336,9 +341,7 @@ public class Node {
 				longHopTime = getCurrentTime()-block.getTime();
 				// if(block.getHeight()==500)System.out.println(long_hop_count);
 				
-				
 				// System.out.println(totalLongHopTime);
-
 			}
 
 			// 隣接ノード数を算出
@@ -347,16 +350,16 @@ public class Node {
 			//add
 			if(block.getId()%BLOCK_FREQ == 0 && block.getId()>1){
 
-				for(Node i: workerList){
-					if(routingTable.getOutbounds().contains(i)){
-						outbound_num ++;
-					}else if(routingTable.getInbounds().contains(i)){
-						inbound_num ++;
-					}
-				}
+				// for(Node i: workerList){
+				// 	if(routingTable.getOutbounds().contains(i)){
+				// 		outbound_num ++;
+				// 	}else if(routingTable.getInbounds().contains(i)){
+				// 		inbound_num ++;
+				// 	}
+				// }
 				// System.out.println(inbound_num + " : "+ outbound_num);
-				outbound_num = 0;
-				inbound_num = 0;
+				// outbound_num = 0;
+				// inbound_num = 0;
 
 				if(SIMULATION_TYPE == 2){
 					checkFrequency();
