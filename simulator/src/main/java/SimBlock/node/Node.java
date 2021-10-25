@@ -62,6 +62,8 @@ public class Node {
 	// 有効invカウント用
 	private static int vaild_inv_count = 0;
 	private static int all_inv_count = 0;
+	private static int outbound_vaild_inv_count = 0;
+	private static int inbound_vaild_inv_count = 0;
 
 	// ブロック所持ノード数カウント
 	private static Map<Integer,Integer[]> node_has_block = new HashMap<Integer, Integer[]>();
@@ -239,6 +241,13 @@ public class Node {
 		if(message instanceof InvMessageTask){
 			Block block = ((InvMessageTask) message).getBlock();
 			if(!this.orphans.contains(block) && !this.downloadingBlocks.contains(block)){
+
+				if(this.getOutbounds().contains(message.getFrom())){
+					outbound_vaild_inv_count++;
+				}else{
+					inbound_vaild_inv_count++;
+				}
+
 				if(this.block == null || block.getHeight() > this.block.getHeight()){
 					AbstractMessageTask task = new RecMessageTask(this,from,block);
 					putTask(task);
@@ -248,7 +257,6 @@ public class Node {
 					vaild_inv_count = node_has_block.get(block.getId())[1];
 					node_has_block.get(block.getId())[1] = addInvCount(vaild_inv_count,block);
 				}else{
-
 					// get orphan block
 					if(block != this.block.getBlockWithHeight(block.getHeight())){
 						AbstractMessageTask task = new RecMessageTask(this,from,block);
@@ -311,7 +319,7 @@ public class Node {
 			}else{
 				propByOutbound_num++;
 			}
-			System.out.println("Inbound : " + propByInbound_num + " \tOutbound : " + propByOutbound_num);
+			// System.out.println("Inbound : " + propByInbound_num + " \tOutbound : " + propByOutbound_num);
 
 			// ブロック伝播時のスコアを出力
 			if(block.getHeight()>=ENDBLOCKHEIGHT/2 && from!=this && !workerList.contains(from)){
@@ -349,6 +357,11 @@ public class Node {
 
 			//add
 			if(block.getId()%BLOCK_FREQ == 0 && block.getId()>1){
+
+				if(block.getId()%100==0){
+					System.out.println("vaild INV from Outbound : " + outbound_vaild_inv_count);
+					System.out.println("vaild INV from Inbound  : " + inbound_vaild_inv_count);
+				}
 
 				// for(Node i: workerList){
 				// 	if(routingTable.getOutbounds().contains(i)){
