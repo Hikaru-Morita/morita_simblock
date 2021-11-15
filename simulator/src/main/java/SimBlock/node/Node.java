@@ -344,8 +344,13 @@ public class Node {
 				// System.out.println(totalLongHopTime);
 			}
 
-			// 隣接ノード数を算出
-			// if()
+			// Outboundノードを既定数まで増やす
+			while(this.getOutbounds().size()<8){
+				Node addNode = getSimulatedNodes().get(rand.nextInt(NUM_OF_NODES-1));
+				if(addNode!=this && !this.getOutbounds().contains(addNode)){
+					this.addNeighbor(addNode);
+				}
+			}
 
 			//add
 			if(block.getId()%BLOCK_FREQ == 0 && block.getId()>1){
