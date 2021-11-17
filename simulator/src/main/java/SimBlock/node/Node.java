@@ -93,6 +93,9 @@ public class Node {
 	private int propByInbound_num = 0;
 	private int propByOutbound_num = 0;
 
+	// 自身が block message を送信した inbound カウント用
+	private Map<Node, Integer> active_inbounds = new HashMap<Node, Integer>();
+
 	// add
 	private Score score = new Score(this);
 	private Random rand = new Random();
@@ -311,7 +314,7 @@ public class Node {
 			}else{
 				propByOutbound_num++;
 			}
-			System.out.println("Inbound : " + propByInbound_num + " \tOutbound : " + propByOutbound_num);
+			// System.out.println("Inbound : " + propByInbound_num + " \tOutbound : " + propByOutbound_num);
 
 			// ブロック伝播時のスコアを出力
 			if(block.getHeight()>=ENDBLOCKHEIGHT/2 && from!=this && !workerList.contains(from)){
@@ -350,6 +353,23 @@ public class Node {
 				if(addNode!=this && !this.getOutbounds().contains(addNode)){
 					this.addNeighbor(addNode);
 				}
+			}
+
+			// 自身が blockMessage を送信しない inbound を捨てる
+			if(block.getId()%BLOCK_FREQ == 0 && block.getId()>1){
+				// for(Map.Entry<Node,Integer> i: active_inbounds.entrySet()){
+					
+				// 	i.getKey().removeNeighbor(this);
+				// }
+				List<Node> inbounds = new ArrayList<Node>();
+				inbounds = this.getInbounds();
+				for(int i=0; i<inbounds.size(); i++){
+				// for(List.Entry<Node,Integer> i: inbounds){
+					if(!active_inbounds.containsKey(inbounds.get(i))){
+						inbounds.get(i).removeNeighbor(this);
+					}
+				}
+				active_inbounds = new HashMap<Node, Integer>();
 			}
 
 			//add
@@ -404,6 +424,13 @@ public class Node {
 			//add
 			addBF(block,this,to);
 
+			if(!this.getOutbounds().contains(to)){
+				if(!active_inbounds.containsKey(to)){
+					active_inbounds.put(to, 1);
+				}else{
+					active_inbounds.put(to, active_inbounds.get(to)+1);
+				}
+			}
 		}else{
 			sendingBlock = false;
 		}
