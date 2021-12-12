@@ -355,8 +355,8 @@ public class Node {
 				}
 			}
 
-			// 自身が blockMessage を送信しない inbound を捨てる
-			if(block.getId()%BLOCK_FREQ == 0 && block.getId()>1){
+			// 自身に blockMessage を送信しない inbound を捨てる
+			if(block.getId()%50 == 0 && block.getId()>1){
 				// for(Map.Entry<Node,Integer> i: active_inbounds.entrySet()){
 					
 				// 	i.getKey().removeNeighbor(this);
@@ -424,11 +424,11 @@ public class Node {
 			//add
 			addBF(block,this,to);
 
-			if(!this.getOutbounds().contains(to)){
-				if(!active_inbounds.containsKey(to)){
-					active_inbounds.put(to, 1);
+			if(!to.getOutbounds().contains(this)){
+				if(!to.active_inbounds.containsKey(this)){
+					to.active_inbounds.put(this, 1);
 				}else{
-					active_inbounds.put(to, active_inbounds.get(to)+1);
+					to.active_inbounds.put(this, to.active_inbounds.get(this)+1);
 				}
 			}
 		}else{
