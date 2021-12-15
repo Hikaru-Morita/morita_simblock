@@ -19,7 +19,7 @@ nodeList.txt
 out.txt
 
 # To manage directory structure by git
-/simulator/src/dist/output/*
+# /simulator/src/dist/output/*
 !/simulator/src/dist/output/graph/
 /simulator/src/dist/output/graph/*
 !/simulator/src/dist/output/graph/.gitkeep
@@ -32,3 +32,4 @@ out.txt
 *.json
 
 python-env/
+/simulator/src/dist/output/static.json

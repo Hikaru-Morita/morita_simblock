@@ -72,6 +72,7 @@ public class Node {
 	// スコアが意味を成していない場合の確認用
 	private static Map<Integer, Integer> bad_score_count = new HashMap<Integer, Integer>();
 	private static int average_count =0;
+
 	// 働いていないノードの確認
 	private int worker_num = 0;
 	private static int worker_count = 0;
@@ -85,7 +86,17 @@ public class Node {
 	// ワーカーカウント変数
 	private int worker_tmp = 0;
 
-	//add
+	private int inbound_num = 0;
+	private int outbound_num = 0;
+
+	// ブロック伝播が Inbound, Outbound どちらからかをカウントする
+	private int propByInbound_num = 0;
+	private int propByOutbound_num = 0;
+
+	// 自身が block message を送信した inbound カウント用
+	private Map<Node, Integer> active_inbounds = new HashMap<Node, Integer>();
+
+	// add
 	private Score score = new Score(this);
 	private Random rand = new Random();
 	private Map<Block,Integer> block_prop = new HashMap<Block,Integer>();
@@ -270,14 +281,13 @@ public class Node {
 
 			// if(block.getHeight()==ENDBLOCKHEIGHT)System.out.println(vaild_inv_count + " : " + all_inv_count);
 
-
 			//add
 			// if(!block_prop.containsKey(block)){
 			// 	block_prop.put(block,1);
 			// }else{
 			// 	int num = block_prop.get(block)+1;
 			// 	block_prop.put(block,num);
-			// 	if(num>=8){
+			// 	if(num>=OUTBOUND_NUM){
 			// 		System.out.println(block.getHeight()+ +(getCurrentTime()-block.getTime()));
 			// 		block_prop.remove(block);
 			// 		// num = 0;
@@ -298,11 +308,13 @@ public class Node {
 			downloadingBlocks.remove(block);
 			this.receiveBlock(block);
 
-			// if(!node_has_block.containsKey(block.getId())){
-			// 	node_has_block.put(block.getId(),1);
-			// }else{
-			// 	node_has_block.put(block.getId(),node_has_block.get(block.getId())+1);
-			// }
+			// ブロック伝播時に Inbound, Outbound どちらからなのか判別
+			if(this.getInbounds().contains(message.getFrom())){
+				propByInbound_num++;
+			}else{
+				propByOutbound_num++;
+			}
+			// System.out.println("Inbound : " + propByInbound_num + " \tOutbound : " + propByOutbound_num);
 
 			// ブロック伝播時のスコアを出力
 			if(block.getHeight()>=ENDBLOCKHEIGHT/2 && from!=this && !workerList.contains(from)){
@@ -332,24 +344,47 @@ public class Node {
 				longHopTime = getCurrentTime()-block.getTime();
 				// if(block.getHeight()==500)System.out.println(long_hop_count);
 				
-				
 				// System.out.println(totalLongHopTime);
-
 			}
 
-			// 隣接ノード数を算出
-			// if()
+			// Outboundノードを既定数まで増やす
+			while(this.getOutbounds().size()<8){
+				Node addNode = getSimulatedNodes().get(rand.nextInt(NUM_OF_NODES-1));
+				if(addNode!=this && !this.getOutbounds().contains(addNode)){
+					this.addNeighbor(addNode);
+				}
+			}
 
-			//add
-			if(block.getId()%30 == 0 && block.getId()>1){
-
-				for(Node i: workerList){
-					if(routingTable.getOutbounds().contains(i)){
-						worker_tmp ++;
+			// 自身に blockMessage を送信しない inbound を捨てる
+			if(block.getId()%50 == 0 && block.getId()>1){
+				// for(Map.Entry<Node,Integer> i: active_inbounds.entrySet()){
+					
+				// 	i.getKey().removeNeighbor(this);
+				// }
+				List<Node> inbounds = new ArrayList<Node>();
+				inbounds = this.getInbounds();
+				for(int i=0; i<inbounds.size(); i++){
+				// for(List.Entry<Node,Integer> i: inbounds){
+					if(!active_inbounds.containsKey(inbounds.get(i))){
+						inbounds.get(i).removeNeighbor(this);
 					}
 				}
-				System.out.println(worker_tmp);
-				worker_tmp = 0;
+				active_inbounds = new HashMap<Node, Integer>();
+			}
+
+			//add
+			if(block.getId()%BLOCK_FREQ == 0 && block.getId()>1){
+
+				// for(Node i: workerList){
+				// 	if(routingTable.getOutbounds().contains(i)){
+				// 		outbound_num ++;
+				// 	}else if(routingTable.getInbounds().contains(i)){
+				// 		inbound_num ++;
+				// 	}
+				// }
+				// System.out.println(inbound_num + " : "+ outbound_num);
+				// outbound_num = 0;
+				// inbound_num = 0;
 
 				if(SIMULATION_TYPE == 2){
 					checkFrequency();
@@ -389,6 +424,13 @@ public class Node {
 			//add
 			addBF(block,this,to);
 
+			if(!to.getOutbounds().contains(this)){
+				if(!to.active_inbounds.containsKey(this)){
+					to.active_inbounds.put(this, 1);
+				}else{
+					to.active_inbounds.put(this, to.active_inbounds.get(this)+1);
+				}
+			}
 		}else{
 			sendingBlock = false;
 		}
@@ -412,7 +454,7 @@ public class Node {
 		while(true){
 			addNode = getSimulatedNodes().get(rand.nextInt(NUM_OF_NODES));
 			
-			if(addNode.getInbounds().size()>=30){
+			if(addNode.getInbounds().size()>=INBOUND_NUM){
 			}else if(addNode==removeNode){
 			}else if(addNeighbor(addNode))break;
 		}
@@ -446,7 +488,7 @@ public class Node {
 				while(true){
 					addNode = getSimulatedNodes().get(rand.nextInt(NUM_OF_NODES-1));
 				
-					if(addNode.getInbounds().size()>30){
+					if(addNode.getInbounds().size()>OUTBOUND_NUM){
 					}else if(addNode==removeNode){
 					}else if(addNeighbor(addNode)){
 						count++;
@@ -478,14 +520,14 @@ public class Node {
 			if(!workerList.contains(node) && removeNeighbor(node)){
 				while(true){
 					int size = score.getPreNodes().size();
-					if(size>8 && addNode!=this){
+					if(size>OUTBOUND_NUM && addNode!=this){
 						// addNode = score.getBestNodeFromAllScores(node_over30Inbounds);
 						addNode = getSimulatedNodes().get(rand.nextInt(NUM_OF_NODES-1));
 					}else{
 						addNode = getSimulatedNodes().get(rand.nextInt(NUM_OF_NODES-1));
 					}
 
-					if(addNode.getInbounds().size()>30){
+					if(addNode.getInbounds().size()>INBOUND_NUM){
 					}else if(addNode==node){
 					}else if(addNeighbor(addNode)){
 						count++;
@@ -544,7 +586,7 @@ public class Node {
 			node_has_block.put(receivedBlock.getId(),list);
 			// System.out.println("received block:"+ node_has_block.get(receivedBlock.getId()) + ":" + receivedBlock);
 			if(receivedBlock.getHeight()>(ENDBLOCKHEIGHT/2)&&node_has_block.get(receivedBlock.getId())[0]%10==0){
-				System.out.println(receivedBlock +" "+ receivedBlock.getHeight() + " " + this.getNeighbors().size() + " currentTime:" + (getCurrentTime()-receivedBlock.getTime()) + " 伝播率:" + node_has_block.get(receivedBlock.getId())[0] + " =" + node_has_block.get(receivedBlock.getId())[1] + "/" + node_has_block.get(receivedBlock.getId())[2]);
+				// System.out.println(receivedBlock +" "+ receivedBlock.getHeight() + " " + this.getNeighbors().size() + " currentTime:" + (getCurrentTime()-receivedBlock.getTime()) + " 伝播率:" + node_has_block.get(receivedBlock.getId())[0] + " =" + node_has_block.get(receivedBlock.getId())[1] + "/" + node_has_block.get(receivedBlock.getId())[2]);
 
 				average_neighbor_num = average_neighbor_num + this.getNeighbors().size();
 				// for(Map.Entry<Node,Double> i: score.getScores().entrySet()){

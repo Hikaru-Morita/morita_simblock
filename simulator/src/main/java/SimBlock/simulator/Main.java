@@ -233,7 +233,7 @@ public class Main {
 		int miningpower=0;
 		for(int id =1; id <= numNodes; id++){
 			miningpower=genMiningPower();
-			Node node = new Node(id,8,regionList.get(id-1),miningpower,TABLE);
+			Node node = new Node(id,OUTBOUND_NUM,regionList.get(id-1),miningpower,TABLE);
 		
 			addNode(node);
 			OUT_JSON_FILE.print("{");

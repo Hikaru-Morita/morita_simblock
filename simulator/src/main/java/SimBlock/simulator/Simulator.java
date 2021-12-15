@@ -201,7 +201,7 @@ public class Simulator {
 					if(block.getHeight()>=ENDBLOCKHEIGHT/2){
 						sum_50percent = sum_50percent + timeEntry.getValue();
 						divide_count++;
-						System.out.println("50%: " + sum_50percent/divide_count);
+						System.out.println("50%: " + sum_50percent/divide_count + " divide_count:" + divide_count);
 					}
 				}
 				if(count == NUM_OF_NODES*80/100){

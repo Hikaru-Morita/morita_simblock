@@ -52,8 +52,11 @@ public class NetworkConfiguration {
 	private static final long[] DOWNLOAD_BANDWIDTH_2015_3times_night = {25000000, 8000000, 6500000, 10000000, 5500000, 5000000, 6 * 1000000};
 	private static long[] DOWNLOAD_BANDWIDTH_2019_3times = {52000000, 20000000, 180000000, 7800000, 7800000, 9900000, 6 * 1000000};
 
-	public static long[] DOWNLOAD_BANDWIDTH = DOWNLOAD_BANDWIDTH_2015_3times;
+	private static final long[] DOWNLOAD_BANDWIDTH_2015_large = {25000000, 24000000, 500000, 10000000, 17500000, 14000000, 6 * 1000000};
+
+	// public static long[] DOWNLOAD_BANDWIDTH = DOWNLOAD_BANDWIDTH_2015_3times;
 	// public static long[] DOWNLOAD_BANDWIDTH = DOWNLOAD_BANDWIDTH_2015;
+	public static long[] DOWNLOAD_BANDWIDTH = DOWNLOAD_BANDWIDTH_2015_3times;
 
 	// Upload bandwidth in each region, and last element is Inter-regional bandwidth
 	// Unit: bit per second
@@ -64,8 +67,11 @@ public class NetworkConfiguration {
 	private static final long[] UPLOAD_BANDWIDTH_2015_3times_night =  { 4700000,  4100000, 1800000,  5300000,  1400000,  2200000, 6 * 1000000};
 	private static final long[] UPLOAD_BANDWIDTH_2019_3times =  { 19200000,  10700000, 5800000,  8700000,  5200000,  5300000, 6 * 1000000};
 
-	public static long[] UPLOAD_BANDWIDTH = UPLOAD_BANDWIDTH_2015_3times;
+	private static final long[] UPLOAD_BANDWIDTH_2015_large =  { 4700000,  8100000, 200000,  5300000,  3400000,  5200000, 6 * 1000000};
+
+	// public static long[] UPLOAD_BANDWIDTH = UPLOAD_BANDWIDTH_2015_3times;
 	// public static long[] UPLOAD_BANDWIDTH = UPLOAD_BANDWIDTH_2015;
+	public static long[] UPLOAD_BANDWIDTH = UPLOAD_BANDWIDTH_2015_3times;
 
 	public static void change_bw_2015(){
 		if(DOWNLOAD_BANDWIDTH == DOWNLOAD_BANDWIDTH_2015_3times){

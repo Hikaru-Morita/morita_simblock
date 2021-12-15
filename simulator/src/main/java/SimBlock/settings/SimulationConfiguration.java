@@ -27,7 +27,7 @@ public class SimulationConfiguration {
 	public static final int AVERAGE_MINING_POWER = 400000;
 	public static final int STDEV_OF_MINING_POWER = 100000;
 
-	public static final int ENDBLOCKHEIGHT = 1000;
+	public static final int ENDBLOCKHEIGHT = 2000;
 
 	// Unit: byte
 	public static final long BLOCKSIZE = 535000;//6110;//8000;//535000;//0.5MB
@@ -38,8 +38,12 @@ public class SimulationConfiguration {
 	// simulation type
 	// 1: previous research
 	// 2: my research 
-	public static final int SIMULATION_TYPE = 1;
+	public static final int SIMULATION_TYPE = 2;
 
-	// 
-	// public static final
+	// number of inbound, outbound connections
+	public static final int INBOUND_NUM = 110;
+	public static final int OUTBOUND_NUM = 8;
+
+	// number of block per node change
+	public static final int BLOCK_FREQ = 30;
 }

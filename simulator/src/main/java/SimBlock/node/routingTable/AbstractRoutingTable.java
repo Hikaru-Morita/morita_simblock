@@ -16,12 +16,13 @@
 package SimBlock.node.routingTable;
 
 import java.util.ArrayList;
+import static SimBlock.settings.SimulationConfiguration.*;
 
 import SimBlock.node.Node;
 
 public abstract class AbstractRoutingTable {
 	private Node selfNode;
-	private int nConnection = 8;
+	private int nConnection = OUTBOUND_NUM;
 
 	public AbstractRoutingTable(Node selfNode){
 		this.selfNode = selfNode;
