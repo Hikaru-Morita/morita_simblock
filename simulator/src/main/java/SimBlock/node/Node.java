@@ -309,9 +309,9 @@ public class Node {
 
 			// inbound 選択
 			// 上流の inbound を選択、自身にブロックを送信するノードを選ぶ
-			if(this.getInbounds().contains(message.getFrom())){
-				active_inbounds.put(message.getFrom(),1);
-			}
+			// if(this.getInbounds().contains(message.getFrom())){
+			// 	active_inbounds.put(message.getFrom(),1);
+			// }
 
 			// ブロック伝播時に Inbound, Outbound どちらからなのか判別
 			if(this.getInbounds().contains(message.getFrom())){
@@ -361,25 +361,26 @@ public class Node {
 			}
 
 			// 自身に blockMessage を送信しない inbound を捨てる
-			// if(block.getId()%40 == 0 && block.getId()>1){
-			// 	// for(Map.Entry<Node,Integer> i: active_inbounds.entrySet()){
+			// if(block.getId()%BLOCK_FREQ == 0 && block.getId()>1){
+			if(block.getId()%BLOCK_FREQ == 0 && this.getNodeID()>NODE_PERCENT){
+				// for(Map.Entry<Node,Integer> i: active_inbounds.entrySet()){
 					
-			// 	// 	i.getKey().removeNeighbor(this);
-			// 	// }
-			// 	List<Node> inbounds = new ArrayList<Node>();
-			// 	inbounds = this.getInbounds();
-			// 	for(int i=0; i<inbounds.size(); i++){
-			// 	// for(List.Entry<Node,Integer> i: inbounds){
-			// 		if(!active_inbounds.containsKey(inbounds.get(i))){
-			// 			inbounds.get(i).removeNeighbor(this);
-			// 		}
-			// 	}
-			// 	active_inbounds = new HashMap<Node, Integer>();
-			// }
+				// 	i.getKey().removeNeighbor(this);
+				// }
+				List<Node> inbounds = new ArrayList<Node>();
+				inbounds = this.getInbounds();
+				for(int i=0; i<inbounds.size(); i++){
+				// for(List.Entry<Node,Integer> i: inbounds){
+					if(!active_inbounds.containsKey(inbounds.get(i))){
+						inbounds.get(i).removeNeighbor(this);
+					}
+				}
+				active_inbounds = new HashMap<Node, Integer>();
+			}
 
 			//add
-			if(block.getId()%BLOCK_FREQ == 0 && block.getId()>1){
-
+			// if(block.getId()%BLOCK_FREQ == 0 && block.getId()>1){
+			if(block.getId()%BLOCK_FREQ == 0 && this.getNodeID()>NODE_PERCENT){
 				// inbound, outbound の数を確認
 				// for(Node i: workerList){
 				// 	if(routingTable.getOutbounds().contains(i)){
@@ -430,15 +431,15 @@ public class Node {
 			//add
 			addBF(block,this,to);
 
-			// // inbound を選ぶ
-			// // 自分からみて下流を選ぶ
-			// if(!to.getOutbounds().contains(this)){
-			// 	if(!to.active_inbounds.containsKey(this)){
-			// 		to.active_inbounds.put(this, 1);
-			// 	}else{
-			// 		to.active_inbounds.put(this, to.active_inbounds.get(this)+1);
-			// 	}
-			// }
+			// inbound を選ぶ
+			// 自分からみて下流を選ぶ
+			if(!this.getOutbounds().contains(to)){
+				if(!active_inbounds.containsKey(to)){
+					active_inbounds.put(to, 1);
+				}else{
+					active_inbounds.put(to, active_inbounds.get(to)+1);
+				}
+			}
 		}else{
 			sendingBlock = false;
 		}

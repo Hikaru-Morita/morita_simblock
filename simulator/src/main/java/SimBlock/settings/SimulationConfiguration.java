@@ -38,12 +38,13 @@ public class SimulationConfiguration {
 	// simulation type
 	// 1: previous research
 	// 2: my research 
-	public static final int SIMULATION_TYPE = 2;
+	public static final int SIMULATION_TYPE = 20;
 
 	// number of inbound, outbound connections
-	public static final int INBOUND_NUM = 110;
+	public static final int INBOUND_NUM = 32;
 	public static final int OUTBOUND_NUM = 8;
 
 	// number of block per node change
-	public static final int BLOCK_FREQ = 30;
+	public static final int BLOCK_FREQ = 40;
+	public static final int NODE_PERCENT = 0;
 }
