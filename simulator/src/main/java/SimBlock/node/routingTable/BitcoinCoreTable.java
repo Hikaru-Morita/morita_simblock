@@ -67,8 +67,9 @@ public class BitcoinCoreTable extends AbstractRoutingTable {
 			// System.out.println("1;"+(node == getSelfNode()));
 			// System.out.println("2;"+this.outbound.contains(node));
 			// System.out.println("3;"+this.inbound.contains(node));
+			// System.out.println("4;"+this.outbound.size());
 			return false;
-		}else if(this.outbound.add(node) && node.getRoutingTable().addInbound(getSelfNode())){
+		}else if(node.getRoutingTable().addInbound(getSelfNode()) && this.outbound.add(node)){
 			printAddLink(node);
 			return true;
 		}else{
