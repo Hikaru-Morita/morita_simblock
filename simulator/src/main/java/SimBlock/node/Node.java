@@ -319,7 +319,10 @@ public class Node {
 			}else{
 				propByOutbound_num++;
 			}
+
 			// System.out.println("Inbound : " + propByInbound_num + " \tOutbound : " + propByOutbound_num);
+			System.out.println(propByInbound_num);
+			// System.out.println(propByOutbound_num);
 
 			// ブロック伝播時のスコアを出力
 			if(block.getHeight()>=ENDBLOCKHEIGHT/2 && from!=this && !workerList.contains(from)){
@@ -362,26 +365,26 @@ public class Node {
 
 			// 自身に blockMessage を送信しない inbound を捨てる
 			// if(block.getId()%BLOCK_FREQ == 0 && block.getId()>1){
-			if(block.getId()%BLOCK_FREQ == 0 && this.getNodeID()>NODE_PERCENT){
-				// for(Map.Entry<Node,Integer> i: active_inbounds.entrySet()){
+			// if(block.getId()%BLOCK_FREQ == 0 && this.getNodeID()>NODE_PERCENT){
+			// 	// for(Map.Entry<Node,Integer> i: active_inbounds.entrySet()){
 					
-				// 	i.getKey().removeNeighbor(this);
-				// }
-				List<Node> inbounds = new ArrayList<Node>();
-				inbounds = this.getInbounds();
-				for(int i=0; i<inbounds.size(); i++){
-				// for(List.Entry<Node,Integer> i: inbounds){
-					if(!active_inbounds.containsKey(inbounds.get(i))){
-						inbounds.get(i).removeNeighbor(this);
-					}
-				}
-				active_inbounds = new HashMap<Node, Integer>();
-			}
+			// 	// 	i.getKey().removeNeighbor(this);
+			// 	// }
+			// 	List<Node> inbounds = new ArrayList<Node>();
+			// 	inbounds = this.getInbounds();
+			// 	for(int i=0; i<inbounds.size(); i++){
+			// 	// for(List.Entry<Node,Integer> i: inbounds){
+			// 		if(!active_inbounds.containsKey(inbounds.get(i))){
+			// 			inbounds.get(i).removeNeighbor(this);
+			// 		}
+			// 	}
+			// 	active_inbounds = new HashMap<Node, Integer>();
+			// }
 
 			//add
 			// if(block.getId()%BLOCK_FREQ == 0 && block.getId()>1){
 			if(block.getId()%BLOCK_FREQ == 0 && this.getNodeID()>NODE_PERCENT){
-				// inbound, outbound の数を確認
+				// // inbound, outbound の数を確認
 				// for(Node i: workerList){
 				// 	if(routingTable.getOutbounds().contains(i)){
 				// 		outbound_num ++;
@@ -389,7 +392,8 @@ public class Node {
 				// 		inbound_num ++;
 				// 	}
 				// }
-				// System.out.println(inbound_num + " : "+ outbound_num);
+				// // System.out.println(inbound_num + " : "+ outbound_num);
+				// System.out.println(inbound_num + outbound_num);
 				// outbound_num = 0;
 				// inbound_num = 0;
 

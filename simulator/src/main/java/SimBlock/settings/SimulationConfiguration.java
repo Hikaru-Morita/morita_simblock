@@ -38,7 +38,7 @@ public class SimulationConfiguration {
 	// simulation type
 	// 1: previous research
 	// 2: my research 
-	public static final int SIMULATION_TYPE = 20;
+	public static final int SIMULATION_TYPE = 2;
 
 	// number of inbound, outbound connections
 	public static final int INBOUND_NUM = 32;
