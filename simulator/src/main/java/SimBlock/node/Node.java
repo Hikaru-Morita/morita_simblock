@@ -129,7 +129,7 @@ public class Node {
 
 
 	//add
-	private ArrayList<Node> workerList = new ArrayList<Node>();
+	private Map<Node,Integer> workerList = new HashMap<Node,Integer>();
 	public int getScoresSize(){return score.getScoresSize();}
 	public double getScore(Node node){return score.getScore(node);}
 	public ArrayList<Node> getOutbounds(){return routingTable.getOutbounds();}
@@ -314,6 +314,7 @@ public class Node {
 			// }
 
 			// ブロック伝播時に Inbound, Outbound どちらからなのか判別
+			// ここを使ってる
 			if(this.getInbounds().contains(message.getFrom())){
 				propByInbound_num++;
 			}else{
@@ -321,11 +322,11 @@ public class Node {
 			}
 
 			// System.out.println("Inbound : " + propByInbound_num + " \tOutbound : " + propByOutbound_num);
-			System.out.println(propByInbound_num);
+			// System.out.println(propByInbound_num);
 			// System.out.println(propByOutbound_num);
 
 			// ブロック伝播時のスコアを出力
-			if(block.getHeight()>=ENDBLOCKHEIGHT/2 && from!=this && !workerList.contains(from)){
+			if(block.getHeight()>=ENDBLOCKHEIGHT/2 && from!=this && !workerList.containsKey(from)){
 			// if(block.getId()>=ENDBLOCKHEIGHT/2 && from!=this && score.getAverageScore()<this.getScore(from)){
 			// if(block.getId()>=ENDBLOCKHEIGHT/2 && from!=this && !score.getScores().containsKey(from)){
 				if(!bad_score_count.containsKey(block.getId())){
@@ -365,21 +366,24 @@ public class Node {
 
 			// 自身に blockMessage を送信しない inbound を捨てる
 			// if(block.getId()%BLOCK_FREQ == 0 && block.getId()>1){
-			// if(block.getId()%BLOCK_FREQ == 0 && this.getNodeID()>NODE_PERCENT){
-			// 	// for(Map.Entry<Node,Integer> i: active_inbounds.entrySet()){
+			if(block.getId()%BLOCK_FREQ == 0 && this.getNodeID()>NODE_PERCENT){
+				// for(Map.Entry<Node,Integer> i: active_inbounds.entrySet()){
 					
-			// 	// 	i.getKey().removeNeighbor(this);
-			// 	// }
-			// 	List<Node> inbounds = new ArrayList<Node>();
-			// 	inbounds = this.getInbounds();
-			// 	for(int i=0; i<inbounds.size(); i++){
-			// 	// for(List.Entry<Node,Integer> i: inbounds){
-			// 		if(!active_inbounds.containsKey(inbounds.get(i))){
-			// 			inbounds.get(i).removeNeighbor(this);
-			// 		}
-			// 	}
-			// 	active_inbounds = new HashMap<Node, Integer>();
-			// }
+				// 	i.getKey().removeNeighbor(this);
+				// }
+				List<Node> inbounds = new ArrayList<Node>();
+				inbounds = this.getInbounds();
+				for(int i=0; i<inbounds.size(); i++){
+				// for(List.Entry<Node,Integer> i: inbounds){
+					if(!active_inbounds.containsKey(inbounds.get(i))){
+						inbounds.get(i).removeNeighbor(this);
+					}
+				}
+				for(Integer num: active_inbounds.values()){
+					System.out.println(num);
+				}
+				active_inbounds = new HashMap<Node, Integer>();
+			}
 
 			//add
 			// if(block.getId()%BLOCK_FREQ == 0 && block.getId()>1){
@@ -397,9 +401,16 @@ public class Node {
 				// outbound_num = 0;
 				// inbound_num = 0;
 
+				// ↑ workerlist だけでなく activeInbound も見る必要がある？
+
 				if(SIMULATION_TYPE == 2){
 					checkFrequency();
-					workerList = new ArrayList<Node>();
+
+					for(Integer num: workerList.values()){
+						System.out.println(num);
+					}
+
+					workerList = new HashMap<Node,Integer>();
 				}else if(SIMULATION_TYPE == 1){
 					changeNeighbors();
 				// changeNeighbors_v2();
@@ -412,7 +423,8 @@ public class Node {
 			//add
 			hop_count.put(block, message.getFrom().getHopCount(block)+1);
 			countInterval(m.getInterval());
-			if(!workerList.contains(m.getFrom()))workerList.add(m.getFrom());			
+			if(!workerList.containsKey(m.getFrom()))workerList.put(m.getFrom(),1);
+			else if(workerList.containsKey(m.getFrom()))workerList.put(m.getFrom(),workerList.get(m.getFrom())+1);			
 		}
 	}
 
@@ -472,7 +484,7 @@ public class Node {
 			}else if(addNeighbor(addNode))break;
 			removeNeighbor(addNode);
 		}
-		workerList = new ArrayList<Node>();
+		workerList = new HashMap<Node,Integer>();
 	}
 
 	//add
@@ -531,7 +543,7 @@ public class Node {
 			Node node = neighbors.get(i);
 			// Node node = neighbors.get(rand.nextInt(NUM_OF_NODES-1));
 			score.removeScore(node);
-			if(!workerList.contains(node) && removeNeighbor(node)){
+			if(!workerList.containsKey(node) && removeNeighbor(node)){
 				while(true){
 					int size = score.getPreNodes().size();
 					if(size>OUTBOUND_NUM && addNode!=this){
