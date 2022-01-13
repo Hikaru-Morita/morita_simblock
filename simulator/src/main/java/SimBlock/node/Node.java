@@ -94,7 +94,7 @@ public class Node {
 	private int propByOutbound_num = 0;
 
 	// 自身が block message を送信した inbound カウント用
-	private Map<Node, Integer> active_inbounds = new HashMap<Node, Integer>();
+	private Map<Node, int[]> active_inbounds = new HashMap<Node, int[]>();
 
 	// add
 	private Score score = new Score(this);
@@ -129,7 +129,7 @@ public class Node {
 
 
 	//add
-	private Map<Node,Integer> workerList = new HashMap<Node,Integer>();
+	private Map<Node,int[]> workerList = new HashMap<Node,int[]>();
 	public int getScoresSize(){return score.getScoresSize();}
 	public double getScore(Node node){return score.getScore(node);}
 	public ArrayList<Node> getOutbounds(){return routingTable.getOutbounds();}
@@ -379,10 +379,12 @@ public class Node {
 						inbounds.get(i).removeNeighbor(this);
 					}
 				}
-				for(Integer num: active_inbounds.values()){
-					System.out.println(num);
+				for(int[] num: active_inbounds.values()){
+					// System.out.println("inbound  回数：" + num[0] + ", " + block.getHeight() + ":" + num[1]);
+					// System.out.println("inbound  回数:" + num[0] + ", 間隔:" + (block.getHeight() - num[1]));
+					// System.out.println("inbound  回数:" + num[0] + ", 間隔:" + num[1] + ", " + num[2]);
 				}
-				active_inbounds = new HashMap<Node, Integer>();
+				active_inbounds = new HashMap<Node, int[]>();
 			}
 
 			//add
@@ -406,11 +408,22 @@ public class Node {
 				if(SIMULATION_TYPE == 2){
 					checkFrequency();
 
-					for(Integer num: workerList.values()){
-						System.out.println(num);
+					for(int[] num: workerList.values()){
+						if(num[0] == 1){
+							// System.out.println("outbound 回数:" + num[0] + ", 間隔:" + num[1] + ", " + (block.getHeight()-num[2]));
+							if((block.getHeight()-num[2]) < (BLOCK_FREQ/2)){
+								System.out.println(BLOCK_FREQ - (block.getHeight()-num[2]));
+							}else{
+								System.out.println(block.getHeight()-num[2]);
+							}
+						}else{
+							// System.out.println("outbound 回数:" + num[0] + ", " + block.getHeight() + ":" + num[1]);
+							// System.out.println("outbound 回数:" + num[0] + ", 間隔:" + (block.getHeight() - num[1]));
+							System.out.println(num[2]);
+						}
 					}
 
-					workerList = new HashMap<Node,Integer>();
+					workerList = new HashMap<Node,int[]>();
 				}else if(SIMULATION_TYPE == 1){
 					changeNeighbors();
 				// changeNeighbors_v2();
@@ -423,8 +436,17 @@ public class Node {
 			//add
 			hop_count.put(block, message.getFrom().getHopCount(block)+1);
 			countInterval(m.getInterval());
-			if(!workerList.containsKey(m.getFrom()))workerList.put(m.getFrom(),1);
-			else if(workerList.containsKey(m.getFrom()))workerList.put(m.getFrom(),workerList.get(m.getFrom())+1);			
+			if(this.getOutbounds().contains(m.getFrom())){
+				if(!workerList.containsKey(m.getFrom())){
+					int[] num = {1,m.getBlock().getHeight(),m.getBlock().getHeight()};
+					workerList.put(m.getFrom(), num);
+				}
+				else if(workerList.containsKey(m.getFrom())){
+					// int[] num = {workerList.get(m.getFrom())[0]+1, m.getBlock().getHeight()};
+					int[] num = {workerList.get(m.getFrom())[0]+1, m.getBlock().getHeight(), (m.getBlock().getHeight()-workerList.get(m.getFrom())[1])};
+					workerList.put(m.getFrom(),num);			
+				}
+			}
 		}
 	}
 
@@ -451,9 +473,12 @@ public class Node {
 			// 自分からみて下流を選ぶ
 			if(!this.getOutbounds().contains(to)){
 				if(!active_inbounds.containsKey(to)){
-					active_inbounds.put(to, 1);
+					int[] num = {1,block.getHeight(),0};
+					active_inbounds.put(to, num);
 				}else{
-					active_inbounds.put(to, active_inbounds.get(to)+1);
+					// int[] num = {active_inbounds.get(to)[0]+1, block.getHeight()};
+					int[] num = {active_inbounds.get(to)[0]+1, block.getHeight(),(block.getHeight()-active_inbounds.get(to)[1])};
+					active_inbounds.put(to, num);
 				}
 			}
 		}else{
@@ -484,7 +509,7 @@ public class Node {
 			}else if(addNeighbor(addNode))break;
 			removeNeighbor(addNode);
 		}
-		workerList = new HashMap<Node,Integer>();
+		workerList = new HashMap<Node,int[]>();
 	}
 
 	//add
