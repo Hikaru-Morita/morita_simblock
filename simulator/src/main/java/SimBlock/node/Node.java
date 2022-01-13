@@ -364,7 +364,7 @@ public class Node {
 				}
 			}
 
-			// 自身に blockMessage を送信しない inbound を捨てる
+			// 自身が blockMessage を送信しない inbound を捨てる
 			// if(block.getId()%BLOCK_FREQ == 0 && block.getId()>1){
 			if(block.getId()%BLOCK_FREQ == 0 && this.getNodeID()>NODE_PERCENT){
 				// for(Map.Entry<Node,Integer> i: active_inbounds.entrySet()){
@@ -375,12 +375,13 @@ public class Node {
 				inbounds = this.getInbounds();
 				for(int i=0; i<inbounds.size(); i++){
 				// for(List.Entry<Node,Integer> i: inbounds){
-					if(!active_inbounds.containsKey(inbounds.get(i))){
+					if(!active_inbounds.containsKey(inbounds.get(i)) || active_inbounds.get(inbounds.get(i))<1){
 						inbounds.get(i).removeNeighbor(this);
 					}
 				}
+				// 伝播したブロック数を出力
 				for(Integer num: active_inbounds.values()){
-					System.out.println(num);
+					// System.out.println(num);
 				}
 				active_inbounds = new HashMap<Node, Integer>();
 			}
@@ -389,7 +390,7 @@ public class Node {
 			// if(block.getId()%BLOCK_FREQ == 0 && block.getId()>1){
 			if(block.getId()%BLOCK_FREQ == 0 && this.getNodeID()>NODE_PERCENT){
 				// // inbound, outbound の数を確認
-				// for(Node i: workerList){
+				// for(Node i: workerList.keySet()){
 				// 	if(routingTable.getOutbounds().contains(i)){
 				// 		outbound_num ++;
 				// 	}else if(routingTable.getInbounds().contains(i)){
@@ -405,9 +406,10 @@ public class Node {
 
 				if(SIMULATION_TYPE == 2){
 					checkFrequency();
-
+					
+					// 伝播したブロック数を出力
 					for(Integer num: workerList.values()){
-						System.out.println(num);
+						// System.out.println(num);
 					}
 
 					workerList = new HashMap<Node,Integer>();
@@ -543,26 +545,28 @@ public class Node {
 			Node node = neighbors.get(i);
 			// Node node = neighbors.get(rand.nextInt(NUM_OF_NODES-1));
 			score.removeScore(node);
-			if(!workerList.containsKey(node) && removeNeighbor(node)){
-				while(true){
-					int size = score.getPreNodes().size();
-					if(size>OUTBOUND_NUM && addNode!=this){
-						// addNode = score.getBestNodeFromAllScores(node_over30Inbounds);
-						addNode = getSimulatedNodes().get(rand.nextInt(NUM_OF_NODES-1));
-					}else{
-						addNode = getSimulatedNodes().get(rand.nextInt(NUM_OF_NODES-1));
-					}
+			if(!workerList.containsKey(node) || workerList.get(node) < 0 ){
+				if(removeNeighbor(node)){
+					while(true){
+						int size = score.getPreNodes().size();
+						if(size>OUTBOUND_NUM && addNode!=this){
+							// addNode = score.getBestNodeFromAllScores(node_over30Inbounds);
+							addNode = getSimulatedNodes().get(rand.nextInt(NUM_OF_NODES-1));
+						}else{
+							addNode = getSimulatedNodes().get(rand.nextInt(NUM_OF_NODES-1));
+						}
 
-					if(addNode.getInbounds().size()>INBOUND_NUM){
-					}else if(addNode==node){
-					}else if(addNeighbor(addNode)){
-						count++;
-						break;
-						// return;
+						if(addNode.getInbounds().size()>INBOUND_NUM){
+						}else if(addNode==node){
+						}else if(addNeighbor(addNode)){
+							count++;
+							break;
+							// return;
+						}
+						node_over30Inbounds.add(addNode);
 					}
-					node_over30Inbounds.add(addNode);
+					// if(count==1)break;
 				}
-				// if(count==1)break;
 			}
 		}
 		// workerList = new ArrayList<Node>();
