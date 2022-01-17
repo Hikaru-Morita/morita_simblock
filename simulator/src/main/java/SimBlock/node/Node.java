@@ -372,9 +372,16 @@ public class Node {
 
 				// workerList に含まれない node を Outbounds から削除
 				for(Node node: neighbors){
-					if(!workerList.contains(node)){
-						removing_nodes.add(node);
+					// if(!workerList.contains(node)){
+					// 	removing_nodes.add(node);
+					// }
+					for(Node worker: workerList){
+						if(node == worker){
+							worker_count++;
+						}
 					}
+					if(worker_count<=1)removing_nodes.add(node);
+					worker_count = 0;
 				}
 
 				// System.out.println(removing_nodes);
