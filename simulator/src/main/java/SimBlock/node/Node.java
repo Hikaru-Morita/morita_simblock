@@ -95,7 +95,7 @@ public class Node {
 	private int propByOutbound_num = 0;
 
 	// 自身が block message を送信した inbound カウント用
-	private Map<Node, int[]> active_inbounds = new HashMap<Node, int[]>();
+	private LinkedList<Node> active_inbound = new LinkedList<Node>();
 
 	// add
 	private Score score = new Score(this);
@@ -419,16 +419,29 @@ public class Node {
 
 			// inbound を選ぶ
 			// 自分からみて下流を選ぶ
-			// if(!this.getOutbounds().contains(to)){
-			// 	if(!active_inbounds.containsKey(to)){
-			// 		int[] num = {1,block.getHeight(),0};
-			// 		active_inbounds.put(to, num);
-			// 	}else{
-			// 		// int[] num = {active_inbounds.get(to)[0]+1, block.getHeight()};
-			// 		int[] num = {active_inbounds.get(to)[0]+1, block.getHeight(),(block.getHeight()-active_inbounds.get(to)[1])};
-			// 		active_inbounds.put(to, num);
-			// 	}
-			// }
+			Node working_node = to;
+			ArrayList<Node> target_inbounds = this.getInbounds();
+			ArrayList<Node> removing_node = new ArrayList<Node>();
+			if(active_inbound.size()<BLOCK_FREQ){
+				active_inbound.add(working_node);
+			}else{
+				// 更新間隔 + 1 になるよう add
+				active_inbound.add(working_node);
+				active_inbound.removeFirst();
+
+				for(Node node: target_inbounds){
+					if(active_inbound.contains(node)){
+						removing_node.add(node);
+					}
+				}
+
+				for(Node node : removing_node){
+					if(!active_inbound.contains(node)){
+						node.removeNeighbor(this);
+						while(node.addNeighbor(getSimulatedNodes().get(rand.nextInt(NUM_OF_NODES-1))));	
+					}
+				}
+			}
 		}else{
 			sendingBlock = false;
 		}
