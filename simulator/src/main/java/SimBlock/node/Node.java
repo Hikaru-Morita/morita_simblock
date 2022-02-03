@@ -97,6 +97,11 @@ public class Node {
 	// 自身が block message を送信した inbound カウント用
 	private LinkedList<Node> active_inbound = new LinkedList<Node>();
 
+	// ノードが伝播するブロックの間隔を調べる
+	private int received_block_count = 0;
+	private Map<Node,Integer> nodes_blockFreq_count = new HashMap<Node,Integer>();
+	private static Map<Integer,Integer> freq_count = new HashMap<Integer,Integer>();
+
 	// add
 	private Score score = new Score(this);
 	private Random rand = new Random();
@@ -347,7 +352,7 @@ public class Node {
 
 			// 		workerList = new LinkedList<Node>();
 			// 	}else if(SIMULATION_TYPE == 1){
-			// 		changeNeighbors();
+					// changeNeighbors();
 			// 	// changeNeighbors_v2();
 			// 	}
 			// }
@@ -355,10 +360,37 @@ public class Node {
 			//add
 			BlockMessageTask m = (BlockMessageTask) message;
 
+			// ノードごとのブロック伝播頻度を確認
+			received_block_count = received_block_count + 1;
+			Node node_from = m.getFrom();
+			if(this.getOutbounds().contains(node_from)){
+				if(block.getHeight()>(ENDBLOCKHEIGHT-5000) && nodes_blockFreq_count.containsKey(node_from)){
+					// System.out.println((received_block_count - nodes_blockFreq_count.get(node_from)));
+					int freq_num = received_block_count - nodes_blockFreq_count.get(node_from);
+					if(freq_num<=200){
+						if(!freq_count.containsKey(freq_num)){
+							freq_count.put(freq_num,1);
+						}else{
+							freq_count.put(freq_num,freq_count.get(freq_num)+1);
+						}
+					}
+				}
+			}
+			nodes_blockFreq_count.put(node_from,received_block_count);
+
+			if(block.getHeight()==ENDBLOCKHEIGHT){
+				System.out.println("-------------");
+				for(Integer num : freq_count.keySet()){
+					System.out.println(num + "\t" + freq_count.get(num));
+				}
+				System.out.println("-------------");
+			}
+
 			// //add
 			// hop_count.put(block, message.getFrom().getHopCount(block)+1);
 			countInterval(m.getInterval());
 
+			// Outbound をスライド方式で更新
 			Node working_node = m.getFrom();
 			ArrayList<Node> removing_nodes = new ArrayList<Node>();
 
@@ -451,27 +483,27 @@ public class Node {
 	public void checkNode(){routingTable.checkNode();}
 
 	// //add
-	// public void changeNeighbors(){
-	// 	Random rand = new Random();
-	// 	Node removeNode;
-	// 	Node addNode;
+	public void changeNeighbors(){
+		Random rand = new Random();
+		Node removeNode;
+		Node addNode;
 
-	// 	removeNode = score.getWorstNodeWithRemove();
-	// 	if(removeNode == this) return;
+		removeNode = score.getWorstNodeWithRemove();
+		if(removeNode == this) return;
 
-	// 	removeNeighbor(removeNode);
-	// 	workerList.remove(removeNode);
+		removeNeighbor(removeNode);
+		// workerList.remove(removeNode);
 
-	// 	while(true){
-	// 		addNode = getSimulatedNodes().get(rand.nextInt(NUM_OF_NODES));
+		while(true){
+			addNode = getSimulatedNodes().get(rand.nextInt(NUM_OF_NODES));
 
-	// 		if(addNode.getInbounds().size()>=INBOUND_NUM){
-	// 		}else if(addNode==removeNode){
-	// 		}else if(addNeighbor(addNode))break;
-	// 		removeNeighbor(addNode);
-	// 	}
-	// 	workerList = new HashMap<Node,int[]>();
-	// }
+			if(addNode.getInbounds().size()>=INBOUND_NUM){
+			}else if(addNode==removeNode){
+			}else if(addNeighbor(addNode))break;
+			removeNeighbor(addNode);
+		}
+		// workerList = new HashMap<Node,int[]>();
+	}
 
 	// //add
 	// public void changeNeighbors_v2(){
