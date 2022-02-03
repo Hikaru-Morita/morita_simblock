@@ -352,7 +352,7 @@ public class Node {
 
 			// 		workerList = new LinkedList<Node>();
 			// 	}else if(SIMULATION_TYPE == 1){
-					// changeNeighbors();
+					changeNeighbors();
 			// 	// changeNeighbors_v2();
 			// 	}
 			// }
@@ -381,7 +381,7 @@ public class Node {
 			if(block.getHeight()==ENDBLOCKHEIGHT){
 				System.out.println("-------------");
 				for(Integer num : freq_count.keySet()){
-					System.out.println(num + "\t" + freq_count.get(num));
+					System.out.println(freq_count.get(num));
 				}
 				System.out.println("-------------");
 			}
@@ -391,41 +391,41 @@ public class Node {
 			countInterval(m.getInterval());
 
 			// Outbound をスライド方式で更新
-			Node working_node = m.getFrom();
-			ArrayList<Node> removing_nodes = new ArrayList<Node>();
+			// Node working_node = m.getFrom();
+			// ArrayList<Node> removing_nodes = new ArrayList<Node>();
 
-			if(workerList.size()<BLOCK_FREQ){
-				workerList.add(working_node);
-			}else{
-				// 更新間隔 + 1 になるよう add
-				workerList.add(working_node);
+			// if(workerList.size()<BLOCK_FREQ){
+			// 	workerList.add(working_node);
+			// }else{
+			// 	// 更新間隔 + 1 になるよう add
+			// 	workerList.add(working_node);
 
-				ArrayList<Node> neighbors = this.getOutbounds();
+			// 	ArrayList<Node> neighbors = this.getOutbounds();
 
-				// workerList に含まれない node を Outbounds から削除
-				for(Node node: neighbors){
-					if(!workerList.contains(node)){
-						removing_nodes.add(node);
-					}
-				}
+			// 	// workerList に含まれない node を Outbounds から削除
+			// 	for(Node node: neighbors){
+			// 		if(!workerList.contains(node)){
+			// 			removing_nodes.add(node);
+			// 		}
+			// 	}
 
-				// System.out.println(removing_nodes);
+			// 	// System.out.println(removing_nodes);
 
-				for(Node node: removing_nodes){
-					if(!this.removeNeighbor(node))System.out.println("faild to remove neighbor node.");
-				}
-				// Outboundノードを既定数まで増やす
-				while(this.getOutbounds().size()<OUTBOUND_NUM){
-					Node addNode = getSimulatedNodes().get(rand.nextInt(NUM_OF_NODES-1));
-					if(addNode!=this && !this.getOutbounds().contains(addNode) && !this.getInbounds().contains(addNode)){
-						this.addNeighbor(addNode);
-					}
-				}
+			// 	for(Node node: removing_nodes){
+			// 		if(!this.removeNeighbor(node))System.out.println("faild to remove neighbor node.");
+			// 	}
+			// 	// Outboundノードを既定数まで増やす
+			// 	while(this.getOutbounds().size()<OUTBOUND_NUM){
+			// 		Node addNode = getSimulatedNodes().get(rand.nextInt(NUM_OF_NODES-1));
+			// 		if(addNode!=this && !this.getOutbounds().contains(addNode) && !this.getInbounds().contains(addNode)){
+			// 			this.addNeighbor(addNode);
+			// 		}
+			// 	}
 
-				// System.out.println("before removeFirst()" + "\t size: " + workerList.size() + "\t node: " + workerList.getFirst());
-				workerList.removeFirst();
-				// System.out.println("after  removeFirst()" + "\t size: " + workerList.size() + "\t node: " + workerList.getFirst());
-			}
+			// 	// System.out.println("before removeFirst()" + "\t size: " + workerList.size() + "\t node: " + workerList.getFirst());
+			// 	workerList.removeFirst();
+			// 	// System.out.println("after  removeFirst()" + "\t size: " + workerList.size() + "\t node: " + workerList.getFirst());
+			// }
 		
 		}
 	}
@@ -451,29 +451,29 @@ public class Node {
 
 			// inbound を選ぶ
 			// 自分からみて下流を選ぶ
-			Node working_node = to;
-			ArrayList<Node> target_inbounds = this.getInbounds();
-			ArrayList<Node> removing_node = new ArrayList<Node>();
-			if(active_inbound.size()<BLOCK_FREQ){
-				active_inbound.add(working_node);
-			}else{
-				// 更新間隔 + 1 になるよう add
-				active_inbound.add(working_node);
-				active_inbound.removeFirst();
+			// Node working_node = to;
+			// ArrayList<Node> target_inbounds = this.getInbounds();
+			// ArrayList<Node> removing_node = new ArrayList<Node>();
+			// if(active_inbound.size()<BLOCK_FREQ){
+			// 	active_inbound.add(working_node);
+			// }else{
+			// 	// 更新間隔 + 1 になるよう add
+			// 	active_inbound.add(working_node);
+			// 	active_inbound.removeFirst();
 
-				for(Node node: target_inbounds){
-					if(active_inbound.contains(node)){
-						removing_node.add(node);
-					}
-				}
+			// 	for(Node node: target_inbounds){
+			// 		if(active_inbound.contains(node)){
+			// 			removing_node.add(node);
+			// 		}
+			// 	}
 
-				for(Node node : removing_node){
-					if(!active_inbound.contains(node)){
-						node.removeNeighbor(this);
-						while(node.addNeighbor(getSimulatedNodes().get(rand.nextInt(NUM_OF_NODES-1))));	
-					}
-				}
-			}
+			// 	for(Node node : removing_node){
+			// 		if(!active_inbound.contains(node)){
+			// 			node.removeNeighbor(this);
+			// 			while(node.addNeighbor(getSimulatedNodes().get(rand.nextInt(NUM_OF_NODES-1))));	
+			// 		}
+			// 	}
+			// }
 		}else{
 			sendingBlock = false;
 		}
