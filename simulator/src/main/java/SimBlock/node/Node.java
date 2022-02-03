@@ -381,7 +381,7 @@ public class Node {
 			if(block.getHeight()==ENDBLOCKHEIGHT){
 				System.out.println("-------------");
 				for(Integer num : freq_count.keySet()){
-					System.out.println(num + "\t" + freq_count.get(num));
+					System.out.println(freq_count.get(num));
 				}
 				System.out.println("-------------");
 			}
