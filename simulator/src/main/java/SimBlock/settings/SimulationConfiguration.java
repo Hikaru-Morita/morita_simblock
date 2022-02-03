@@ -27,7 +27,7 @@ public class SimulationConfiguration {
 	public static final int AVERAGE_MINING_POWER = 400000;
 	public static final int STDEV_OF_MINING_POWER = 100000;
 
-	public static final int ENDBLOCKHEIGHT = 7000;
+	public static final int ENDBLOCKHEIGHT = 10000;
 
 	// Unit: byte
 	public static final long BLOCKSIZE = 535000;//6110;//8000;//535000;//0.5MB

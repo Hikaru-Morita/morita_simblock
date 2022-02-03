@@ -367,7 +367,7 @@ public class Node {
 				if(block.getHeight()>(ENDBLOCKHEIGHT-5000) && nodes_blockFreq_count.containsKey(node_from)){
 					// System.out.println((received_block_count - nodes_blockFreq_count.get(node_from)));
 					int freq_num = received_block_count - nodes_blockFreq_count.get(node_from);
-					if(freq_num<=200){
+					if(freq_num<=400){
 						if(!freq_count.containsKey(freq_num)){
 							freq_count.put(freq_num,1);
 						}else{
